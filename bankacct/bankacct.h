@@ -49,7 +49,7 @@ struct Bank
  /* ---- main functions -----------
   * int mainMenu();
   * int acctMenu();
-  * int newAcct();
+  * void newAcct(Bank[]);
   * int loadAcct();
   * ------ acct functions -----------
   * void depositAcct();

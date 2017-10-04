@@ -1,0 +1,18 @@
+/* -----------------------------------------------------------------------------
+
+FILE:              tanner_benavides.CPP / factorial.cpp
+
+DESCRIPTION:       the Original "factorial.cpp" and modified "tanner_benavides.cpp" C++ files that run a simple math program asking for 
+		   input
+
+COMPILER:          C++ programming language, and linux compiler were used.
+
+NOTES:             This .tgz zip file contains 2 makefiles, 2 cpp files. 2 executables, 2 output files, and a word document.
+
+MODIFICATION HISTORY:
+
+Author                  Date               Version
+---------------         ----------         --------------
+Tanner Benavides         2017-08-29        1.0
+
+----------------------------------------------------------------------------- */

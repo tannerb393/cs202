@@ -1,0 +1,7 @@
+
+The value of 4! is: 24
+
+This program was written by YoursTruly.
+
+Goodbye.
+

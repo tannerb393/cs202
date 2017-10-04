@@ -1,0 +1,58 @@
+A LOG FOR THE CHANGES MADE, PROGRAMS INSTALLED FROM TERMINAL
+
+ 9-10-17 - INITIAL SETUP OF VIM/ GIT /*{{{*/
+    *added vim to term
+        sudo apt-get install vim
+    *added git to term to be able to install vim plugins
+        sudo apt-get install git
+        git clone --depth=1 git://github.com/amix/vimrc.git ~/.vim_runtimesh ~/.vim_runtime/install_basic_vimrc.sh
+            *instructions on github.com/amix/vimrc
+    *Modified .vimrc (plugin_config), to include c++ support under syntastic, add top bottom of file:
+        path to edit .vimrc: vim ~/.vim_runtime/vimrcs/plugins_config.vim
+        let g:syntastic_cpp_compiler = 'clang++'
+        let g:syntastic_cpp_compiler_options = ' -std=c++11 -stdlib=libc++'/*}}}*/
+
+    9-25-17 -- NEW VIMRC SETTINGS/*{{{*/
+            added set mouse=a & set number to .vimrc in ~/   
+            added tab settings to .vimrc
+                map <F7> :tabp <CR>
+                map <F8> :tabn <CR>/*}}}*/
+    9-26-17 -- NEW VIMRC SETTINGS AND CTRLP SETUP/*{{{*/
+            added some setting from the 'A Good vim' tutorial into .vimrc file
+                set incsearch "set search as characters are entered mode
+                set hlsearch "higlight matches
+                set foldenable "enables folding
+                set foldlevelstart=5 "open most folds by default
+                set foldnestmax=2 " 2 nested fold max
+                set foldmethod=marker "fold based on markers
+                colorscheme molokai " colorscheme molokai, color folder .vim_runtime/colors
+                "Below| sets space to clear last search
+                nnoremap<leader><space> :nohlsearch<CR>
+                "Below| sets ',s' to save last session of vim windows, vim -S to restore
+                nnoremap<leader>s :mksession<CR>
+                "Below| sets 'jk' to escape, way quicker :) 
+                inoremap jk <esc>
+                "Below| sets F7 and F8 to tab through open vim tabs
+                map <F7> :tabp <CR>
+                map <F8> :tabn <CR>
+                let g:ctrlp_map = '<c-p>'
+                let g:ctrlp_cmd = 'CtrlP'
+                map <F6> :CtrlP <CR>
+            added Ctrlp to vim www.kien.github.io/ctrlp.vim/#installation
+                follow instructions on bottom of page, change ~/.vim folder instructed in each 
+                step to ~/.vim_runtime/vimrcs
+                    search list of words in 'Input' mode with ctrl+p
+                    fuzzy search the directory in 'Normal' mode pressing new mapped <F6>/*}}}*/
+    9-28-17 -- ADDED SSH KEYS TO LAPTOP USING KEGEN/*{{{*/
+        From laptop of computer that you want to use to SSH to home or server
+             $ cd ~/.ssh/
+             $ ssh-keygen (ENTER) (ENTER) to skip adding passphrase
+             $ adding new public key to server (from .ssh folder):
+                $ cat.ssh/id_rsa.pub | ssh tannerb393@tannerb.root.sx -p 8000 'cat >> ~/.ssh/authorized_keys'
+             - Test out by doing ssh into home computer.
+             - create bash file to quick login to home:
+                $vim toHome.sh , and then write:
+                    "#!/bin/bash
+
+                    ssh tannerb393@tannerb.root.sx -p 8000"
+/*}}}*/
