@@ -50,14 +50,14 @@ struct Bank
   * int mainMenu();
   * int acctMenu();
   * void newAcct(Bank[]);
-  * int loadAcct();
+  * int loadAcct(Bank[]);
   * ------ acct functions -----------
-  * void depositAcct();
-  * void withdrawAcct();
-  * void transferAcct();
-  * int closeAcct();
-  * void userReport();
-  * void fullReport();
+  * void depositAcct(Bank[]);
+  * void withdrawAcct(Bank[]);
+  * void transferAcct(Bank[]);
+  * int closeAcct(Bank[]);
+  * void userReport(Bank[]);
+  * void fullReport(Bank[]);
   * void resetData();
   * void loadStructArray(Bank *);
   * ---- data check functions --------
