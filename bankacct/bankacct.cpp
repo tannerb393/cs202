@@ -31,11 +31,9 @@ int main (int argc, char* argv[])
 {/*{{{*/
     int record;
 
-    Bank = user[1000];
-    Bank *userptr = nullptr;
-    userptr = &user;
+    Bank user[1000];
 
-    // loadStructArray(&user);
+    // loadStructArray(user);
 
 	while (choice = 0)
     {
