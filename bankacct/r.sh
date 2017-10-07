@@ -2,5 +2,5 @@
 
 clear
 make bankacct
-./banacct
+./bankacct
 

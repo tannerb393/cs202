@@ -1,6 +1,8 @@
-/*   --------------------------------FILE HEADER------------------------------------/*{{{*/
-FILE NAME:     structures_v6.h
-DESCRIPTION:   .h file that is the header file for the .cpp file holding the library definitions
+/*{{{*/
+
+/* --------------------------------FILE HEADER------------------------------------
+* FILE NAME:     structures_v6.h
+* DESCRIPTION:   .h file that is the header file for the .cpp file holding the library definitions
                 the structure definition and the function prototypes.
 PURPOSE:       This files helps to contain parts of the .cpp file which may be used by multiple 
                 .cpp files, saving time and cleaning up the code.
@@ -17,7 +19,8 @@ Author              Date        Modification(s)
 Tanner_Benavides  09-21-2017     1.0 / structures_v4.h
 Tanner_Benavides  09-25-2017     2.0 / structures_v5.h
 Tanner_Benavides  09-25-2017     3.0 / structures_v6.h
------------------------------------------------------------------------------ *//*}}}*/
+//----------------------------------------------------------------------------- 
+*//*}}}*/
 
 #ifndef __BANKACCT_H__
 #define __BANKACCT_H__
@@ -27,47 +30,54 @@ Tanner_Benavides  09-25-2017     3.0 / structures_v6.h
 #include <stdlib.h> // for system("clear");
 #include <cstdlib> //for char comparisons: atoi, atof, etc
 #include <cctype> //for testing characters
+#include <fstream> //file stream
 
 using namespace std;
 
 #define ARRAY_SIZE(a) sizeof(a)/sizeof(a[0]) // may not work for struct arrays
 //#define MAX(x,y) ((x) ? (x) : (y) ) ''
 
+	const int NAME_MAX = 31;
+	const int SS_MAX = 12;
+	const int PHONE_MAX = 16;
+	const int ACCTN_MAX = 6;
+	const int PASS_MAX = 7;
+
 struct Bank 
 {
-    char last[30+ 1]; 
-    char first[30+ 1];
+    char last[NAME_MAX]; 
+    char first[NAME_MAX];
     char middle;
-    char ss[11 + 1];
-    char phone[15 + 1];
+    char ss[SS_MAX];
+    char phone[PHONE_MAX];
     float balance;
-    char acctNum[5 + 1];
-    char passw[7];
+    char acctnum[ACCTN_MAX];
+    char passw[PASS_MAX];
 };
 
  // Function prototypes go here
- /* ---- main functions -----------
-  * int mainMenu();
-  * int acctMenu();
-  * void newAcct(Bank[]);
-  * int loadAcct(Bank[]);
-  * ------ acct functions -----------
-  * void depositAcct(Bank[]);
-  * void withdrawAcct(Bank[]);
-  * void transferAcct(Bank[]);
-  * int closeAcct(Bank[]);
-  * void userReport(Bank[]);
-  * void fullReport(Bank[]);
-  * void resetData();
-  * void loadStructArray(Bank *);
-  * ---- data check functions --------
-  * float balanceCheck();
-  * char ssCheck();
-  * char acFormCheck();
-  * char paFormCheck();
-  * char passwordCheck();
-  * int invaidIntChoice();
-  */  
+  int invalidIntChoice();
+  int mainMenu();
+  int acctMenu();
+  int newAcct(Bank [100], int &);
+  int loadAcct(Bank [100], int &);
+  //------ acct functions -----------
+  void depositAcct();
+  void withdrawAcct();
+  void transferAcct();
+  int closeAcct();
+  void userReport();
+  int fullReport(Bank [100], int &);
+  void loadStructArray(Bank[100], int &);
+  //---- data check functions --------
+  float balanceCheck();
+  char ssCheck();
+  char acFormCheck();
+  char paFormCheck();
+  char passwordCheck();
+  bool nameCheck(Bank *);
+  
+    
 
 #endif /* __BANKACCT_H__ */
 
