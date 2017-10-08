@@ -31,6 +31,7 @@ Tanner_Benavides  09-25-2017     3.0 / structures_v6.h
 #include <cstdlib> //for char comparisons: atoi, atof, etc
 #include <cctype> //for testing characters
 #include <fstream> //file stream
+#include <limits>
 
 using namespace std;
 
@@ -45,7 +46,7 @@ using namespace std;
 
 struct Bank 
 {
-    char last[NAME_MAX]; 
+    char last[NAME_MAX + 1]; 
     char first[NAME_MAX];
     char middle;
     char ss[SS_MAX];
@@ -59,7 +60,7 @@ struct Bank
   int invalidIntChoice();
   int mainMenu();
   int acctMenu();
-  int newAcct(Bank [100], int &);
+  int newAcct(Bank [100], int &, Bank *);
   int loadAcct(Bank [100], int &);
   //------ acct functions -----------
   void depositAcct();
@@ -70,14 +71,15 @@ struct Bank
   int fullReport(Bank [100], int &);
   void loadStructArray(Bank[100], int &);
   //---- data check functions --------
-  float balanceCheck();
-  char ssCheck();
+  float balanceFormCheck(Bank *);
   char acFormCheck();
   char paFormCheck();
   char passwordCheck();
-  bool nameCheck(Bank *);
-  
-    
+  void firstFormCheck(Bank *);
+  void lastFormCheck(Bank *);
+  void middleFormCheck(Bank *);
+  void ssFormCheck(Bank *); 
+  void phoneFormCheck(Bank *);
 
 #endif /* __BANKACCT_H__ */
 
