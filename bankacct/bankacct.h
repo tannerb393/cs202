@@ -32,6 +32,7 @@ Tanner_Benavides  09-25-2017     3.0 / structures_v6.h
 #include <cctype> //for testing characters
 #include <fstream> //file stream
 #include <limits>
+#include <iomanip>
 
 using namespace std;
 
@@ -40,28 +41,30 @@ using namespace std;
 
 	const int NAME_MAX = 31;
 	const int SS_MAX = 12;
-	const int PHONE_MAX = 16;
+	const int PHONE_MAX = 14;
 	const int ACCTN_MAX = 6;
 	const int PASS_MAX = 7;
 
 struct Bank 
 {
-    char last[NAME_MAX + 1]; 
+    char last[NAME_MAX]; 
     char first[NAME_MAX];
     char middle;
     char ss[SS_MAX];
     char phone[PHONE_MAX];
-    float balance;
+    double balance;
     char acctnum[ACCTN_MAX];
     char passw[PASS_MAX];
 };
 
  // Function prototypes go here
   int invalidIntChoice();
+  void clearIt();
   int mainMenu();
   int acctMenu();
   int newAcct(Bank [100], int &, Bank *);
   int loadAcct(Bank [100], int &);
+  void saveAcct(Bank [100], int &);
   //------ acct functions -----------
   void depositAcct();
   void withdrawAcct();
@@ -71,10 +74,10 @@ struct Bank
   int fullReport(Bank [100], int &);
   void loadStructArray(Bank[100], int &);
   //---- data check functions --------
-  float balanceFormCheck(Bank *);
-  char acFormCheck();
-  char paFormCheck();
-  char passwordCheck();
+  void balanceFormCheck(Bank *);
+  void acctFormCheck(Bank *);
+  void passFormCheck(Bank *);
+  void passwordCheck();
   void firstFormCheck(Bank *);
   void lastFormCheck(Bank *);
   void middleFormCheck(Bank *);

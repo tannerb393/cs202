@@ -122,64 +122,71 @@ int newAcct(Bank user[],int &record, Bank *temp)
 { /*{{{*/
     system("clear");
 
-	int choice = 0;
+    char approve = 'x';
+    int choice = 0;
     cout << " ==================== NEW ACCOUNT =================== \n \n";
 	cout << "Please choose from the options below and press [ENTER]: \n \n";
-
     cout << "| [1] CREATE NEW ACCOUNT\n"
             "| [2] RETURN TO PREVIOUS MENU\n";
 	cout << "|-----------> ";
 	cin >> choice;
 
-    cin.clear();
-    cin.ignore(100, '\n');
+    clearIt();
 
    
 	while (choice < 1 || choice > 2) // INCORRECT CHOICE FIXER
 		choice = invalidIntChoice();
 
-    if (choice == 1)
+    while (choice == 1)
     {
-        (lastFormCheck(temp));
-        (firstFormCheck(temp));
-        (middleFormCheck(temp));
-        (ssFormCheck(temp));
-        (phoneFormCheck(temp));
-        cout << "Enter Initial Account Balance:\n";
-        cin >>  temp->balance;
-        cout << "ACCOUNT NUMBER WILL AUTO GENERATE INPUT, THEN DISPLAY HERE\n";
-        cin >>  temp->acctnum;
-        cout << "Please Choose An Account Password:\n";
-        cin >>  temp->passw;
-        cout << endl;
+            (lastFormCheck(temp));
+            (firstFormCheck(temp));
+            (middleFormCheck(temp));
+            (ssFormCheck(temp));
+            (phoneFormCheck(temp));
+           // (balanceFormCheck(temp));
+            temp->balance = 0.00;
+            (acctFormCheck(temp));
+            (passFormCheck(temp));
+            cout << endl;
+            clearIt();
 
+            cout << "[Bank Account Data Collected]\n";
+            cout << temp->last << endl;
+            cout << temp->first << endl;
+            cout << temp->middle << endl;
+            cout << temp->ss << endl;
+            cout << temp->phone << endl;
+            cout << temp->balance << endl;
+            cout << temp->acctnum << endl;
+            cout << temp->passw << endl;
+            cout <<endl;
 
+            cout << "Add Account To Database?? (Y/N)\n";
+            cin >> approve;
+        //    while (approve != 'y' && approve != 'Y' && approve != 'n' && approve != 'N')
+         //       cin >> approve;
 
-        cin >> user[record].last;
-        cin >>  user[record].first;               
-        cin >>  user[record].middle;
-        cin >>  user[record].ss;
-        cin >>  user[record].phone;
-        cin >>  user[record].balance;
-        cin >>  user[record].acctnum;
-        cin >>  user[record].passw;
+            if (approve == 'y' || approve == 'Y')
+            {
+                record ++;
+                choice = 0;
+               strcpy(user[record].last, temp->last);
+               strcpy(user[record].first, temp->first);             
+                      user[record].middle = temp->middle;
+               strcpy(user[record].ss, temp->ss);
+               strcpy(user[record].phone, temp->phone);
+                      user[record].balance = temp->balance;
+               strcpy(user[record].acctnum, temp->acctnum);
+               strcpy(user[record].passw, temp->passw);
 
+               saveAcct(user, record);
+               cout << "Database Updated";
+            }
 
-        cout << user[record].last << endl;
-        cout << user[record].first << endl;
-        cout << user[record].middle << endl;
-        cout << user[record].ss << endl;
-        cout << user[record].phone << endl;
-        cout << user[record].balance << endl;
-        cout << user[record].acctnum << endl;
-        cout << user[record].passw << endl;
-
+            else
+                choice = 1;
     }
-
-    else 
-        choice = 0;
-
-
 
 	return choice;
 }/*}}}*/
@@ -224,7 +231,7 @@ int fullReport(Bank user[], int &record)
    system("clear");
    cout << endl;
 
-   for (int i = 0; i < record; i ++)
+   for (int i = 0; i <= record; i ++)
     {
        cout << user[i].last << endl;
        cout << user[i].first << endl;
@@ -281,14 +288,33 @@ void loadStructArray(Bank user[], int &record)
     record = (lines/9);
 
     cout << record << " records \n";
+    record--;
     ifile.close();
 
+}/*}}}*/
 
+void saveAcct(Bank user[], int &record)
+{ /*{{{*/
 
+    ofstream sfile; //opening and then closing banksave file to check create if not present 
 
-
+    sfile.open("banksave.txt", ios::out);
+    for (int i = 0; i <= record; i ++)
+    {
+       sfile << user[i].last << endl;
+       sfile << user[i].first << endl;
+       sfile << user[i].middle << endl;
+       sfile << user[i].ss << endl;
+       sfile << user[i].phone << endl;
+       sfile << user[i].balance << endl;
+       sfile << user[i].acctnum << endl;
+       sfile << user[i].passw << endl;
+       sfile << endl;
+    }
+   sfile.close(); //close 'banksave' written to struct array
 
 }/*}}}*/
+
 
 /***************************************ACCOUNT FUNCTIONS*******************************/
 
@@ -339,29 +365,7 @@ int closeAcct()
 
 /************************************DATA CHECK FUNCTIONS******************************/
 
-float balanceCheck()
-{ /*{{{*/
-
-
-}/*}}}*/
-
-char ssCheck()
-{ /*{{{*/
-
-}/*}}}*/
-
-char acFormCheck()
-{ /*{{{*/
- 
-
-}/*}}}*/
-
-char paFormCheck()
-{ /*{{{*/
-    
-}/*}}}*/
-
-char passwordCheck()
+void passwordCheck()
 { /*{{{*/
    
 }/*}}}*/
@@ -376,6 +380,12 @@ int invalidIntChoice()
 	return choice;
 }/*}}}*/
 
+void clearIt()
+{/*{{{*/
+	cin.clear();
+	cin.ignore(100, '\n');
+}/*}}}*/
+
 void lastFormCheck(Bank *temp)
 {/*{{{*/
    int retry;
@@ -386,14 +396,14 @@ void lastFormCheck(Bank *temp)
        cin.getline(temp->last, NAME_MAX);
 
        for (int i = 0; i < strlen(temp->last); i++)
-           if(!isalpha(temp->last[i]) || cin.fail())
+           if(!isalpha(temp->last[i]))
                retry = 1;
 
        if (strlen(temp->last) == 0)
             retry = 1;
 
        if(retry == 1)
-            cout <<"Bad Format! Enter Last Name, single wording using A-Z\n"; 
+            cout <<"Bad Format! Enter Last Name, single word using A-Z\n"; 
     }while (retry == 1);
 }/*}}}*/
 
@@ -414,7 +424,7 @@ void firstFormCheck(Bank *temp)
             retry = 1;
 
        if(retry == 1)
-            cout <<"Bad Format! Enter First Name, single wording using A-Z\n"; 
+            cout <<"Bad Format! Enter First Name, single word using A-Z\n"; 
     }while (retry == 1);
 }/*}}}*/
 
@@ -426,16 +436,16 @@ void middleFormCheck(Bank *temp)
        retry = 0;
        cout << "Enter Middle Inital: " << endl;
        cin.get(temp->middle);
-       cin.clear();
-       cin.ignore(100, '\n');
            
        if(!isalpha(temp->middle) || cin.fail())
            retry = 1;
-       if (strlen(temp->last) == 0 || strlen(temp->last) > 1)
+       if (temp->middle == ' ')
            retry = 1;
        if(retry == 1)
-            cout <<"Bad Format! Enter Middle Initial, single Letter, A-Z\n"; 
+            cout <<"Bad Format!\n"; 
+       clearIt();
     }while (retry == 1);
+
 }/*}}}*/
 
 void ssFormCheck(Bank *temp)
@@ -445,7 +455,7 @@ void ssFormCheck(Bank *temp)
     {
        retry = 0;
        cout << "Enter Social-Security Number [xxx-xx-xxxx format]:\n";
-       cin.getline(temp->ss, NAME_MAX);
+       cin.getline(temp->ss, 100);
  
        if (strlen(temp->ss) == 0
                || strlen(temp->ss) > 11 
@@ -462,9 +472,10 @@ void ssFormCheck(Bank *temp)
                || (!isdigit(temp->ss[10])))
                retry = 1;
 
+   //    cout << temp->ss << endl;
 
        if(retry == 1)
-            cout <<"Bad Format! Enter Social-Security Number [xxx-xx-xxxx format]:\n"; 
+            cout <<"Bad Format!:\n"; 
     }while (retry == 1);
 }/*}}}*/
 
@@ -476,33 +487,89 @@ void phoneFormCheck(Bank *temp)
        retry = 0;
 
         cout << "Enter Phone Number [(xxx)xxx-xxxx format]:\n";
-        cin.getline(temp->ss, NAME_MAX);
+        cin.getline(temp->phone, 100);
  
-       if (strlen(temp->ss) == 0
-               || strlen(temp->ss) > 13 
-               || temp->ss[0] != '('
-               || temp->ss[4] != ')'
-               || temp->ss[8] != '-'
-               || (!isdigit(temp->ss[1]))
-               || (!isdigit(temp->ss[2]))
-               || (!isdigit(temp->ss[3]))
-               || (!isdigit(temp->ss[5]))
-               || (!isdigit(temp->ss[6]))
-               || (!isdigit(temp->ss[7]))
-               || (!isdigit(temp->ss[9]))
-               || (!isdigit(temp->ss[10]))
-               || (!isdigit(temp->ss[11]))
-               || (!isdigit(temp->ss[12])))
+       if (strlen(temp->phone) == 0
+               || strlen(temp->phone) > 13 
+               || temp->phone[0] != '('
+               || temp->phone[4] != ')'
+               || temp->phone[8] != '-'
+               || (!isdigit(temp->phone[1]))
+               || (!isdigit(temp->phone[2]))
+               || (!isdigit(temp->phone[3]))
+               || (!isdigit(temp->phone[5]))
+               || (!isdigit(temp->phone[6]))
+               || (!isdigit(temp->phone[7]))
+               || (!isdigit(temp->phone[9]))
+               || (!isdigit(temp->phone[10]))
+               || (!isdigit(temp->phone[11]))
+               || (!isdigit(temp->phone[12])))
                retry = 1;
 
+   //    cout << temp->phone << endl;
 
        if(retry == 1)
-            cout <<"Bad Format! Enter Phone Number [(xxx)xxx-xxxx format]:\n"; 
+            cout <<"Bad Format!\n"; 
     }while (retry == 1);
 }/*}}}*/
 
+void balanceFormCheck(Bank *temp)
+{/*{{{*/
+    cout << "Please Enter An Amount (Dollars.Cents). Amounts will be rounded to cents place" << endl;
+    cin >> temp->balance;
+    while (cin.fail())
+    {
+        clearIt();
+        cout << "Bad Format!\n";
+        cin >> temp->balance;
+    }
+  //  clearIt();
 
+}/*}}}*/
 
+void acctFormCheck(Bank *temp)
+{/*{{{*/
+   int retry;
+    do  
+    {
+       retry = 0;
+       cout << "Enter Account Number Using Letters (A-Z)\n"
+               "and Numbers (1-9), Must be 5 Characters Long. *Not Case Sensitive\n";
+       cin.getline(temp->acctnum, 100);
+       
+       for (int i = 0; i < strlen(temp->acctnum); i++)
+           if(!isalnum(temp->acctnum[i]) || cin.fail())
+               retry = 1;
+
+       if (strlen(temp->acctnum) == 0 ||strlen(temp->acctnum) != 5)
+            retry = 1;
+
+       if(retry == 1)
+       cout << "Bad Format!\n"; 
+    }while (retry == 1);
+}/*}}}*/
+
+void passFormCheck(Bank *temp)
+{/*{{{*/
+   int retry;
+    do  
+    {
+       retry = 0;
+       cout << "Enter Account Password Using Letters (A-Z)\n"
+               " and Numbers (1-9), Must be 6 Characters Long. *Not Case Sensitive\n";
+       cin.getline(temp->passw, 100);
+
+       for (int i = 0; i < strlen(temp->passw); i++)
+           if(!isalnum(temp->passw[i]) || cin.fail())
+               retry = 1;
+
+       if (strlen(temp->passw) == 0 ||strlen(temp->passw) != 6)
+            retry = 1;
+
+       if(retry == 1)
+       cout << "Bad Format!\n";
+    }while (retry == 1);
+}/*}}}*/
 
 
 

@@ -2,5 +2,4 @@
 
 clear
 make bankacct
-./bankacct 
-
+./bankacct < input.txt
