@@ -67,9 +67,9 @@ int mainMenu()
 			"| [3] GENERATE BANK ACCOUNT DATABASE REPORT\n";
 	cout << "|-----------> ";
 	cin >> choice;
-	while (choice < 1 || choice > 3) // INCORRECT CHOICE FIXER
+	while (choice < 1 || choice > 3 || cin.fail()) // INCORRECT CHOICE FIXER
 		choice = invalidIntChoice();
-
+    clearIt();
 	return (choice);
 }/*}}}*/
 
@@ -130,12 +130,9 @@ int newAcct(Bank user[],int &record, Bank *temp)
             "| [2] RETURN TO PREVIOUS MENU\n";
 	cout << "|-----------> ";
 	cin >> choice;
-
-    clearIt();
-
-   
 	while (choice < 1 || choice > 2) // INCORRECT CHOICE FIXER
 		choice = invalidIntChoice();
+    clearIt();
 
     while (choice == 1)
     {
@@ -149,7 +146,6 @@ int newAcct(Bank user[],int &record, Bank *temp)
             (acctFormCheck(temp));
             (passFormCheck(temp));
             cout << endl;
-            clearIt();
 
             cout << "[Bank Account Data Collected]\n";
             cout << temp->last << endl;
@@ -164,6 +160,7 @@ int newAcct(Bank user[],int &record, Bank *temp)
 
             cout << "Add Account To Database?? (Y/N)\n";
             cin >> approve;
+            clearIt();
         //    while (approve != 'y' && approve != 'Y' && approve != 'n' && approve != 'N')
          //       cin >> approve;
 
@@ -194,33 +191,73 @@ int newAcct(Bank user[],int &record, Bank *temp)
 int loadAcct(Bank user[], int &record)
 { /*{{{*/
     system("clear");
+    char loadAcct[6];
+    char loadPass[7];
 
 	int choice = 0;
-    cout << " ===================== LOG IN ====================== \n \n";
-	cout << "Please choose from the options below and press [ENTER]: \n \n";
 
-    cout << "| [1] ENTER LOG-IN INFORMATION\n"
-            "| [2] RETURN TO PREVIOUS MENU\n";
-	cout << "|-----------> ";
-	cin >> choice;
-	//choices used switch(acctMenu())
-   
-	while (choice < 1 || choice > 2) // INCORRECT CHOICE FIXER
-		choice = invalidIntChoice();
 
-    if (choice == 1)
+    do
     {
-    // check for format
-    // load array and find account
-    // check password
-    // if all checks out pass user# onto acctMenu()
-    //
+        cout << " =================== LOAD ACCOUNT ==================== \n \n";
 
-    //  choice = (acctMenu);
-    }
+        cout << "Enter User Account Number\n";
+        cout << "-----> ";
+        cin.getline(loadAcct, 100);
+        
+        for(int i = 0; i < record; i++)
+        {
+            if (strcmp(user[i].acctnum, loadAcct) == 0)
+            {
+                record = i;
+                choice = 1;
+            }
+        }
 
-    else 
-        choice = 0;
+        if (choice == 0)
+        {
+         cout << "No Matching Account Number\n";
+         cout << "| [1] Return to Main Menu\n";
+         cout << "| [2] Re-Enter Account Number\n";
+         cin >> choice;
+       	while (choice < 1 || choice > 2 || cin.fail()) // INCORRECT CHOICE FIXER
+		choice = invalidIntChoice();
+        clearIt();
+        }
+        if (choice = 1)
+        {
+            cout << "Enter User Password\n";
+            cout << "-----> ";
+            cin.getline(loadPass, 100);
+           
+            if (strcmp(user[record].passw, loadPass) == 0)
+               choice = 3;
+
+        }
+         if (choice == 1)
+         {
+             cout << "No Matching Password Number\n";
+             cout << "| [1] Return to Main Menu\n";
+             cout << "| [2] Re-Enter Information\n";
+             cin >> choice;
+            while (choice < 1 || choice > 2 || cin.fail()) // INCORRECT CHOICE FIXER
+            choice = invalidIntChoice();
+            clearIt();
+         }
+
+    }while (choice == 2);
+
+       cout << user[record].last << endl;
+       cout << user[record].first << endl;
+       cout << user[record].middle << endl;
+       cout << user[record].ss << endl;
+       cout << user[record].phone << endl;
+       cout << user[record].balance << endl;
+       cout << user[record].acctnum << endl;
+       cout << user[record].passw << endl;
+       cout << endl;
+
+       cin >> choice;
 
 	return choice;
 }/*}}}*/
@@ -375,7 +412,7 @@ int invalidIntChoice()
     int choice = 0;
 	cout << "Please enter a valid menu choice: ";
 	cin.clear();
-	cin.ignore(10, '\n');
+	cin.ignore(100, '\n');
 	cin >> choice;
 	return choice;
 }/*}}}*/
@@ -393,13 +430,13 @@ void lastFormCheck(Bank *temp)
     {
        retry = 0;
        cout << "Enter Last Name: " << endl;
-       cin.getline(temp->last, NAME_MAX);
+       cin.getline(temp->last, 100);
 
        for (int i = 0; i < strlen(temp->last); i++)
            if(!isalpha(temp->last[i]))
                retry = 1;
 
-       if (strlen(temp->last) == 0)
+       if (strlen(temp->last) == 0 || cin.fail())
             retry = 1;
 
        if(retry == 1)
@@ -414,7 +451,7 @@ void firstFormCheck(Bank *temp)
     {
        retry = 0;
        cout << "Enter First Name: " << endl;
-       cin.getline(temp->first, NAME_MAX);
+       cin.getline(temp->first, 100);
 
        for (int i = 0; i < strlen(temp->first); i++)
            if(!isalpha(temp->first[i]) || cin.fail())
@@ -435,7 +472,8 @@ void middleFormCheck(Bank *temp)
     {
        retry = 0;
        cout << "Enter Middle Inital: " << endl;
-       cin.get(temp->middle);
+       cin >> temp->middle;
+       clearIt();
            
        if(!isalpha(temp->middle) || cin.fail())
            retry = 1;
@@ -443,7 +481,6 @@ void middleFormCheck(Bank *temp)
            retry = 1;
        if(retry == 1)
             cout <<"Bad Format!\n"; 
-       clearIt();
     }while (retry == 1);
 
 }/*}}}*/
@@ -517,11 +554,13 @@ void balanceFormCheck(Bank *temp)
 {/*{{{*/
     cout << "Please Enter An Amount (Dollars.Cents). Amounts will be rounded to cents place" << endl;
     cin >> temp->balance;
+    clearIt();
+
     while (cin.fail())
     {
-        clearIt();
         cout << "Bad Format!\n";
         cin >> temp->balance;
+        clearIt();
     }
   //  clearIt();
 
