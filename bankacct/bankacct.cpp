@@ -41,9 +41,9 @@ int main (int argc, char* argv[])
     {
         switch (mainMenu()) // Switch carries out result returned from mainMenu() function.
 		{
-		case 1:	choice = newAcct(user, record, &temp);
+		case 1:	newAcct(user, record, &temp);
 			break;
-		case 2: choice = loadAcct(user, record);
+		case 2: loadAcct(user, record);
 			break;
 		case 3:	fullReport(user, record); // if user wants to exit the game from main title.
 			break;
@@ -78,33 +78,35 @@ int acctMenu(Bank user[], int &record)
     system("clear");
 
 	int choice = 0;
-    cout << " ============ ACCOUNT MANAGEMENT MENU ============== \n \n";
     do
-    { currentUser(user, record);
-    cout << "| [1] -DEPOSIT FUNDS\n"
-			"| [2] --WITHDRAW FUNDS\n"
-			"| [3] ---TRANSFER FUNDS \n"
-	        "| [4] ----DELETE  ACCOUNT\n"
-            "| [5] CLOSE ACCOUNT AND RETURN TO MAIN MENU\n";
-	cout << "|-------> ";
-	cin >> choice;
+    {    
+        cout << " ============ ACCOUNT MANAGEMENT MENU ============== \n \n";
+        currentUser(user, record);
+        cout << "| [1] -DEPOSIT FUNDS\n"
+                "| [2] --WITHDRAW FUNDS\n"
+                "| [3] ---TRANSFER FUNDS \n"
+                "| [4] ----DELETE  ACCOUNT\n"
+                "| [5] CLOSE ACCOUNT AND RETURN TO MAIN MENU\n";
+        cout << "|-------> ";
+        cin >> choice;
 
-	while (choice < 1 || choice > 6) // INCORRECT CHOICE FIXER
-		choice = invalidIntChoice();
-    switch(choice)
-        {
-            case 1: depositAcct(user, record);
-                break;
-            case 2:	withdrawAcct(user, record);
-                break;
-            case 3:	transferAcct(user, record);
-                break;
-            case 4: closeAcct(user, record);
-                break;
-            case 5: loadStructArray(user, record); // return a 0 if acct closed to goto mainMenu
-                    choice = 0;
-                break;
-        }
+        while (choice < 1 || choice > 6) // INCORRECT CHOICE FIXER
+            choice = invalidIntChoice();
+        switch(choice)
+            {
+                case 1: depositAcct(user, record);
+                    break;
+                case 2:	withdrawAcct(user, record);
+                    break;
+                case 3:	transferAcct(user, record);
+                    break;
+                case 4: closeAcct(user, record);
+                    break;
+                case 5: recordCount(record); // reloads full 'record' count
+                        saveAcct(user, record);
+                        choice = 0;
+                    break;
+            }
 
 
     } while (choice != 0);
@@ -113,7 +115,7 @@ int acctMenu(Bank user[], int &record)
     return choice;
 }/*}}}*/
 
-int newAcct(Bank user[],int &record, Bank *temp)
+void newAcct(Bank user[],int &record, Bank *temp)
 { /*{{{*/
     system("clear");
 
@@ -129,7 +131,7 @@ int newAcct(Bank user[],int &record, Bank *temp)
 		choice = invalidIntChoice();
     clearIt();
 
-    while (choice == 1)
+    if (choice == 1)
     {
             (lastFormCheck(temp));
             (firstFormCheck(temp));
@@ -148,7 +150,8 @@ int newAcct(Bank user[],int &record, Bank *temp)
             cout << temp->middle << endl;
             cout << temp->ss << endl;
             cout << temp->phone << endl;
-            cout << temp->balance << endl;
+            cout << fixed; 
+            cout << setprecision(2) << temp->balance << endl;
             cout << temp->acctnum << endl;
             cout << temp->passw << endl;
             cout <<endl;
@@ -156,13 +159,14 @@ int newAcct(Bank user[],int &record, Bank *temp)
             cout << "Add Account To Database?? (Y/N)\n";
             cin >> approve;
             clearIt();
-        //    while (approve != 'y' && approve != 'Y' && approve != 'n' && approve != 'N')
-         //       cin >> approve;
+
+             while(approve != 'Y' && approve != 'y' && approve != 'N' && approve != 'n'){
+                cin >> approve;
+                clearIt();}
 
             if (approve == 'y' || approve == 'Y')
             {
                 record ++;
-                choice = 0;
                strcpy(user[record].last, temp->last);
                strcpy(user[record].first, temp->first);             
                       user[record].middle = temp->middle;
@@ -173,17 +177,15 @@ int newAcct(Bank user[],int &record, Bank *temp)
                strcpy(user[record].passw, temp->passw);
 
                saveAcct(user, record);
-               cout << "Database Updated";
+               acctMenu(user, record);
             }
 
-            else
-                choice = 1;
+
     }
 
-	return choice;
 }/*}}}*/
 
-int loadAcct(Bank user[], int &record)
+void loadAcct(Bank user[], int &record)
 { /*{{{*/
     system("clear");
     char loadAcct[6];
@@ -244,20 +246,15 @@ int loadAcct(Bank user[], int &record)
     }while (choice == 1);
 
     if (act == true && pas == true)
-    {
-       currentUser(user, record);
-       choice = (acctMenu(user, record));
-    }
+        choice = (acctMenu(user, record));
     else
-        loadStructArray(user, record);
-    
-    return choice;
+        recordCount(record);
+
 }/*}}}*/
 
 void fullReport(Bank user[], int &record)
 { /*{{{*/
 
-   system("clear");
    char YN = 'x';
    char reportDefault[] = "BankAcct.Rpt";
    char reportName[31];
@@ -297,10 +294,6 @@ void fullReport(Bank user[], int &record)
 void loadStructArray(Bank user[], int &record)
 { /*{{{*/
 
-    char cur = '\0';
-    char last= '\0';
-    int lines = 0;
-
     fstream checkf; //opening and then closing banksave file to check create if not present 
     checkf.open("banksave.txt", ios::out | ios::app);
     checkf.close();
@@ -321,8 +314,17 @@ void loadStructArray(Bank user[], int &record)
        ifile >> user[i].passw;
     }
    ifile.close(); //close 'banksave' written to struct array
+   
+   recordCount(record);
 
-    char length; // for saving number of lines in save file
+}/*}}}*/
+
+void recordCount(int &record)
+{/*{{{*/
+    char cur = '\0';
+    char last= '\0';
+    int lines = 0;
+   ifstream ifile; // 'ifile' for inputting banksave.txt to struct array 'user'
 
     ifile.open("banksave.txt", ios::in);
     while (ifile.get(cur)) // while used to count number of lines in save file.
@@ -336,7 +338,6 @@ void loadStructArray(Bank user[], int &record)
     cout << record << " records \n";
     record--;
     ifile.close();
-
 }/*}}}*/
 
 void saveAcct(Bank user[], int &record)
@@ -347,6 +348,7 @@ void saveAcct(Bank user[], int &record)
     sfile.open("banksave.txt", ios::out);
     for (int i = 0; i <= record; i ++)
     {
+       sfile << setprecision(2) << fixed; 
        sfile << user[i].last << endl;
        sfile << user[i].first << endl;
        sfile << user[i].middle << endl;
@@ -366,10 +368,20 @@ void saveAcct(Bank user[], int &record)
 
 void depositAcct(Bank user[], int &record)
 { /*{{{*/
-    system("clear");
 
-    cout << " ======================== DEPOSIT FUNDS ====================== \n \n";
-    cout << "Please choose from the options below and press [ENTER]: \n \n";
+    double deposit = 0;
+    cout << "Deposit amount: \n";
+    cout << "---> ";
+    cin >> deposit;
+    while (deposit < 0 || cin.fail())
+    {
+        cout << "Invalid Deposit Amount, Enter a Positive Dollar Amount: \n";
+        cout << "---> ";
+        clearIt();
+        cin >> deposit;
+    }
+
+    user[record].balance += deposit;
 
 }/*}}}*/
 
@@ -404,6 +416,7 @@ void currentUser(Bank user[], int &record)
 {/*{{{*/
    cout << "[ACCOUNT INFO]\n";
    cout << "-----------------\n";
+   cout << setprecision(2) << fixed;
    cout << user[record].last << endl;
    cout << user[record].first << endl;
    cout << user[record].middle << endl;

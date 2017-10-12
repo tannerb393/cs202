@@ -61,9 +61,10 @@ struct Bank
   int invalidIntChoice();
   void clearIt();
   int mainMenu();
+  void recordCount(int &);
   int acctMenu(Bank [100], int &);
-  int newAcct(Bank [100], int &, Bank *);
-  int loadAcct(Bank [100], int &);
+  void newAcct(Bank [100], int &, Bank *);
+  void loadAcct(Bank [100], int &);
   void saveAcct(Bank [100], int &);
   //------ acct functions -----------
   void depositAcct(Bank [100], int &);
@@ -88,3 +89,5 @@ struct Bank
 // c123a
 // z52c42
 
+// A6217
+// Tb8542
