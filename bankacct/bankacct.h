@@ -62,15 +62,17 @@ struct Bank
   void clearIt();
   int mainMenu();
   void recordCount(int &);
-  int acctMenu(Bank [100], int &);
+  int acctMenu(Bank [100], int &, int &);
   void newAcct(Bank [100], int &, Bank *);
-  void loadAcct(Bank [100], int &);
+  void loadAcct(Bank [100], int &, int &);
   void saveAcct(Bank [100], int &);
+  void cmdLoop(int &, char[]);
+  void cmdCheck(char[]);
   //------ acct functions -----------
   void depositAcct(Bank [100], int &);
-  void withdrawAcct(Bank [100], int &);
-  void transferAcct(Bank [100], int &);
-  int closeAcct(Bank [100], int &);
+  void withdrawalAcct(Bank [100], int &);
+  void transferAcct(Bank [100], int &, int &);
+  int deleteAcct(Bank [100], int &, int &);
   void currentUser(Bank [100], int &);
   void fullReport(Bank [100], int &);
   void loadStructArray(Bank[100], int &);
@@ -89,5 +91,5 @@ struct Bank
 // c123a
 // z52c42
 
-// A6217
-// Tb8542
+// f123c
+// u2xc90

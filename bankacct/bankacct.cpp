@@ -27,10 +27,11 @@ Tanner_Benavides  09-21-2017     1.0 / structures_v1.cpp
  *RETURNS: 0 for true, 1 for false
  *NOTE: holds two command line parameters and and input to structures StudentGrade
  * --------------------------------------------------------------------------------------*/
-int main (int argc, char* argv[])
+int main (int argc, char *argv[])
 {/*{{{*/
     int record = 0;
     int choice = 0;
+    int recordhold;
 
     Bank user[100];
     Bank temp;
@@ -43,7 +44,7 @@ int main (int argc, char* argv[])
 		{
 		case 1:	newAcct(user, record, &temp);
 			break;
-		case 2: loadAcct(user, record);
+		case 2: choice = acctMenu(user, record, recordhold);
 			break;
 		case 3:	fullReport(user, record); // if user wants to exit the game from main title.
 			break;
@@ -52,6 +53,8 @@ int main (int argc, char* argv[])
 
    return 0;
 }/*}}}*/
+
+
 
 int mainMenu()
 {/*{{{*/
@@ -63,7 +66,7 @@ int mainMenu()
 
 	// choices used in switch(mainMenu())
 	cout << "| [1] REGISTER A NEW BANK ACCOUNT\n"
-			"| [2] ACCESS USER BANK ACCOUNT\n"
+			"| [2] LOAD ACCOUNT & ACCESS ACCOUNT MENU\n"
 			"| [3] GENERATE BANK ACCOUNT DATABASE REPORT\n";
 	cout << "|-----------> ";
 	cin >> choice;
@@ -73,15 +76,23 @@ int mainMenu()
 	return (choice);
 }/*}}}*/
 
-int acctMenu(Bank user[], int &record)
+int acctMenu(Bank user[], int &record, int &recordhold)
 {/*{{{*/
     system("clear");
 
-	int choice = 0;
-    do
+	int choice = 1;
+    loadAcct(user, record, recordhold);
+    
+    if (recordhold == 101)
+        choice = 0;
+    else
+        record = recordhold;
+
+    while (choice != 0)
     {    
         cout << " ============ ACCOUNT MANAGEMENT MENU ============== \n \n";
         currentUser(user, record);
+        recordhold = record;
         cout << "| [1] -DEPOSIT FUNDS\n"
                 "| [2] --WITHDRAW FUNDS\n"
                 "| [3] ---TRANSFER FUNDS \n"
@@ -90,27 +101,25 @@ int acctMenu(Bank user[], int &record)
         cout << "|-------> ";
         cin >> choice;
 
-        while (choice < 1 || choice > 6) // INCORRECT CHOICE FIXER
+        while (choice < 1 || choice > 5) // INCORRECT CHOICE FIXER
             choice = invalidIntChoice();
+        clearIt();
         switch(choice)
             {
                 case 1: depositAcct(user, record);
                     break;
-                case 2:	withdrawAcct(user, record);
+                case 2:	withdrawalAcct(user, record);
                     break;
-                case 3:	transferAcct(user, record);
+                case 3:	transferAcct(user, record, recordhold);
                     break;
-                case 4: closeAcct(user, record);
+                case 4: choice = deleteAcct(user, record, recordhold);
                     break;
                 case 5: recordCount(record); // reloads full 'record' count
                         saveAcct(user, record);
                         choice = 0;
                     break;
             }
-
-
-    } while (choice != 0);
-
+    } 
 
     return choice;
 }/*}}}*/
@@ -177,7 +186,7 @@ void newAcct(Bank user[],int &record, Bank *temp)
                strcpy(user[record].passw, temp->passw);
 
                saveAcct(user, record);
-               acctMenu(user, record);
+              // acctMenu(user, record, recordhold);
             }
 
 
@@ -185,18 +194,23 @@ void newAcct(Bank user[],int &record, Bank *temp)
 
 }/*}}}*/
 
-void loadAcct(Bank user[], int &record)
+void loadAcct(Bank user[], int &record, int &recordhold)
 { /*{{{*/
-    system("clear");
     char loadAcct[6];
+    char lowerUserAcct[6];
+    char lowerLoadAcct[6];
     char loadPass[7];
+    char lowerLoadPass[7];
+    char lowerUserPass[7];
     bool act = false;
     bool pas = false;
-	int choice = 0;
+    int choice;
 
+    recordCount(record);
 
     do
     {
+    	choice = 2;
         cout << " =================== LOAD ACCOUNT ==================== \n \n";
 
         cout << "Enter User Account Number\n";
@@ -205,9 +219,12 @@ void loadAcct(Bank user[], int &record)
         
         for(int i = 0; i <= record; i++)
         {
-            if (strcmp(user[i].acctnum, loadAcct) == 0)
+            for (int j = 0; j < 6; j++){
+                lowerUserAcct[j] = tolower(user[i].acctnum[j]);
+                lowerLoadAcct[j] = tolower(loadAcct[j]);}
+            if (strcmp(lowerUserAcct, lowerLoadAcct) == 0)
             {
-                record = i;
+                recordhold = i;
                 act = true;
             }
         }
@@ -227,8 +244,10 @@ void loadAcct(Bank user[], int &record)
             cout << "Enter User Password\n";
             cout << "-----> ";
             cin.getline(loadPass, 100);
-           
-            if (strcmp(user[record].passw, loadPass) == 0)
+            for (int j = 0; j < 7; j++){
+               lowerUserPass[j] = tolower(user[recordhold].passw[j]);
+               lowerLoadPass[j] = tolower(loadPass[j]);}          
+            if (strcmp(lowerUserPass, lowerLoadPass) == 0)
                pas = true;
 
         }
@@ -245,11 +264,9 @@ void loadAcct(Bank user[], int &record)
 
     }while (choice == 1);
 
-    if (act == true && pas == true)
-        choice = (acctMenu(user, record));
-    else
-        recordCount(record);
-
+    if (choice == 0)
+        recordhold = 101;
+        
 }/*}}}*/
 
 void fullReport(Bank user[], int &record)
@@ -382,49 +399,137 @@ void depositAcct(Bank user[], int &record)
     }
 
     user[record].balance += deposit;
+    clearIt();
 
 }/*}}}*/
 
-void withdrawAcct(Bank user[], int &record)
+void withdrawalAcct(Bank user[], int &record)
 { /*{{{*/
-    system("clear");
+    double withdrawal = 0;
+    cout << "Withdrawal Amount: \n";
+    cout << "---> ";
+    cin >> withdrawal;
+    while (withdrawal < 0 || cin.fail() || (user[record].balance - withdrawal) < 0)
+    {
+        cout << "Invalid Deposit Amount, Enter a Positive Dollar Amount: \n";
+        cout << "Final Account Balance Cannot Be Less than Zero\n";
+        cout << "---> ";
+        clearIt();
+        cin >> withdrawal;
+    }
 
-    cout << " ====================== WITHDRAW FUNDS ====================== \n \n";
-    cout << "Please choose from the options below and press [ENTER]: \n \n";
+    user[record].balance -= withdrawal;
+    clearIt();
 
 }/*}}}*/
 
-void transferAcct(Bank user[], int &record)
+void transferAcct(Bank user[], int &record, int &recordhold)
 { /*{{{*/
-    system("clear");
+    int mainrec = record;
+    loadAcct(user, record, recordhold);
+    double transfer;
+    int choice;
+    do
+    {   choice = 0;
+        system ("clear");
+        cout << "[ACCOUNT 1]\n";
+        currentUser(user, mainrec);
+        cout << endl;
+        cout << "[ACCOUNT 2]\n";
+        currentUser(user, recordhold);
+        cout << endl;
 
-    cout << " ======================= TRANSFER FUNDS ====================== \n \n";
-    cout << "Please choose from the options below and press [ENTER]: \n \n";
+        cout << "TRANSFER [ACCOUNT 1] ---> [ACCOUNT 2]\n";
+        cout << "Transfer Amount: ";
+        cin >> transfer;
+
+        while (transfer < 0 || (user[mainrec].balance < transfer) || cin.fail())
+            {
+                cout << "Invalid Amount, Enter a Positive Dollar Amount That is Present in [ACCOUNT 1]: \n";
+                cout << "---> ";
+                clearIt();
+                cin >> transfer;
+            }
+            clearIt();
+
+        user[mainrec].balance -= transfer;
+        user[recordhold].balance += transfer;
+
+        cout << "[ACCOUNT 1]\n";
+        currentUser(user, mainrec);
+        cout << endl;
+        cout << "[ACCOUNT 2]\n";
+        currentUser(user, recordhold);
+        cout << endl;
+        
+        cout << "[1] Transfer Again\n";
+        cout << "[2] Go Back\n";
+        cin >> choice;
+        while (choice < 1 || choice > 2 || cin.fail()) // INCORRECT CHOICE FIXER
+            choice = invalidIntChoice();
+        clearIt();
+
+    }while(choice == 1);
+
+    record = mainrec;
 
 }/*}}}*/
 
-int closeAcct(Bank user[], int &record)
+int deleteAcct(Bank user[], int &record, int &delAccount)
 { /*{{{*/
-    system("clear");
+    system ("clear");
+    int currentRecord = record;
+    recordCount(record);
+    int choice;
 
-    cout << " ===================== CLOSE ACCOUNT ======================== \n \n";
-    cout << "Please choose from the options below and press [ENTER]: \n \n";
+    cout << "*** Permanently Delete Accout? ***\n";
+    cout << "[1] YES\n";
+    cout << "[2] NO\n";
+    cin >> choice;
+    while (choice < 1 || choice > 2) // INCORRECT CHOICE FIXER
+        choice = invalidIntChoice();
+    clearIt();
+
+    if(choice == 1)
+    {
+        ofstream sfile; //opening and then closing banksave file to check create if not present 
+
+        sfile.open("banksave.txt", ios::out);
+        for (int i = 0; i <= record; i ++)
+        {
+            if(i == delAccount)
+                i++;
+
+            sfile << setprecision(2) << fixed; 
+            sfile << user[i].last << endl;
+            sfile << user[i].first << endl;
+            sfile << user[i].middle << endl;
+            sfile << user[i].ss << endl;
+            sfile << user[i].phone << endl;
+            sfile << user[i].balance << endl;
+            sfile << user[i].acctnum << endl;
+            sfile << user[i].passw << endl;
+            sfile << endl;
+        }
+       sfile.close(); //close 'banksave' written to struct array
+       choice = 0;
+    }
+    else
+        record = currentRecord;
+   return choice;
 
 }/*}}}*/
 
 void currentUser(Bank user[], int &record)
 {/*{{{*/
-   cout << "[ACCOUNT INFO]\n";
    cout << "-----------------\n";
    cout << setprecision(2) << fixed;
    cout << user[record].last << endl;
    cout << user[record].first << endl;
    cout << user[record].middle << endl;
-   cout << user[record].ss << endl;
    cout << user[record].phone << endl;
    cout << user[record].balance << endl;
    cout << user[record].acctnum << endl;
-   cout << user[record].passw << endl;
    cout << "-----------------\n";
    cout << endl;
 }/*}}}*/
@@ -639,5 +744,40 @@ void passFormCheck(Bank *temp)
     }while (retry == 1);
 }/*}}}*/
 
+void cmdCheck(char argv[]) // char arg[] obtains argv[] array.
+{/*{{{*/
+    char buf[100]; 
+    const char SLASH = '/';
+    char validOptions[] = "?ABCDEFG";
+    char *p = validOptions; // pointer to beginning address of valid_options array
+    bool firstChar; // Test paramenter's 1st char
+    bool secondChar; // test parameter's 2nd char
 
+    firstChar = argv[0] == SLASH;
 
+    for (p; *p !=0; p++) // ; basically means 'while', so while dereferenced pointer is not /0, loop
+    {
+        secondChar = argv[1] == *p;
+        if (secondChar == true) 
+            break;
+    }
+
+    if(!firstChar || !secondChar)
+        cout << "Invalid Command Entered" << endl;
+    else
+        cout << "Arg: " << (argv + 2) << "Option: " << *p << endl;
+
+    strcpy(buf, (argv + 2)); 
+    cout << " Data: " << buf << endl;
+    
+}/*}}}*/
+
+void cmdLoop(int argc, char *argv[])
+{
+
+  for (int i = 0; i < argc; i++) 
+  {
+     if (i) 
+         cmdCheck(argv[i]); // if argument is true (above 0, which is Argument:0, or ./command
+  }
+}
