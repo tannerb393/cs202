@@ -1,0 +1,402 @@
+//HEADER  /*{{{*/
+/*   --------------------------------FILE HEADER ---------------------------------------
+FILE NAME:     structures_v1.CPP
+DESCRIPTION:   .cpp file written to use examples of structures and file input/output
+PURPOSE:       holds code that is compiled with makefie to run the structures program
+USAGE:         compile this file into an executable by using the make file in Lab3, run the 
+                compiled file along with inputs for variable when prompted. or using the '<input.txt' file.
+EXAMPLES:      'make structure_v1' followed by './structures_v1' or './structures_v1.cpp < input.txt '
+PARAMETERS:    int argc - holds count of paramenters on the command line / char *argv[] holds an array of the pointers
+EXIT CODES:    0 = success other = error
+COMPILATION:   vim to write, and make file to compile: (CPP: g++ -o $* $*.cpp -std=c++11 -std=gnu++11)
+NOTES:         Frst version of the structures .cpp file, holds a 5 var structures and basic call for input to and output
+		from the structure 'StudentGrade'
+MODIFICATION HISTORY:
+Author              Date        Modification(s)
+-------------   -----------    ---------------
+Tanner_Benavides  09-21-2017     1.0 / structures_v1.cpp
+----------------------------------------------------------------------------- 
+/*}}}*/
+
+#include "bankacct.h" // call to header file
+
+
+ /*--------------------------------------------------------------------------------------
+ *FUNCTION NAME: int main ()
+ *PURPOSE: Holds main code for running program and calling other functions. first function called
+ *RETURNS: 0 for true, 1 for false
+ *NOTE: holds two command line parameters and and input to structures StudentGrade
+ * --------------------------------------------------------------------------------------*/
+int main (int argc, char* argv[])
+{/*{{{*/
+    int record = 0;
+    int choice = 0;
+
+    Bank user[100];
+    Bank temp;
+
+  loadStructArray(user, record);
+
+	while (choice == 0)
+    {
+        switch (mainMenu()) // Switch carries out result returned from mainMenu() function.
+		{
+		case 1:	choice = newAcct(user, record);
+			break;
+		case 2: choice = loadAcct(user, record);
+			break;
+		case 3:	choice = fullReport(user, record); // if user wants to exit the game from main title.
+			break;
+		} 
+    }
+
+   return 0;
+}/*}}}*/
+
+int mainMenu()
+{/*{{{*/
+  //  system("clear");
+
+	int choice = 0;
+	cout << "  ==========BANK ACCOUNT TOOL MAIN MENU============\n \n";
+	cout << "Please choose from the options below and press [ENTER]: \n \n";
+
+	// choices used in switch(mainMenu())
+	cout << "| [1] REGISTER A NEW BANK ACCOUNT\n"
+			"| [2] ACCESS USER BANK ACCOUNT\n"
+			"| [3] GENERATE BANK ACCOUNT DATABASE REPORT\n";
+	cout << "|-----------> ";
+	cin >> choice;
+	while (choice < 1 || choice > 3) // INCORRECT CHOICE FIXER
+		choice = invalidIntChoice();
+
+	return (choice);
+}/*}}}*/
+
+int acctMenu()
+{/*{{{*/
+    system("clear");
+
+
+	int choice = 0;
+    cout << " ============ ACCOUNT MANAGEMENT MENU ============== \n \n";
+	cout << "Please choose from the options below and press [ENTER]: \n \n";
+
+    do
+    {
+	//choices used switch(acctMenu())
+    cout << "| [1] DISPLAY ACCOUNT INFORMATION\n"
+            "| [2] DEPOSIT FUNDS INTO ACCOUNT\n"
+			"| [3] WITHDRAW FUNDS FROM ACCOUNT\n"
+			"| [4] TRANSFER FUNDS TO ANOTHER ACCOUNT\n";
+	        "| [5] CLOSE OUT THIS BANK ACCOUNT\n"
+            "| [6] CLOSE ACCOUNT AND RETURN TO MAIN MENU\n";
+	cout << "|-----------> ";
+	cin >> choice;
+
+	while (choice < 1 || choice > 6) // INCORRECT CHOICE FIXER
+		choice = invalidIntChoice();
+    switch(choice)
+        {
+            case 1: userReport();
+                break;
+            case 2: depositAcct();
+                break;
+            case 3:	withdrawAcct();
+                break;
+            case 4: transferAcct();
+                break;
+            case 5: choice = closeAcct(); // return a 0 if acct closed to goto mainMenu
+                break;
+        }
+        if (choice == 6)
+            choice = 0;
+
+    } while (choice != 0);
+
+
+    return choice;
+}/*}}}*/
+
+int newAcct(Bank user[],int &record)
+{ /*{{{*/
+    system("clear");
+
+	int choice = 0;
+    cout << " ==================== NEW ACCOUNT =================== \n \n";
+	cout << "Please choose from the options below and press [ENTER]: \n \n";
+
+    cout << "| [1] CREATE NEW ACCOUNT\n"
+            "| [2] RETURN TO PREVIOUS MENU\n";
+	cout << "|-----------> ";
+	cin >> choice;
+	//choices used switch(acctMenu())
+   
+	while (choice < 1 || choice > 2) // INCORRECT CHOICE FIXER
+		choice = invalidIntChoice();
+    Bank temp;
+
+
+    if (choice == 1)
+    {
+        cout << "Enter Last Name:\n";
+        cin.getline(temp.last, 30);
+            while(nameCheck(&temp) != 1)
+                    cin.getline(temp.last, 30);
+        cout << "Enter First Name:\n";
+        cin >>  temp.first;               
+        cout << "Enter Middle Inital:\n";
+        cin >>  temp.middle;
+        cout << "Enter Social-Security Number [xxx-xx-xxxx format]:\n";
+        cin >>  temp.ss;
+        cout << "Enter Phone Number [(xxx)xxx-xxxx format]:\n";
+        cin >>  temp.phone;
+        cout << "Enter Initial Account Balance:\n";
+        cin >>  temp.balance;
+        cout << "ACCOUNT NUMBER WILL AUTO GENERATE INPUT, THEN DISPLAY HERE\n";
+        cin >>  temp.acctnum;
+        cout << "Please Choose An Account Password:\n";
+        cin >>  temp.passw;
+        cout << endl;
+
+
+
+        cin >> user[record].last;
+        cin >>  user[record].first;               
+        cin >>  user[record].middle;
+        cin >>  user[record].ss;
+        cin >>  user[record].phone;
+        cin >>  user[record].balance;
+        cin >>  user[record].acctnum;
+        cin >>  user[record].passw;
+
+
+        cout << user[record].last << endl;
+        cout << user[record].first << endl;
+        cout << user[record].middle << endl;
+        cout << user[record].ss << endl;
+        cout << user[record].phone << endl;
+        cout << user[record].balance << endl;
+        cout << user[record].acctnum << endl;
+        cout << user[record].passw << endl;
+
+    }
+
+    else 
+        choice = 0;
+
+
+
+	return choice;
+}/*}}}*/
+
+int loadAcct(Bank user[], int &record)
+{ /*{{{*/
+    system("clear");
+
+	int choice = 0;
+    cout << " ===================== LOG IN ====================== \n \n";
+	cout << "Please choose from the options below and press [ENTER]: \n \n";
+
+    cout << "| [1] ENTER LOG-IN INFORMATION\n"
+            "| [2] RETURN TO PREVIOUS MENU\n";
+	cout << "|-----------> ";
+	cin >> choice;
+	//choices used switch(acctMenu())
+   
+	while (choice < 1 || choice > 2) // INCORRECT CHOICE FIXER
+		choice = invalidIntChoice();
+
+    if (choice == 1)
+    {
+    // check for format
+    // load array and find account
+    // check password
+    // if all checks out pass user# onto acctMenu()
+    //
+
+    //  choice = (acctMenu);
+    }
+
+    else 
+        choice = 0;
+
+	return choice;
+}/*}}}*/
+
+int fullReport(Bank user[], int &record)
+{ /*{{{*/
+
+   system("clear");
+   cout << endl;
+
+   for (int i = 0; i < record; i ++)
+    {
+       cout << user[i].last << endl;
+       cout << user[i].first << endl;
+       cout << user[i].middle << endl;
+       cout << user[i].ss << endl;
+       cout << user[i].phone << endl;
+       cout << user[i].balance << endl;
+       cout << user[i].acctnum << endl;
+       cout << user[i].passw << endl;
+       cout << endl;
+    }
+
+ return 0;
+
+}/*}}}*/
+
+void loadStructArray(Bank user[], int &record)
+{ /*{{{*/
+
+    char cur = '\0';
+    char last= '\0';
+    int lines = 0;
+
+    fstream checkf; //opening and then closing banksave file to check create if not present 
+    checkf.open("banksave.txt", ios::out | ios::app);
+    checkf.close();
+    if (checkf.fail()) // checks for file present.
+        cout << "file was not created or found\n";
+
+    ifstream ifile; // 'ifile' for inputting banksave.txt to struct array 'user'
+    ifile.open("banksave.txt", ios::in);
+    for (int i = 0; i < 100; i ++)
+    {
+       ifile >> user[i].last;
+       ifile >> user[i].first;
+       ifile >> user[i].middle;
+       ifile >> user[i].ss;
+       ifile >> user[i].phone;
+       ifile >> user[i].balance;
+       ifile >> user[i].acctnum;
+       ifile >> user[i].passw;
+    }
+   ifile.close(); //close 'banksave' written to struct array
+
+    char length; // for saving number of lines in save file
+
+    ifile.open("banksave.txt", ios::in);
+    while (ifile.get(cur)) // while used to count number of lines in save file.
+    { if (cur == '\n' || 
+            (cur == '\f' && last == '\r'))
+        lines++;
+    }
+ 
+    record = (lines/9);
+
+    cout << record << " records \n";
+    ifile.close();
+
+
+
+
+
+
+}/*}}}*/
+
+/***************************************ACCOUNT FUNCTIONS*******************************/
+
+void userReport()
+{ /*{{{*/
+    system("clear");
+
+    cout << " ==================== ACCOUNT INFORMATION =================== \n \n";
+    cout << "Please choose from the options below and press [ENTER]: \n \n";
+
+}/*}}}*/
+
+void depositAcct()
+{ /*{{{*/
+    system("clear");
+
+    cout << " ======================== DEPOSIT FUNDS ====================== \n \n";
+    cout << "Please choose from the options below and press [ENTER]: \n \n";
+
+}/*}}}*/
+
+void withdrawAcct()
+{ /*{{{*/
+    system("clear");
+
+    cout << " ====================== WITHDRAW FUNDS ====================== \n \n";
+    cout << "Please choose from the options below and press [ENTER]: \n \n";
+
+}/*}}}*/
+
+void transferAcct()
+{ /*{{{*/
+    system("clear");
+
+    cout << " ======================= TRANSFER FUNDS ====================== \n \n";
+    cout << "Please choose from the options below and press [ENTER]: \n \n";
+
+}/*}}}*/
+
+int closeAcct()
+{ /*{{{*/
+    system("clear");
+
+    cout << " ===================== CLOSE ACCOUNT ======================== \n \n";
+    cout << "Please choose from the options below and press [ENTER]: \n \n";
+
+}/*}}}*/
+
+/************************************DATA CHECK FUNCTIONS******************************/
+
+float balanceCheck()
+{ /*{{{*/
+
+
+}/*}}}*/
+
+char ssCheck()
+{ /*{{{*/
+
+}/*}}}*/
+
+char acFormCheck()
+{ /*{{{*/
+ 
+
+}/*}}}*/
+
+char paFormCheck()
+{ /*{{{*/
+    
+}/*}}}*/
+
+char passwordCheck()
+{ /*{{{*/
+   
+}/*}}}*/
+
+int invalidIntChoice()
+{/*{{{*/
+    int choice = 0;
+	cout << "Please enter a valid menu choice: ";
+	cin.clear();
+	cin.ignore(10, '\n');
+	cin >> choice;
+	return choice;
+}/*}}}*/
+
+bool nameCheck(Bank *temp)
+{/*{{{*/
+    
+    for (int i = 0; i < strlen(temp->last); i ++)
+    {
+       if(!isalpha(temp->last[i])  || isspace(temp->last[i]))
+       {
+           cout << "Incorrect name format! Last name must consecutive letters A-Z\n";
+           cout << "Enter Last Name:\n";
+           cin.ignore(MAX), '\n');
+           return(false);
+       }
+       else
+           return(true);
+    }
+
+}/*}}}*/
+

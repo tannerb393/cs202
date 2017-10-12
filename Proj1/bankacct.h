@@ -62,8 +62,8 @@ struct Bank
   void clearIt();
   int mainMenu();
   void recordCount(int &);
-  void acctMenu(Bank [100], int &, int &);
-  void newAcct(Bank [100], int &, int &, Bank *);
+  int acctMenu(Bank [100], int &, int &);
+  void newAcct(Bank [100], int &, Bank *);
   void loadAcct(Bank [100], int &, int &);
   void saveAcct(Bank [100], int &);
   void cmdLoop(int &, char[]);

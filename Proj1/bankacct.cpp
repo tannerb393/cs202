@@ -36,22 +36,17 @@ int main (int argc, char *argv[])
     Bank user[100];
     Bank temp;
 
-  
+  loadStructArray(user, record);
 
 	while (choice == 0)
     {
-        loadStructArray(user, record);
         switch (mainMenu()) // Switch carries out result returned from mainMenu() function.
 		{
-		case 1:	newAcct(user, record, recordhold, &temp);
-                acctMenu(user, record, recordhold);
+		case 1:	newAcct(user, record, &temp);
 			break;
-		case 2: loadAcct(user, record, recordhold);
-                acctMenu(user, record, recordhold);
+		case 2: choice = acctMenu(user, record, recordhold);
 			break;
 		case 3:	fullReport(user, record); // if user wants to exit the game from main title.
-			break;
-        case 4: choice = 1;
 			break;
 		} 
     }
@@ -65,7 +60,6 @@ int mainMenu()
 {/*{{{*/
   //  system("clear");
 
-    system("clear");
 	int choice = 0;
 	cout << "  ==========BANK ACCOUNT TOOL MAIN MENU============\n \n";
 	cout << "Please choose from the options below and press [ENTER]: \n \n";
@@ -73,26 +67,26 @@ int mainMenu()
 	// choices used in switch(mainMenu())
 	cout << "| [1] REGISTER A NEW BANK ACCOUNT\n"
 			"| [2] LOAD ACCOUNT & ACCESS ACCOUNT MENU\n"
-			"| [3] GENERATE BANK ACCOUNT DATABASE REPORT\n"
-            "| [4] CLOSE BANKING PROGRAM\n";
+			"| [3] GENERATE BANK ACCOUNT DATABASE REPORT\n";
 	cout << "|-----------> ";
 	cin >> choice;
-	while (choice < 1 || choice > 4 || cin.fail()) // INCORRECT CHOICE FIXER
+	while (choice < 1 || choice > 3 || cin.fail()) // INCORRECT CHOICE FIXER
 		choice = invalidIntChoice();
     clearIt();
 	return (choice);
 }/*}}}*/
 
-void acctMenu(Bank user[], int &record, int &recordhold)
+int acctMenu(Bank user[], int &record, int &recordhold)
 {/*{{{*/
     system("clear");
 
 	int choice = 1;
+    loadAcct(user, record, recordhold);
     
     if (recordhold == 101)
         choice = 0;
-
-    record = recordhold;
+    else
+        record = recordhold;
 
     while (choice != 0)
     {    
@@ -127,9 +121,10 @@ void acctMenu(Bank user[], int &record, int &recordhold)
             }
     } 
 
+    return choice;
 }/*}}}*/
 
-void newAcct(Bank user[],int &record, int &recordhold, Bank *temp)
+void newAcct(Bank user[],int &record, Bank *temp)
 { /*{{{*/
     system("clear");
 
@@ -189,15 +184,13 @@ void newAcct(Bank user[],int &record, int &recordhold, Bank *temp)
                       user[record].balance = temp->balance;
                strcpy(user[record].acctnum, temp->acctnum);
                strcpy(user[record].passw, temp->passw);
-               
-               recordhold = record;
+
                saveAcct(user, record);
+              // acctMenu(user, record, recordhold);
             }
-            else 
-                recordhold = 101;
+
+
     }
-    else
-        recordhold = 101;
 
 }/*}}}*/
 
@@ -273,7 +266,7 @@ void loadAcct(Bank user[], int &record, int &recordhold)
 
     if (choice == 0)
         recordhold = 101;
-
+        
 }/*}}}*/
 
 void fullReport(Bank user[], int &record)
@@ -310,7 +303,7 @@ void fullReport(Bank user[], int &record)
     {  
        ofile << left << setw(10) << user[i].acctnum <<  setw(13) << user[i].last << setw(13) << user[i].first
            << setw(5) << user[i].middle << setw(14) << user[i].ss << setw(16) << user[i].phone << 
-           user[i].balance << endl;
+           user[i].acctnum << endl;
     }
        ofile.close();
 }/*}}}*/
