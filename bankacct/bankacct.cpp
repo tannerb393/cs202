@@ -45,7 +45,7 @@ int main (int argc, char* argv[])
 			break;
 		case 2: choice = loadAcct(user, record);
 			break;
-		case 3:	choice = fullReport(user, record); // if user wants to exit the game from main title.
+		case 3:	fullReport(user, record); // if user wants to exit the game from main title.
 			break;
 		} 
     }
@@ -73,44 +73,39 @@ int mainMenu()
 	return (choice);
 }/*}}}*/
 
-int acctMenu()
+int acctMenu(Bank user[], int &record)
 {/*{{{*/
     system("clear");
 
-
 	int choice = 0;
     cout << " ============ ACCOUNT MANAGEMENT MENU ============== \n \n";
-	cout << "Please choose from the options below and press [ENTER]: \n \n";
-
     do
-    {
-	//choices used switch(acctMenu())
-    cout << "| [1] DISPLAY ACCOUNT INFORMATION\n"
-            "| [2] DEPOSIT FUNDS INTO ACCOUNT\n"
-			"| [3] WITHDRAW FUNDS FROM ACCOUNT\n"
-			"| [4] TRANSFER FUNDS TO ANOTHER ACCOUNT\n";
-	        "| [5] CLOSE OUT THIS BANK ACCOUNT\n"
-            "| [6] CLOSE ACCOUNT AND RETURN TO MAIN MENU\n";
-	cout << "|-----------> ";
+    { currentUser(user, record);
+    cout << "| [1] -DEPOSIT FUNDS\n"
+			"| [2] --WITHDRAW FUNDS\n"
+			"| [3] ---TRANSFER FUNDS \n"
+	        "| [4] ----DELETE  ACCOUNT\n"
+            "| [5] CLOSE ACCOUNT AND RETURN TO MAIN MENU\n";
+	cout << "|-------> ";
 	cin >> choice;
 
 	while (choice < 1 || choice > 6) // INCORRECT CHOICE FIXER
 		choice = invalidIntChoice();
     switch(choice)
         {
-            case 1: userReport();
+            case 1: depositAcct(user, record);
                 break;
-            case 2: depositAcct();
+            case 2:	withdrawAcct(user, record);
                 break;
-            case 3:	withdrawAcct();
+            case 3:	transferAcct(user, record);
                 break;
-            case 4: transferAcct();
+            case 4: closeAcct(user, record);
                 break;
-            case 5: choice = closeAcct(); // return a 0 if acct closed to goto mainMenu
+            case 5: loadStructArray(user, record); // return a 0 if acct closed to goto mainMenu
+                    choice = 0;
                 break;
         }
-        if (choice == 6)
-            choice = 0;
+
 
     } while (choice != 0);
 
@@ -193,7 +188,8 @@ int loadAcct(Bank user[], int &record)
     system("clear");
     char loadAcct[6];
     char loadPass[7];
-
+    bool act = false;
+    bool pas = false;
 	int choice = 0;
 
 
@@ -205,84 +201,97 @@ int loadAcct(Bank user[], int &record)
         cout << "-----> ";
         cin.getline(loadAcct, 100);
         
-        for(int i = 0; i < record; i++)
+        for(int i = 0; i <= record; i++)
         {
             if (strcmp(user[i].acctnum, loadAcct) == 0)
             {
                 record = i;
-                choice = 1;
+                act = true;
             }
         }
 
-        if (choice == 0)
+        if (act == false)
         {
          cout << "No Matching Account Number\n";
-         cout << "| [1] Return to Main Menu\n";
-         cout << "| [2] Re-Enter Account Number\n";
+         cout << "| [0] Return to Main Menu\n";
+         cout << "| [1] Re-Enter Account Information\n";
          cin >> choice;
-       	while (choice < 1 || choice > 2 || cin.fail()) // INCORRECT CHOICE FIXER
+       	while (choice < 0 || choice > 1 || cin.fail()) // INCORRECT CHOICE FIXER
 		choice = invalidIntChoice();
         clearIt();
         }
-        if (choice = 1)
+        if (act == true)
         {
             cout << "Enter User Password\n";
             cout << "-----> ";
             cin.getline(loadPass, 100);
            
             if (strcmp(user[record].passw, loadPass) == 0)
-               choice = 3;
+               pas = true;
 
         }
-         if (choice == 1)
+         if (pas == false && act == true)
          {
              cout << "No Matching Password Number\n";
-             cout << "| [1] Return to Main Menu\n";
-             cout << "| [2] Re-Enter Information\n";
+             cout << "| [0] Return to Main Menu\n";
+             cout << "| [1] Re-Enter Information\n";
              cin >> choice;
-            while (choice < 1 || choice > 2 || cin.fail()) // INCORRECT CHOICE FIXER
+            while (choice < 0 || choice > 1 || cin.fail()) // INCORRECT CHOICE FIXER
             choice = invalidIntChoice();
             clearIt();
          }
 
-    }while (choice == 2);
+    }while (choice == 1);
 
-       cout << user[record].last << endl;
-       cout << user[record].first << endl;
-       cout << user[record].middle << endl;
-       cout << user[record].ss << endl;
-       cout << user[record].phone << endl;
-       cout << user[record].balance << endl;
-       cout << user[record].acctnum << endl;
-       cout << user[record].passw << endl;
-       cout << endl;
-
-       cin >> choice;
-
-	return choice;
+    if (act == true && pas == true)
+    {
+       currentUser(user, record);
+       choice = (acctMenu(user, record));
+    }
+    else
+        loadStructArray(user, record);
+    
+    return choice;
 }/*}}}*/
 
-int fullReport(Bank user[], int &record)
+void fullReport(Bank user[], int &record)
 { /*{{{*/
 
    system("clear");
-   cout << endl;
+   char YN = 'x';
+   char reportDefault[] = "BankAcct.Rpt";
+   char reportName[31];
+   char Rpt[] = ".Rpt";
+   int hold;
+
+   cout << "BankAcct.Rpt is the default name, would you like to choose a different file name?\n";
+   while(YN != 'Y' && YN != 'y' && YN != 'N' && YN != 'n')
+        cin >> YN;
+   if (YN == 'Y' || YN == 'y')
+   {
+       clearIt();
+       cout << "Please Select a file name (Letters/Numbers Only): \n";
+       cin.getline(reportName, 30);
+       strcat(reportName, Rpt);
+   }
+   else
+       strcpy(reportName, reportDefault);
+    
+    ofstream ofile;
+    ofile.open(reportName, ios::out);
+
+   ofile << "--------  -----        -----        --   -----------   -------------   ----------" << endl;
+   ofile << "Account   Last         First        MI   SS            Phone           Account   " << endl;
+   ofile << "Number    Name         Name              Number        Number          Balance   " << endl;
+   ofile << "--------  -----        -----        --   -----------   -------------   ----------" << endl;
 
    for (int i = 0; i <= record; i ++)
-    {
-       cout << user[i].last << endl;
-       cout << user[i].first << endl;
-       cout << user[i].middle << endl;
-       cout << user[i].ss << endl;
-       cout << user[i].phone << endl;
-       cout << user[i].balance << endl;
-       cout << user[i].acctnum << endl;
-       cout << user[i].passw << endl;
-       cout << endl;
+    {  
+       ofile << left << setw(10) << user[i].acctnum <<  setw(13) << user[i].last << setw(13) << user[i].first
+           << setw(5) << user[i].middle << setw(14) << user[i].ss << setw(16) << user[i].phone << 
+           user[i].acctnum << endl;
     }
-
- return 0;
-
+       ofile.close();
 }/*}}}*/
 
 void loadStructArray(Bank user[], int &record)
@@ -355,16 +364,7 @@ void saveAcct(Bank user[], int &record)
 
 /***************************************ACCOUNT FUNCTIONS*******************************/
 
-void userReport()
-{ /*{{{*/
-    system("clear");
-
-    cout << " ==================== ACCOUNT INFORMATION =================== \n \n";
-    cout << "Please choose from the options below and press [ENTER]: \n \n";
-
-}/*}}}*/
-
-void depositAcct()
+void depositAcct(Bank user[], int &record)
 { /*{{{*/
     system("clear");
 
@@ -373,7 +373,7 @@ void depositAcct()
 
 }/*}}}*/
 
-void withdrawAcct()
+void withdrawAcct(Bank user[], int &record)
 { /*{{{*/
     system("clear");
 
@@ -382,7 +382,7 @@ void withdrawAcct()
 
 }/*}}}*/
 
-void transferAcct()
+void transferAcct(Bank user[], int &record)
 { /*{{{*/
     system("clear");
 
@@ -391,13 +391,29 @@ void transferAcct()
 
 }/*}}}*/
 
-int closeAcct()
+int closeAcct(Bank user[], int &record)
 { /*{{{*/
     system("clear");
 
     cout << " ===================== CLOSE ACCOUNT ======================== \n \n";
     cout << "Please choose from the options below and press [ENTER]: \n \n";
 
+}/*}}}*/
+
+void currentUser(Bank user[], int &record)
+{/*{{{*/
+   cout << "[ACCOUNT INFO]\n";
+   cout << "-----------------\n";
+   cout << user[record].last << endl;
+   cout << user[record].first << endl;
+   cout << user[record].middle << endl;
+   cout << user[record].ss << endl;
+   cout << user[record].phone << endl;
+   cout << user[record].balance << endl;
+   cout << user[record].acctnum << endl;
+   cout << user[record].passw << endl;
+   cout << "-----------------\n";
+   cout << endl;
 }/*}}}*/
 
 /************************************DATA CHECK FUNCTIONS******************************/

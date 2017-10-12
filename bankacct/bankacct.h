@@ -61,23 +61,22 @@ struct Bank
   int invalidIntChoice();
   void clearIt();
   int mainMenu();
-  int acctMenu();
+  int acctMenu(Bank [100], int &);
   int newAcct(Bank [100], int &, Bank *);
   int loadAcct(Bank [100], int &);
   void saveAcct(Bank [100], int &);
   //------ acct functions -----------
-  void depositAcct();
-  void withdrawAcct();
-  void transferAcct();
-  int closeAcct();
-  void userReport();
-  int fullReport(Bank [100], int &);
+  void depositAcct(Bank [100], int &);
+  void withdrawAcct(Bank [100], int &);
+  void transferAcct(Bank [100], int &);
+  int closeAcct(Bank [100], int &);
+  void currentUser(Bank [100], int &);
+  void fullReport(Bank [100], int &);
   void loadStructArray(Bank[100], int &);
   //---- data check functions --------
   void balanceFormCheck(Bank *);
   void acctFormCheck(Bank *);
   void passFormCheck(Bank *);
-  void passwordCheck();
   void firstFormCheck(Bank *);
   void lastFormCheck(Bank *);
   void middleFormCheck(Bank *);
@@ -88,4 +87,4 @@ struct Bank
 
 // c123a
 // z52c42
-//
+
