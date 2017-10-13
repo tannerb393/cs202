@@ -1,24 +1,24 @@
 /*{{{*/
 
 /* --------------------------------FILE HEADER------------------------------------
-* FILE NAME:     structures_v6.h
+* FILE NAME:     banking.h
 * DESCRIPTION:   .h file that is the header file for the .cpp file holding the library definitions
                 the structure definition and the function prototypes.
 PURPOSE:       This files helps to contain parts of the .cpp file which may be used by multiple 
                 .cpp files, saving time and cleaning up the code.
-USAGE:         included in the beginning of the .cpp by adding "#include structures_vx.h" "
-EXAMPLES:      #include "structures_v6.h"
+USAGE:         included in the beginning of the .cpp by adding "#include 
+EXAMPLES:      #include "banking.h"
 PARAMETERS:    none 
 EXIT CODES:    NA
 COMPILATION:   used vim and makefile which includes (.cpp :
 	            g++ -o $* $*.cpp -std=c++11 -std=gnu++11
-NOTES:         v6 includes new functions prototypes for 'get_average' and 'get_grade'
+NOTES:         
 MODIFICATION HISTORY:
 Author              Date        Modification(s)
 -------------   -----------    ---------------
-Tanner_Benavides  09-21-2017     1.0 / structures_v4.h
-Tanner_Benavides  09-25-2017     2.0 / structures_v5.h
-Tanner_Benavides  09-25-2017     3.0 / structures_v6.h
+Tanner_Benavides  09-28-2017     1.0 / banking.h
+Tanner_Benavides  10-1-2017     2.0 / banking.h
+Tanner_Benavides  10-12-2017     3.0 / banking.h
 //----------------------------------------------------------------------------- 
 *//*}}}*/
 
@@ -57,6 +57,14 @@ struct Bank
     char passw[PASS_MAX];
 };
 
+struct Para 
+{
+    char ok[100];
+    char go[100];
+};
+
+
+
  // Function prototypes go here
   int invalidIntChoice();
   void clearIt();
@@ -67,7 +75,7 @@ struct Bank
   void loadAcct(Bank [100], int &, int &);
   void saveAcct(Bank [100], int &);
   void cmdLoop(int &, char[]);
-  void cmdCheck(char[]);
+  int parameter(int&, char *[], Bank[100], int &);
   //------ acct functions -----------
   void depositAcct(Bank [100], int &);
   void withdrawalAcct(Bank [100], int &);
@@ -85,11 +93,10 @@ struct Bank
   void middleFormCheck(Bank *);
   void ssFormCheck(Bank *); 
   void phoneFormCheck(Bank *);
+ // ------COMMAND FUNCTIONS ----------
+  void help ();
+  void loadAcctP(Bank[100], int &, char[], char[], char[]);
+
 
 #endif /* __BANKACCT_H__ */
 
-// c123a
-// z52c42
-
-// f123c
-// u2xc90

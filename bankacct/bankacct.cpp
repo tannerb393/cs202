@@ -1,27 +1,30 @@
-//HEADER  /*{{{*/
-/*   --------------------------------FILE HEADER ---------------------------------------
-FILE NAME:     structures_v1.CPP
-DESCRIPTION:   .cpp file written to use examples of structures and file input/output
-PURPOSE:       holds code that is compiled with makefie to run the structures program
-USAGE:         compile this file into an executable by using the make file in Lab3, run the 
-                compiled file along with inputs for variable when prompted. or using the '<input.txt' file.
-EXAMPLES:      'make structure_v1' followed by './structures_v1' or './structures_v1.cpp < input.txt '
+//HEADER
+/*--------------------------------FILE HEADER ---------------------------------------
+FILE NAME:     banking.CPP
+DESCRIPTION:   .cpp file written to use create a banking program 
+PURPOSE:       holds code that is compiled with makefie to run the banking program
+USAGE:         compile this file into an executable by using the make file in Proj1, run the 
+                compiled file along any command line actions.
+EXAMPLES:      'make banking' followed by './banking '
 PARAMETERS:    int argc - holds count of paramenters on the command line / char *argv[] holds an array of the pointers
 EXIT CODES:    0 = success other = error
 COMPILATION:   vim to write, and make file to compile: (CPP: g++ -o $* $*.cpp -std=c++11 -std=gnu++11)
-NOTES:         Frst version of the structures .cpp file, holds a 5 var structures and basic call for input to and output
+NOTES:         large project file that contains most processes in individual functions
 		from the structure 'StudentGrade'
 MODIFICATION HISTORY:
 Author              Date        Modification(s)
 -------------   -----------    ---------------
-Tanner_Benavides  09-21-2017     1.0 / structures_v1.cpp
------------------------------------------------------------------------------ 
-/*}}}*/
+Tanner_Benavides  09-28-2017     1.0 / banking.cpp
+Tanner_Benavides  10-8-2017     2.0 / banking.cpp
+Tanner_Benavides  10-11-2017     3.0 / banking.cpp
+Tanner_Benavides  10-12-2017     4.0 / banking.cpp
+//----------------------------------------------------------------------------- 
+*/
 
 #include "bankacct.h" // call to header file
 
 
- /*--------------------------------------------------------------------------------------
+/* --------------------------------------------------------------------------------------
  *FUNCTION NAME: int main ()
  *PURPOSE: Holds main code for running program and calling other functions. first function called
  *RETURNS: 0 for true, 1 for false
@@ -36,7 +39,9 @@ int main (int argc, char *argv[])
     Bank user[100];
     Bank temp;
 
-  
+        loadStructArray(user, record);
+    if (argc > 1)
+       choice = (parameter(argc, argv, user, record));
 
 	while (choice == 0)
     {
@@ -59,13 +64,15 @@ int main (int argc, char *argv[])
    return 0;
 }/*}}}*/
 
-
-
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: int mainMenu()
+ *PURPOSE: Holds visual menu dispaly
+ *RETURNS: 0 for return to main;
+ * --------------------------------------------------------------------------------------*/
 int mainMenu()
 {/*{{{*/
-  //  system("clear");
 
-    system("clear");
+  //  system("clear");
 	int choice = 0;
 	cout << "  ==========BANK ACCOUNT TOOL MAIN MENU============\n \n";
 	cout << "Please choose from the options below and press [ENTER]: \n \n";
@@ -83,6 +90,12 @@ int mainMenu()
 	return (choice);
 }/*}}}*/
 
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: acctMenu ()
+ *PURPOSE: Menu used after a Bank account is loaded or created
+ *RETURNS: 0 for return
+ *NOTE: holds switch and call to 4 banking functions
+ * --------------------------------------------------------------------------------------*/
 void acctMenu(Bank user[], int &record, int &recordhold)
 {/*{{{*/
     system("clear");
@@ -129,6 +142,12 @@ void acctMenu(Bank user[], int &record, int &recordhold)
 
 }/*}}}*/
 
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME:newAcct()
+ *PURPOSE: Function that calls the data check functions to aggregate correct new user info
+ *RETURNS: void
+ *NOTE: runs though Bank structure in order
+ * --------------------------------------------------------------------------------------*/
 void newAcct(Bank user[],int &record, int &recordhold, Bank *temp)
 { /*{{{*/
     system("clear");
@@ -201,6 +220,12 @@ void newAcct(Bank user[],int &record, int &recordhold, Bank *temp)
 
 }/*}}}*/
 
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: loadAcct ()
+ *PURPOSE: search for existing banking accounts by account number and password, then loads
+ *RETURNS: void
+ *NOTE: is no longer case sensitive
+ * --------------------------------------------------------------------------------------*/
 void loadAcct(Bank user[], int &record, int &recordhold)
 { /*{{{*/
     char loadAcct[6];
@@ -276,6 +301,12 @@ void loadAcct(Bank user[], int &record, int &recordhold)
 
 }/*}}}*/
 
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: fullReport ()
+ *PURPOSE: creates the BankDB.Rpt report formatted for user viewig
+ *RETURNS: void
+ *NOTE: runs through array and send out info
+ * --------------------------------------------------------------------------------------*/
 void fullReport(Bank user[], int &record)
 { /*{{{*/
 
@@ -315,6 +346,10 @@ void fullReport(Bank user[], int &record)
        ofile.close();
 }/*}}}*/
 
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: loadStructArray ()
+ *PURPOSE: intially loads save file into array, also creates file if not present
+ * --------------------------------------------------------------------------------------*/
 void loadStructArray(Bank user[], int &record)
 { /*{{{*/
 
@@ -343,6 +378,11 @@ void loadStructArray(Bank user[], int &record)
 
 }/*}}}*/
 
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: recordCount ()
+ *PURPOSE: simply for re-obtaining full record count for use in program
+ *NOTE: record counts are used in many save and display functions
+ * --------------------------------------------------------------------------------------*/
 void recordCount(int &record)
 {/*{{{*/
     char cur = '\0';
@@ -359,11 +399,16 @@ void recordCount(int &record)
  
     record = (lines/9);
 
-    cout << record << " records \n";
+    //cout << record << " records \n";
     record--;
     ifile.close();
 }/*}}}*/
 
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: saveAcct ()
+ *PURPOSE: rewrites array to banksave.txt file for updating new info
+ *NOTE: changes saved after new user, and exiting acctMenu
+ * --------------------------------------------------------------------------------------*/
 void saveAcct(Bank user[], int &record)
 { /*{{{*/
 
@@ -389,7 +434,11 @@ void saveAcct(Bank user[], int &record)
 
 
 /***************************************ACCOUNT FUNCTIONS*******************************/
-
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: depositAcct()
+ *PURPOSE: for adding money to loaded account
+ *NOTE: 
+ * --------------------------------------------------------------------------------------*/
 void depositAcct(Bank user[], int &record)
 { /*{{{*/
 
@@ -410,6 +459,12 @@ void depositAcct(Bank user[], int &record)
 
 }/*}}}*/
 
+
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: withdrawalAcct()
+ *PURPOSE: to remove money from the loaded account
+ *NOTE: wont allow negative amounts in account
+ * --------------------------------------------------------------------------------------*/
 void withdrawalAcct(Bank user[], int &record)
 { /*{{{*/
     double withdrawal = 0;
@@ -429,7 +484,11 @@ void withdrawalAcct(Bank user[], int &record)
     clearIt();
 
 }/*}}}*/
-
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME:transferAcct ()
+ *PURPOSE:transfer money
+ *NOTE: transfer from loaded account to 2nd selected account
+ * --------------------------------------------------------------------------------------*/
 void transferAcct(Bank user[], int &record, int &recordhold)
 { /*{{{*/
     int mainrec = record;
@@ -481,7 +540,11 @@ void transferAcct(Bank user[], int &record, int &recordhold)
     record = mainrec;
 
 }/*}}}*/
-
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME:deleteAcct ()
+ *PURPOSE:delete account
+ *NOTE: basically resaves file omitting the chosen account
+ * --------------------------------------------------------------------------------------*/
 int deleteAcct(Bank user[], int &record, int &delAccount)
 { /*{{{*/
     system ("clear");
@@ -526,7 +589,12 @@ int deleteAcct(Bank user[], int &record, int &delAccount)
    return choice;
 
 }/*}}}*/
-
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME:currentUser()
+ *PURPOSE:shows current account info
+ *RETURN: 0
+ *NOTE: shows info for current loaded account
+ * --------------------------------------------------------------------------------------*/
 void currentUser(Bank user[], int &record)
 {/*{{{*/
    cout << "-----------------\n";
@@ -534,20 +602,30 @@ void currentUser(Bank user[], int &record)
    cout << user[record].last << endl;
    cout << user[record].first << endl;
    cout << user[record].middle << endl;
+   cout << user[record].ss << endl;
    cout << user[record].phone << endl;
    cout << user[record].balance << endl;
    cout << user[record].acctnum << endl;
+   cout << user[record].passw << endl;
    cout << "-----------------\n";
    cout << endl;
 }/*}}}*/
 
 /************************************DATA CHECK FUNCTIONS******************************/
-
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: passwordCheck ()
+ *PURPOSE: checks validity of enter password
+ *NOTE: 
+ * --------------------------------------------------------------------------------------*/
 void passwordCheck()
 { /*{{{*/
    
 }/*}}}*/
-
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: invalidIntChoice ()
+ *PURPOSE: if wrong number entered
+ *NOTE: 
+ * --------------------------------------------------------------------------------------*/
 int invalidIntChoice()
 {/*{{{*/
     int choice = 0;
@@ -557,13 +635,22 @@ int invalidIntChoice()
 	cin >> choice;
 	return choice;
 }/*}}}*/
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: clearIt ()
+ *PURPOSE: basic cin.ignore and clear functtion
+ *NOTE: 
+ * --------------------------------------------------------------------------------------*/
 
 void clearIt()
 {/*{{{*/
 	cin.clear();
 	cin.ignore(100, '\n');
 }/*}}}*/
-
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: lastFormCheck ()
+ *PURPOSE:checks validity ofentered name 
+ *NOTE: 
+ * --------------------------------------------------------------------------------------*/
 void lastFormCheck(Bank *temp)
 {/*{{{*/
    int retry;
@@ -584,7 +671,11 @@ void lastFormCheck(Bank *temp)
             cout <<"Bad Format! Enter Last Name, single word using A-Z\n"; 
     }while (retry == 1);
 }/*}}}*/
-
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: firstFormCheck ()
+ *PURPOSE: checks validity of entered first name
+ *NOTE: 
+ * --------------------------------------------------------------------------------------*/
 void firstFormCheck(Bank *temp)
 {/*{{{*/
    int retry;
@@ -605,7 +696,11 @@ void firstFormCheck(Bank *temp)
             cout <<"Bad Format! Enter First Name, single word using A-Z\n"; 
     }while (retry == 1);
 }/*}}}*/
-
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: middleFormCheck ()
+ *PURPOSE: checks validity of entered middle initial
+ *NOTE: 
+ * --------------------------------------------------------------------------------------*/
 void middleFormCheck(Bank *temp)
 {/*{{{*/
    int retry;
@@ -625,7 +720,11 @@ void middleFormCheck(Bank *temp)
     }while (retry == 1);
 
 }/*}}}*/
-
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME:  ()
+ *PURPOSE: 
+ *NOTE: 
+ * --------------------------------------------------------------------------------------*/
 void ssFormCheck(Bank *temp)
 {/*{{{*/
    int retry;
@@ -656,7 +755,12 @@ void ssFormCheck(Bank *temp)
             cout <<"Bad Format!:\n"; 
     }while (retry == 1);
 }/*}}}*/
-
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: int main ()
+ *PURPOSE: Holds main code for running program and calling other functions. first function called
+ *RETURNS: 0 for true, 1 for false
+ *NOTE: holds two command line parameters and and input to structures StudentGrade
+ * --------------------------------------------------------------------------------------*/
 void phoneFormCheck(Bank *temp)
 {/*{{{*/
    int retry;
@@ -690,7 +794,12 @@ void phoneFormCheck(Bank *temp)
             cout <<"Bad Format!\n"; 
     }while (retry == 1);
 }/*}}}*/
-
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: int main ()
+ *PURPOSE: Holds main code for running program and calling other functions. first function called
+ *RETURNS: 0 for true, 1 for false
+ *NOTE: holds two command line parameters and and input to structures StudentGrade
+ * --------------------------------------------------------------------------------------*/
 void balanceFormCheck(Bank *temp)
 {/*{{{*/
     cout << "Please Enter An Amount (Dollars.Cents). Amounts will be rounded to cents place" << endl;
@@ -706,7 +815,12 @@ void balanceFormCheck(Bank *temp)
   //  clearIt();
 
 }/*}}}*/
-
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: int main ()
+ *PURPOSE: Holds main code for running program and calling other functions. first function called
+ *RETURNS: 0 for true, 1 for false
+ *NOTE: holds two command line parameters and and input to structures StudentGrade
+ * --------------------------------------------------------------------------------------*/
 void acctFormCheck(Bank *temp)
 {/*{{{*/
    int retry;
@@ -728,7 +842,12 @@ void acctFormCheck(Bank *temp)
        cout << "Bad Format!\n"; 
     }while (retry == 1);
 }/*}}}*/
-
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: int main ()
+ *PURPOSE: Holds main code for running program and calling other functions. first function called
+ *RETURNS: 0 for true, 1 for false
+ *NOTE: holds two command line parameters and and input to structures StudentGrade
+ * --------------------------------------------------------------------------------------*/
 void passFormCheck(Bank *temp)
 {/*{{{*/
    int retry;
@@ -750,41 +869,271 @@ void passFormCheck(Bank *temp)
        cout << "Bad Format!\n";
     }while (retry == 1);
 }/*}}}*/
-
-void cmdCheck(char argv[]) // char arg[] obtains argv[] array.
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: int main ()
+ *PURPOSE: Holds main code for running program and calling other functions. first function called
+ *RETURNS: 0 for true, 1 for false
+ *NOTE: holds two command line parameters and and input to structures StudentGrade
+ * --------------------------------------------------------------------------------------*/
+int parameter(int &argc, char *argv[], Bank user[], int &record) // char arg[] obtains argv[] array.
 {/*{{{*/
     char buf[100]; 
+    char Ocheck[] = "banksave.txt";
     const char SLASH = '/';
-    char validOptions[] = "?ABCDEFG";
-    char *p = validOptions; // pointer to beginning address of valid_options array
-    bool firstChar; // Test paramenter's 1st char
-    bool secondChar; // test parameter's 2nd char
+    char validOptions[] = "?ACDFILMNOPRSTW";
+    double money;
+    int A, C, D, F, I, L, M, N, O, P, R, S, T, W;
+    bool OO = false;
+    bool AA = false;
+    bool PP = false;
+    int choice = 0;
+    char *p = validOptions; // pointer to beginning address of validOptions
+    char *pstart = validOptions;
+    bool firstChar = true; // Test paramenter's 1st char
+    bool secondChar = true; // test parameter's 2nd char
+    Para meter[50];
 
-    firstChar = argv[0] == SLASH;
 
-    for (p; *p !=0; p++) // ; basically means 'while', so while dereferenced pointer is not /0, loop
+    for (int i = 1; i < argc; i++) 
     {
-        secondChar = argv[1] == *p;
-        if (secondChar == true) 
-            break;
+       p = pstart;
+       strcpy(meter[i].ok, argv[i]);
+       cout << meter[i].ok << endl;
+       if ((meter[i].ok[0]) != SLASH){
+           cout << "NO SLASH - INVALID COMMAND\n";
+           choice = 1;
+           break;}
+        for (; *p !=0; p++) 
+        {   
+            secondChar = false;
+            secondChar = meter[i].ok[1] == *p;
+            if (secondChar == true) break;
+        }
+        if (secondChar == false){
+            cout << "INVALID COMMAND\n";
+            choice = 1;}
+        strcpy(meter[i].go, argv[i]+2);
+        cout << meter[i].go << endl;
     }
 
-    if(!firstChar || !secondChar)
-        cout << "Invalid Command Entered" << endl;
-    else
-        cout << "Arg: " << (argv + 2) << "Option: " << *p << endl;
-
-    strcpy(buf, (argv + 2)); 
-    cout << " Data: " << buf << endl;
+    if (choice == 1)
+        return choice;
     
-}/*}}}*/
+ 
 
-void cmdLoop(int argc, char *argv[])
+        if (meter[1].ok[1] == '?')
+            help();
+
+         for (int i = 1; i < argc; i++) 
+        {
+          if((meter[i].ok[1]) == 'A')
+              A = i;
+          if((meter[i].ok[1]) == 'C')
+              C = i;
+          if((meter[i].ok[1]) == 'D')
+              D = i;
+          if((meter[i].ok[1]) == 'F')
+              F = i;
+          if((meter[i].ok[1]) == 'I')
+              I = i;
+          if((meter[i].ok[1]) == 'L')
+              L = i; 
+          if((meter[i].ok[1]) == 'M')
+              M = i;
+          if((meter[i].ok[1]) == 'N')
+              N = i;
+          if((meter[i].ok[1]) == 'O')
+              O = i;    
+          if((meter[i].ok[1]) == 'P')
+              P = i; 
+          if((meter[i].ok[1]) == 'R')
+              R = i;
+          if((meter[i].ok[1]) == 'S')
+              S = i;
+          if((meter[i].ok[1]) == 'T')
+              T = i;   
+          if((meter[i].ok[1]) == 'W')
+              W = i;       
+        }
+
+
+        for (int i = 1; i < argc; i++) 
+        {
+          if((meter[i].ok[1]) == 'O')
+              OO = true;
+          if((meter[i].ok[1]) == 'A')
+              AA = true;
+          if((meter[i].ok[1]) == 'P')
+              PP = true;   
+        }
+
+
+        if (strcmp(meter[O].go, Ocheck) != 0)
+        {
+            OO = false;
+            cout << "/O SAVE FILE NAME INCORRECT, 'banksave.txt' IS CORRECT NAME, EXITING";
+            choice = 1;
+        }
+
+        if (OO == true && AA == true && PP == true)
+        {
+            for (int i = 1; i < argc; i++) 
+            {
+
+              if((meter[i].ok[1]) == 'D')
+                {
+                   loadAcctP(user, record, meter[A].go, meter[P].go, meter[O].go);
+                   money = atoi (meter[D].go);
+                   user[record].balance += money,
+                   currentUser(user, record);
+                   recordCount(record);
+                   saveAcct(user, record);
+
+                }
+              if((meter[i].ok[1]) == 'F')
+                {
+                   loadAcctP(user, record, meter[A].go, meter[P].go, meter[O].go);
+                   strcpy(user[record].first, meter[F].go);
+                   currentUser(user, record);
+                   recordCount(record);
+                   saveAcct(user, record);
+
+                }
+              if((meter[i].ok[1]) == 'I')
+                {
+                   loadAcctP(user, record, meter[A].go, meter[P].go, meter[O].go);
+                }
+
+              if((meter[i].ok[1]) == 'L')
+                {
+                   loadAcctP(user, record, meter[A].go, meter[P].go, meter[O].go);
+                   strcpy(user[record].last, meter[L].go);
+                   currentUser(user, record);
+                   recordCount(record);
+                   saveAcct(user, record);
+                   
+                }
+
+              if((meter[i].ok[1]) == 'M')
+                  M = i;
+              if((meter[i].ok[1]) == 'N')
+                  N = i;
+              if((meter[i].ok[1]) == 'R')
+                  R = i;
+              if((meter[i].ok[1]) == 'S')
+                {
+                   loadAcctP(user, record, meter[A].go, meter[P].go, meter[O].go);
+                   strcpy(user[record].ss, meter[F].go);
+                   recordCount(record);
+                   saveAcct(user, record);
+                }
+              if((meter[i].ok[1]) == 'T')
+                  T = i;   
+              if((meter[i].ok[1]) == 'W')
+                {
+                   loadAcctP(user, record, meter[A].go, meter[P].go, meter[O].go);
+                   money = atoi (meter[W].go);
+                   user[record].balance -= money,
+                   currentUser(user, record);
+                   recordCount(record);
+                   saveAcct(user, record);
+
+                }     
+            }
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+    return 1;
+
+}/*}}}*/
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: int main ()
+ *PURPOSE: Holds main code for running program and calling other functions. first function called
+ *RETURNS: 0 for true, 1 for false
+ *NOTE: holds two command line parameters and and input to structures StudentGrade
+ * --------------------------------------------------------------------------------------*/
+void help()
 {/*{{{*/
+    cout << "-----------------HELP OPTION------------------\n";
+    cout << "To run Program, three basic files are required:\n";
+    cout << "        bankacct.cpp\n";
+    cout << "        bankacct.h\n";
+    cout << "        Makefile\n\n\n";
 
-  for (int i = 0; i < argc; i++) 
-  {
-     if (i) 
-         cmdCheck(argv[i]); // if argument is true (above 0, which is Argument:0, or ./command
-  }
+
+    cout << "commands to run Program fom the Linux Command Line\n";
+    cout << "-----------------------------------------------\n";
+    cout << "$ make bankacct <-- To make the .cpp file\n";
+    cout << "$ ./bankacct <-- To run the created bankaccount program\n\n\n";
+
+
+    cout << "./bankacct can also ran with the follow command line parameters:\n";
+    cout << "-----------------------------------------------\n";
+    cout << " /? /Llast_name  /Ffirst_name /Minitial /Sssn /Nphone_num /Aacct_num\n";
+    cout << " /Ppassword  /Cnew_password  /Ddeposit_amt  /Wwithdraw_amt  /Ttransfer_amt\n";
+    cout << " /Odb_file /Rrp \n";
+
 }/*}}}*/
+/* --------------------------------------------------------------------------------------
+ *FUNCTION NAME: int main ()
+ *PURPOSE: Holds main code for running program and calling other functions. first function called
+ *RETURNS: 0 for true, 1 for false
+ *NOTE: holds two command line parameters and and input to structures StudentGrade
+ * --------------------------------------------------------------------------------------*/
+void loadAcctP(Bank user[], int &record, char sentAcct[], char sentPassw[], char file[])
+{ /*{{{*/
+    bool act = false;
+    bool pas = false;
+    int choice;
+
+    recordCount(record);
+        for(int i = 0; i <= record; i++)
+        {
+           if (strcmp(user[i].acctnum, sentAcct) == 0)
+            {
+                record = i;
+                act = true;
+            }
+        }
+          for(int i = 0; i <= record; i++)
+        {      
+            if (strcmp(user[i].passw, sentPassw) == 0)
+               pas = true;
+
+        }
+
+       if (pas == true && act == true)
+           currentUser(user, record); 
+       else
+           cout << "Wrong username or Password";
+
+
+
+}/*}}}*/
+
