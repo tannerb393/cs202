@@ -56,3 +56,6 @@ A LOG FOR THE CHANGES MADE, PROGRAMS INSTALLED FROM TERMINAL
 
                     ssh tannerb393@tannerb.root.sx -p 8000"
 /*}}}*/
+10-5-17 -- ADDED GITHUB REPOSITORY AND FILESYNC/*{{{*/
+    Set up reposity on GitHub account along with matching file on linux
+        - use ~/cs202/gitsync.sh to sync all files in ~/cs202 /*}}}*/
