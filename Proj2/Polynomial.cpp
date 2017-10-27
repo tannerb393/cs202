@@ -35,13 +35,13 @@ Polynomial::Polynomial()
 
 void Polynomial::setPoly()
 {/*{{{*/
-    cout << "Enter degree of Polynomial: ";
+    cout << "[Enter degree of Polynomial]:\n";
     cin >> degree;
     while (cin.fail())
     { cout << "Please enter Polynomial degree integer 1-9!\n";
       cin >> degree;
     }
-    cout << "Enter all " << degree << " coeficients: \n";
+    cout << "[Enter " << degree << " coeficient(s)]:\n";
     for (int i = degree; i >= 0; i--)
     {cin >> coef[i];
         while (cin.fail() || degree == 0)
@@ -76,7 +76,7 @@ Polynomial Polynomial::operator + (const Polynomial &p1)
 {/*{{{*/
     Polynomial p2;
 
-    cout << "\nADDING 2 Polynomials: \n";
+    cout << "\n[ADDING 2 Polynomials] \n";
 
     p2.degree = MAX(degree, p1.degree);
 
@@ -91,28 +91,12 @@ Polynomial Polynomial::operator - (const Polynomial &p1)
 {/*{{{*/
     Polynomial p2;
 
-    cout << "SUBTRACTING 2 Polynomials: \n";
+    cout << "[SUBTRACTING 2 Polynomials] \n";
 
     p2.degree = MAX(degree, p1.degree);
 
     for(int i = p2.degree; i >= 0; i--)
         p2.coef[i] = coef[i] - p1.coef[i];
-
-    return p2;
-}/*}}}*/
-
-
-// Overloaded binary << operator
-Polynomial Polynomial::operator << (const Polynomial &p1)
-{/*{{{*/
-    Polynomial p2;
-
-    cout << "\nADDING 2 Polynomials: ";
-
-    p2.degree = MAX(degree, p1.degree);
-
-    for(int i = p2.degree; i >= 0; i--)
-        p2.coef[i] = coef[i] + p1.coef[i];
 
     return p2;
 }/*}}}*/
@@ -130,12 +114,38 @@ bool Polynomial::operator == (const Polynomial &p1)
            break;
        }
     }
-
-
     return equal;
 }/*}}}*/
 
 
+// Overloaded binary + operator
+iostream &operator >> (iostream &, const Polynomial &p1)
+{/*{{{*/
+
+}/*}}}*/
+
+
+// Overloaded binary << operator
+ostream &operator << (ostream &strm, const Polynomial &p1)
+{/*{{{*/
+
+    for (int i = p1.degree; i >= 0; i--)
+    {
+    if (i < p1.degree)
+    {
+        if (p1.coef[i] >= 0) strm << " +";
+        else strm << " ";
+    }
+    strm << p1.coef[i];
+
+    if (i>1) strm << "x^" << i ;
+    if (i==1) strm << "x";
+     }
+    strm << endl;
+    strm << endl;
+
+return strm;
+}/*}}}*/
 
 
 

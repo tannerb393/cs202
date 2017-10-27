@@ -35,6 +35,11 @@ using namespace std;
 #define MAX(x,y) ((x) > (y) ? (x) : (y))
 #define ARRAY_SIZE(a) sizeof(a)/sizeof(a[0])
 
+    class Polynomial; // Forward declaration
+    ostream &operator << (ostream &, const Polynomial &);
+    iostream &operator >> (iostream &, const Polynomial &);
+
+
 
 class Polynomial 
 {
@@ -51,8 +56,6 @@ class Polynomial
       //  void assing();
       //  void evaluate();
 
-        Polynomial operator << (const Polynomial &);
-        Polynomial operator >> (const Polynomial &);
         Polynomial operator + (const Polynomial &); // Overload operator for adding polynomails
         Polynomial operator - (const Polynomial &);
         bool operator == (const Polynomial &);
@@ -66,6 +69,8 @@ class Polynomial
         Polynomial operator ++ (const Polynomial &);
     */
       //  Polynomial operator ++ (const Polynomial &);
+    friend ostream &operator << (ostream &, const Polynomial &);
+    friend iostream &operator >> (iostream &, Polynomial &);
 
 
 };

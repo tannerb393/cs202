@@ -21,6 +21,8 @@ void clear_screen();
 
 int main (int argc, char *argv[])
 {
+
+    char ch = 253;
     char charTest1[50]; //large array size to take getline 
     char charTest2[50]; // "
     char charTest3[100]; // double size to hold both above arrays
@@ -97,6 +99,8 @@ int main (int argc, char *argv[])
         double char2dub = atof(numberTest1);
         cout << (char2dub / 2) << endl;
 
+        cout << "X" << ch << endl;
+        cout <<"X\u00b2" << endl;
 
     return 0;       // 0 = success
 

@@ -36,8 +36,9 @@ int main (int argc, char *argv[])
     for (int i = 0; i < 2; i++) 
     {
         poly[i].setPoly();
-        cout << "Polynomial #" << i+1 << "is:\n";
-        poly[i].getPoly();
+        cout << "POLYNOMIAL #" << i+1 << " is: ";
+        cout << poly[i];
+      //  poly[i].getPoly();
         cout << endl;
     }
 
@@ -49,9 +50,9 @@ int main (int argc, char *argv[])
         cout << "to Polynomial #2\n";
 
         poly[2] = poly[0] + poly[1];
-        poly[2].getPoly();
+        cout << poly[2];
         poly[2] = poly[0] - poly[1];
-        poly[2].getPoly();
+        cout << poly[2];
         
 
 
