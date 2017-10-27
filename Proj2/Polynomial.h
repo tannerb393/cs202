@@ -30,35 +30,46 @@ Tanner_Benavides  10-1-2017     2.0 / banking.h
 #include <cctype> //for testing characters
 #include <fstream> //file stream
 
-#define MAX(x,y) ((x) > (y) ? (x) : (y)) 
-#define ARRAY_SIZE(a) sizeof(a)/sizeof(a[0]) 
-
-
-
 using namespace std;
 
-	const int NAME_MAX = 31;
-	const int SS_MAX = 12;
-	const int PHONE_MAX = 14;
-	const int ACCTN_MAX = 6;
-	const int PASS_MAX = 7;
+#define MAX(x,y) ((x) > (y) ? (x) : (y))
+#define ARRAY_SIZE(a) sizeof(a)/sizeof(a[0])
+
 
 class Polynomial 
 {
     private:
-        long int term;
-        int degree;
-        int coef[9];
+        int degree; //store the degree of the polynomial
+        int coef[9]; // coefficients of the poly up to 9
 
     public:
-        void showPoly(Polynomial *);
-        long int polyMath();
-        void polyCheck(Polynomial *); 
-        void polyDisplay(Polynomial *);
-        Polynomial(); // constructor
-        Polynomial polyAdd(Polynomial, Polynomial);
+        Polynomial();
+        void setPoly();
+        void getPoly();
+      //  void objOut();
+      //  void objIn();
+      //  void assing();
+      //  void evaluate();
+
+        Polynomial operator << (const Polynomial &);
+        Polynomial operator >> (const Polynomial &);
+        Polynomial operator + (const Polynomial &); // Overload operator for adding polynomails
+        Polynomial operator - (const Polynomial &);
+        bool operator == (const Polynomial &);
+       
+     /*   Polynomial operator * (const Polynomial &);
+        Polynomial operator = (const Polynomial &);
+
+
+        Polynomial operator () (const Polynomial &);
+        Polynomial operator -- (const Polynomial &);
+        Polynomial operator ++ (const Polynomial &);
+    */
+      //  Polynomial operator ++ (const Polynomial &);
+
 
 };
+
 
  // Function prototypes go here
   int intChoice();

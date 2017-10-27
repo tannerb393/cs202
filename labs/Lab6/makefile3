@@ -12,7 +12,7 @@
 
 
 
-poly_class: Polynomial.o poly_class.o
+poly_class_v2: Polynomial.o poly_class_v2.o
 		g++ -o $@ $@.o Polynomial.o -std=c++11
 
 
@@ -21,14 +21,14 @@ poly_class: Polynomial.o poly_class.o
 # Usage: make -f makefile3 poly_class_v3
 
 
-# poly_class_v3: Polynomial.o poly_class_v2.o
-#		g++ -o $@ $@.o Polynomial.o -std=c++11
+poly_class_v3: Polynomial.o poly_class_v3.o
+		g++ -o $@ $@.o Polynomial.o -std=c++11
 
 
 
 
 
-poly_class.o : Polynomial.h
-# poly_class_v2.o : Polynomial.h
+poly_class_v2.o : Polynomial.h
+poly_class_v3.o : Polynomial.h
 Polynomial.o	: Polynomial.h
 

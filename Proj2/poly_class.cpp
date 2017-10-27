@@ -33,14 +33,30 @@ int main (int argc, char *argv[])
 {/*{{{*/
     Polynomial poly[3]; 
 
-    for (int i = 0; i <3; i++) 
+    for (int i = 0; i < 2; i++) 
     {
-        poly.polyCheck(poly+i);
-        polyDisplay(poly+i);
+        poly[i].setPoly();
+        cout << "Polynomial #" << i+1 << "is:\n";
+        poly[i].getPoly();
+        cout << endl;
     }
 
-    cout << setprecision(2) << fixed << showpoint;
- 
+        cout << "Polynomial #1 ";
+        if (poly[0] == poly[1])
+            cout << "IS EQUAL ";
+        else
+            cout << "IS NOT EQUAL ";
+        cout << "to Polynomial #2\n";
+
+        poly[2] = poly[0] + poly[1];
+        poly[2].getPoly();
+        poly[2] = poly[0] - poly[1];
+        poly[2].getPoly();
+        
+
+
+
+  //  cout << setprecision(2) << fixed << showpoint;
     
 
    return 0;
@@ -61,66 +77,5 @@ void clearIt()
 	cin.clear();
 	cin.ignore(100, '\n');
 }/*}}}*/
-
-Polynomial::Polynomial()
-{
-    expo = 0;
-
-    for (int i = 0; i < ARRAY_SIZE(coef); i++)
-        coef[i] = 0;
-
-}
-
-void Polynomial::polyCheck(Polynomial *p)
-{
-    cout << "Enter degree of Polynomial: ";
-    cin >> degree;
-    while (cin.fail())
-    { cout << "Please enter Polynomial degree integer 1-9!\n";
-      cin >> degree;
-    }
-    polyPass(degree);
-    cout << "Enter all " << degree << " coeficients: \n";
-    for (int i = degree-1; i >= 0; i--)
-    {cin >> p->coef[i];
-        while (cin.fail() || degree == 0)
-        { cout << "Please enter Polynomial degree integer 1-9!\n";
-          cin >> p->coef[i];
-        }
-    }
-}
-void Polynomial::polyDisplay(Polynomial *p)
-{
-    cout << "\n\t"; //  Display polynomial
-
-    for (int i = p->degree; i >= 0; i--)
-    {
-    if (i < p->degree)
-    {
-        if (p->coef[i] >= 0) cout << " +";
-        else cout << " ";
-    }
-    cout << p->coef[i];
-
-    if (i>1) cout << "x^" << i ;
-    if (i==1) cout << "x";
-     }
-    cout << endl;
-    cout << endl;
-}
-
-Polynomial polyAdd(Polynomial p0, Polynomial p1)  // Passes & returns
-{                              // polynomial structures
-        Polynomial p2;
-
-            cout << "\nAdding the 2 polynomials: \n\n";
-
-                p2.degree = MAX(p0.degree, p1.degree); 
-
-                    for (int i = p2.degree; i >= 0; i--)
-                                p2.coef[i] = p0.coef[i] + p1.coef[i];
-
-                        return p2;
-}
 
 
