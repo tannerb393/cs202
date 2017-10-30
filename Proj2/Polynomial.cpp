@@ -25,18 +25,28 @@ Tanner_Benavides  10-11-2017     3.0 / banking.cpp
 //#include "Polynomial.cpp" // Call to Classes
 //Implenmentation file for Polynomial Class
 
+//Copy constructor
 Polynomial::Polynomial()
 {/*{{{*/
+    sum = 0;
     degree = 0;
     for (int i = 0; i < ARRAY_SIZE(coef); i++)
         coef[i] = 0;
+}/*}}}*/
 
+//Copy Contructor #2 (overloaded)
+Polynomial::Polynomial(int sum1, int degree1)
+{/*{{{*/
+    sum = sum1;
+    degree = degree1;
+    for (int i = 0; i < ARRAY_SIZE(coef); i++)
+        coef[i] = 0;
 }/*}}}*/
 
 // Overloaded binary + operator
 Polynomial Polynomial::operator + (const Polynomial &p1)
 {/*{{{*/
-    Polynomial p2;
+    Polynomial p2(0, 0);
 
     cout << "\n[ADDING 2 Polynomials] \n";
 

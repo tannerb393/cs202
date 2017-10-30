@@ -49,8 +49,20 @@ class Polynomial
         double sum;
 
     public:
-        Polynomial();
-        void displayTotal() const
+        Polynomial();  // Constructor
+        Polynomial(int, int);
+
+        Polynomial(const Polynomial &pCopy) // Copy Constructor
+        {
+            degree = pCopy.degree;
+            for (int i = 0; i < 9; i++)
+            coef[i] = pCopy.coef[i];
+            sum = pCopy.sum;
+        }
+        
+        //~Polynomial();
+
+        void displayTotal() const // Display out sum total of polynomial after defining X
         {cout << sum << endl;}
 
         Polynomial operator + (const Polynomial &); // Overload operator for adding polynomails
