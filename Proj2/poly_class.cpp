@@ -32,33 +32,38 @@ Tanner_Benavides  10-11-2017     3.0 / banking.cpp
 int main (int argc, char *argv[])
 {/*{{{*/
     Polynomial poly[3]; 
+    int x = 0;
 
     for (int i = 0; i < 2; i++) 
     {
-        poly[i].setPoly();
+        cin >> poly[i];
         cout << "POLYNOMIAL #" << i+1 << " is: ";
         cout << poly[i];
-      //  poly[i].getPoly();
         cout << endl;
     }
 
-        cout << "Polynomial #1 ";
+        cout << "[Polynomial #1 ";
         if (poly[0] == poly[1])
             cout << "IS EQUAL ";
         else
             cout << "IS NOT EQUAL ";
-        cout << "to Polynomial #2\n";
-
+        cout << "to Polynomial #2]\n";
         poly[2] = poly[0] + poly[1];
         cout << poly[2];
         poly[2] = poly[0] - poly[1];
         cout << poly[2];
-        
-
-
+        poly[2] = poly[0] * poly[1];
+        cout << poly[2];
+        cout << "Set Value for variable x: \n";
+        cin >> x;
+        poly[0](x);
+        cout << "Polynomial #1 sum: ";
+        poly[0].displayTotal();
+        poly[1](x);
+        cout << "Polynomial #2 sum: ";
+        poly[1].displayTotal();
 
   //  cout << setprecision(2) << fixed << showpoint;
-    
 
    return 0;
 }/*}}}*/

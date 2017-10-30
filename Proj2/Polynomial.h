@@ -26,8 +26,8 @@ Tanner_Benavides  10-1-2017     2.0 / banking.h
 
 #include <iostream> // main
 #include <cstring> // for cstring input
+#include <math.h>
 #include <stdlib.h> // for system("clear");
-#include <cctype> //for testing characters
 #include <fstream> //file stream
 
 using namespace std;
@@ -37,7 +37,7 @@ using namespace std;
 
     class Polynomial; // Forward declaration
     ostream &operator << (ostream &, const Polynomial &);
-    iostream &operator >> (iostream &, const Polynomial &);
+    istream &operator >> (iostream &, const Polynomial &);
 
 
 
@@ -46,37 +46,29 @@ class Polynomial
     private:
         int degree; //store the degree of the polynomial
         int coef[9]; // coefficients of the poly up to 9
+        double sum;
 
     public:
         Polynomial();
-        void setPoly();
-        void getPoly();
-      //  void objOut();
-      //  void objIn();
-      //  void assing();
-      //  void evaluate();
+        void displayTotal() const
+        {cout << sum << endl;}
 
         Polynomial operator + (const Polynomial &); // Overload operator for adding polynomails
         Polynomial operator - (const Polynomial &);
-        bool operator == (const Polynomial &);
-       
-     /*   Polynomial operator * (const Polynomial &);
+              bool operator == (const Polynomial &);
+        Polynomial operator * (const Polynomial &);
+        Polynomial operator () (int);
+
+    /*    
         Polynomial operator = (const Polynomial &);
-
-
-        Polynomial operator () (const Polynomial &);
         Polynomial operator -- (const Polynomial &);
         Polynomial operator ++ (const Polynomial &);
     */
-      //  Polynomial operator ++ (const Polynomial &);
     friend ostream &operator << (ostream &, const Polynomial &);
-    friend iostream &operator >> (iostream &, Polynomial &);
-
-
+    friend istream &operator >> (istream &, Polynomial &);
 };
 
 
- // Function prototypes go here
   int intChoice();
   void clearIt();
 

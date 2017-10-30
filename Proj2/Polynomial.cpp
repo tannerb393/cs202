@@ -33,44 +33,6 @@ Polynomial::Polynomial()
 
 }/*}}}*/
 
-void Polynomial::setPoly()
-{/*{{{*/
-    cout << "[Enter degree of Polynomial]:\n";
-    cin >> degree;
-    while (cin.fail())
-    { cout << "Please enter Polynomial degree integer 1-9!\n";
-      cin >> degree;
-    }
-    cout << "[Enter " << degree << " coeficient(s)]:\n";
-    for (int i = degree; i >= 0; i--)
-    {cin >> coef[i];
-        while (cin.fail() || degree == 0)
-        { cout << "Please enter Polynomial degree integer 1-9!\n";
-          cin >> coef[i];
-        }
-    }
-}/*}}}*/
-
-void Polynomial::getPoly()
-{/*{{{*/
-  //  cout << "\n\t"; //  Display polynomial
-
-    for (int i = degree; i >= 0; i--)
-    {
-    if (i < degree)
-    {
-        if (coef[i] >= 0) cout << " +";
-        else cout << " ";
-    }
-    cout << coef[i];
-
-    if (i>1) cout << "x^" << i ;
-    if (i==1) cout << "x";
-     }
-    cout << endl;
-    cout << endl;
-}/*}}}*/
-
 // Overloaded binary + operator
 Polynomial Polynomial::operator + (const Polynomial &p1)
 {/*{{{*/
@@ -117,13 +79,25 @@ bool Polynomial::operator == (const Polynomial &p1)
     return equal;
 }/*}}}*/
 
-
 // Overloaded binary + operator
-iostream &operator >> (iostream &, const Polynomial &p1)
+istream &operator >> (istream &strm, Polynomial &p1)
 {/*{{{*/
+    cout << "[Enter degree of Polynomial]:\n";
+    strm >> p1.degree;
+    while (strm.fail())
+    { cout << "Please enter Polynomial degree integer 1-9!\n";
+      strm >> p1.degree;
+    }
+    cout << "[Enter " << p1.degree << " coeficient(s)]:\n";
+    for (int i = p1.degree; i >= 0; i--)
+    {strm >> p1.coef[i];
+        while (strm.fail() || p1.degree == 0)
+        { cout << "Please enter Polynomial degree integer 1-9!\n";
+          strm >> p1.coef[i];
+        }
+    }
 
 }/*}}}*/
-
 
 // Overloaded binary << operator
 ostream &operator << (ostream &strm, const Polynomial &p1)
@@ -147,15 +121,33 @@ ostream &operator << (ostream &strm, const Polynomial &p1)
 return strm;
 }/*}}}*/
 
+// Overloaded binary *
+Polynomial Polynomial::operator * (const Polynomial &p1)
+{/*{{{*/
+
+Polynomial p2;
+
+    cout << "[MULTIPLYING 2 Polynomials] \n";
+
+    p2.degree = MAX(degree, p1.degree);
+
+    for (int i = degree; i >= 0; i--)
+        for (int j = p1.degree; j >= 0; j--)
+        {
+          p2.coef[i+j] += (coef[i] * p1.coef[j]);
+        }
+    p2.degree = degree + p1.degree;
 
 
+return p2;
+}/*}}}*/
 
-
-
-
-
-
-
+//Overloaded assignment ( ) operator
+Polynomial Polynomial::operator () (int x)
+{/*{{{*/
+    for (int i = degree; i >= 0; i--) 
+      sum += coef[i] * (pow (x, i));
+}/*}}}*/
 
 
 
