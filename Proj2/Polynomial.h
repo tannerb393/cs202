@@ -59,22 +59,29 @@ class Polynomial
             coef[i] = pCopy.coef[i];
             sum = pCopy.sum;
         }
-        
+
         //~Polynomial();
 
         void displayTotal() const // Display out sum total of polynomial after defining X
         {cout << sum << endl;}
+
+
+        void operator = (const Polynomial &assign)
+        {   degree = assign.degree;
+            sum = assign.sum;
+            for (int i = 0; i < 9; i++)
+            coef[i] = assign.coef[i];
+        }
 
         Polynomial operator + (const Polynomial &); // Overload operator for adding polynomails
         Polynomial operator - (const Polynomial &);
               bool operator == (const Polynomial &);
         Polynomial operator * (const Polynomial &);
         Polynomial operator () (int);
+        Polynomial operator -- ();
 
     /*    
-        Polynomial operator = (const Polynomial &);
-        Polynomial operator -- (const Polynomial &);
-        Polynomial operator ++ (const Polynomial &);
+        Polynomial operator ++ (const Polynomial &); // integral (both indefinite and definite)
     */
     friend ostream &operator << (ostream &, const Polynomial &);
     friend istream &operator >> (istream &, Polynomial &);

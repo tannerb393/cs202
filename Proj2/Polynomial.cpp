@@ -48,7 +48,7 @@ Polynomial Polynomial::operator + (const Polynomial &p1)
 {/*{{{*/
     Polynomial p2(0, 0);
 
-    cout << "\n[ADDING 2 Polynomials] \n";
+    cout << "\n[ADDING: Polynomial #1 + Polynomial #2] \n";
 
     p2.degree = MAX(degree, p1.degree);
 
@@ -63,7 +63,7 @@ Polynomial Polynomial::operator - (const Polynomial &p1)
 {/*{{{*/
     Polynomial p2;
 
-    cout << "[SUBTRACTING 2 Polynomials] \n";
+    cout << "[SUBTRACTING: Polynomial #1 - Polynomial #2] \n";
 
     p2.degree = MAX(degree, p1.degree);
 
@@ -112,19 +112,30 @@ istream &operator >> (istream &strm, Polynomial &p1)
 // Overloaded binary << operator
 ostream &operator << (ostream &strm, const Polynomial &p1)
 {/*{{{*/
+    
+    int polysum = 0; 
 
     for (int i = p1.degree; i >= 0; i--)
     {
-    if (i < p1.degree)
-    {
-        if (p1.coef[i] >= 0) strm << " +";
-        else strm << " ";
-    }
-    strm << p1.coef[i];
+     if(p1.coef[i] != 0)
+     {
+        if (i < p1.degree)
+        {
+            if (p1.coef[i] >= 0) strm << " +";
+            else strm << " ";
+        }
+      //  if (p1.coef[i] > 1)
+            strm << p1.coef[i];
 
-    if (i>1) strm << "x^" << i ;
-    if (i==1) strm << "x";
+        if (i>1) strm << "x^" << i ;
+        if (i==1) strm << "x";
      }
+     polysum += p1.coef[i];
+    }
+
+    if (polysum == 0)
+        strm << "0";
+
     strm << endl;
     strm << endl;
 
@@ -137,7 +148,7 @@ Polynomial Polynomial::operator * (const Polynomial &p1)
 
 Polynomial p2;
 
-    cout << "[MULTIPLYING 2 Polynomials] \n";
+    cout << "[MULTIPLYING: Polynomial #1 * Polynomial #2]\n";
 
     p2.degree = MAX(degree, p1.degree);
 
@@ -159,7 +170,19 @@ Polynomial Polynomial::operator () (int x)
       sum += coef[i] * (pow (x, i));
 }/*}}}*/
 
+//Overloaded -- Operator
+Polynomial Polynomial:: operator -- ()
+{/*{{{*/
+     int coefTemp[9];
 
+     for (int i = degree; i >= 0; i--) 
+        coefTemp[i] =  coef[i] * i;
+
+     for (int i = degree; i >= 1; i--) 
+        coef[i - 1] =  coefTemp[i];
+     --degree;
+
+}/*}}}*/
 
 
 

@@ -48,20 +48,33 @@ int main (int argc, char *argv[])
         else
             cout << "IS NOT EQUAL ";
         cout << "to Polynomial #2]\n";
+
         poly[2] = poly[0] + poly[1];
         cout << poly[2];
+
         poly[2] = poly[0] - poly[1];
         cout << poly[2];
+
         poly[2] = poly[0] * poly[1];
         cout << poly[2];
+
         cout << "Set Value for variable x: \n";
         cin >> x;
         poly[0](x);
-        cout << "Polynomial #1 sum: ";
+        cout << "Answer for Polynomial #1 given f(" << x << ") : ";
         poly[0].displayTotal();
         poly[1](x);
-        cout << "Polynomial #2 sum: ";
+        cout << "Answer for Polynomial #2 given f(" << x << ") : ";
         poly[1].displayTotal();
+
+        poly[2] = poly[0];
+        --poly[2];
+        cout << "\n[DERIVATIVE of Polynomial #1]\n";
+        cout << poly[2];
+        poly[2] = poly[1];
+        --poly[2];
+        cout << "[DERIVATIVE of Polynomial #2]\n";
+        cout << poly[2];
 
   //  cout << setprecision(2) << fixed << showpoint;
 
