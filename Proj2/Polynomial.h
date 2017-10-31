@@ -45,7 +45,7 @@ class Polynomial
 {
     private:
         int degree; //store the degree of the polynomial
-        int coef[9]; // coefficients of the poly up to 9
+        double coef[9]; // coefficients of the poly up to 9
         double sum;
 
     public:
@@ -79,10 +79,9 @@ class Polynomial
         Polynomial operator * (const Polynomial &);
         Polynomial operator () (int);
         Polynomial operator -- ();
+        Polynomial operator ++();
+        Polynomial operator ++(int);
 
-    /*    
-        Polynomial operator ++ (const Polynomial &); // integral (both indefinite and definite)
-    */
     friend ostream &operator << (ostream &, const Polynomial &);
     friend istream &operator >> (istream &, Polynomial &);
 };

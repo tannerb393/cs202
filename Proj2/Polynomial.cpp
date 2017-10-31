@@ -136,9 +136,6 @@ ostream &operator << (ostream &strm, const Polynomial &p1)
     if (polysum == 0)
         strm << "0";
 
-    strm << endl;
-    strm << endl;
-
 return strm;
 }/*}}}*/
 
@@ -176,16 +173,52 @@ Polynomial Polynomial:: operator -- ()
      int coefTemp[9];
 
      for (int i = degree; i >= 0; i--) 
-        coefTemp[i] =  coef[i] * i;
+        coefTemp[i] = coef[i] * i;
 
      for (int i = degree; i >= 1; i--) 
-        coef[i - 1] =  coefTemp[i];
+        coef[i - 1] = coefTemp[i];
      --degree;
 
 }/*}}}*/
 
+// Overloaed left ++ Operator
+Polynomial Polynomial:: operator ++ ()
+{/*{{{*/
+     double coefTemp[9];
+
+     for (int i = degree; i >= 0; i--) 
+        coefTemp[i] =  coef[i] / (i + 1) ;
+
+     for (int i = degree; i >= 0; i--) 
+        coef[i + 1] = coefTemp[i];
+        coef[0] = 0;
+     ++degree;
+
+}/*}}}*/
 
 
+Polynomial Polynomial::operator ++(int)
+{
+    double sum1 = 0;
+    double sum2 = 0;
+    double min = 0;
+    double max = 0;
+
+    cout << "\nDefine Beginnng Range for the Definite Integral";
+    cin >> min;
+    cout << "\nDefine End Range for the Definite Integral";
+    cin >> max;
+        
+    for (int i = degree; i >= 0; i--) 
+      sum1 += coef[i] * (pow (min, i));
+
+    for (int i = degree; i >= 0; i--) 
+      sum2 += coef[i] * (pow (max, i));
+
+    sum = sum2 - sum1;
+
+
+}
 
 
 

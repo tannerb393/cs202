@@ -31,14 +31,14 @@ Tanner_Benavides  10-11-2017     3.0 / banking.cpp
  * --------------------------------------------------------------------------------------*/
 int main (int argc, char *argv[])
 {/*{{{*/
-    Polynomial poly[3]; 
+    Polynomial poly[5]; 
     int x = 0;
 
     for (int i = 0; i < 2; i++) 
     {
         cin >> poly[i];
         cout << "POLYNOMIAL #" << i+1 << " is: ";
-        cout << poly[i];
+        cout << poly[i] << endl;
         cout << endl;
     }
 
@@ -50,15 +50,15 @@ int main (int argc, char *argv[])
         cout << "to Polynomial #2]\n";
 
         poly[2] = poly[0] + poly[1];
-        cout << poly[2];
+        cout << poly[2] << endl << endl;
 
         poly[2] = poly[0] - poly[1];
-        cout << poly[2];
+        cout << poly[2] << endl << endl;
 
         poly[2] = poly[0] * poly[1];
-        cout << poly[2];
+        cout << poly[2] << endl << endl;
 
-        cout << "Set Value for variable x: \n";
+        cout << "\nSet Value for variable x: \n";
         cin >> x;
         poly[0](x);
         cout << "Answer for Polynomial #1 given f(" << x << ") : ";
@@ -69,12 +69,28 @@ int main (int argc, char *argv[])
 
         poly[2] = poly[0];
         --poly[2];
-        cout << "\n[DERIVATIVE of Polynomial #1]\n";
-        cout << poly[2];
+        cout << "\n[DERIVATIVE OF " << poly[0] << " ]" << endl;
+        cout << poly[2] << endl;
         poly[2] = poly[1];
         --poly[2];
-        cout << "[DERIVATIVE of Polynomial #2]\n";
-        cout << poly[2];
+        cout << "\n[DERIVATIVE OF " << poly[1] << " ]" << endl;
+        cout << poly[2] << endl;
+
+        poly[3] = poly[0];
+        ++poly[3];
+        cout << "\n[INTEGRAL OF " << poly[0] << " ]" << endl;
+        cout << poly[3] << endl;
+        poly[4] = poly[1];
+        ++poly[4];
+        cout << "\n[INTEGRAL OF " << poly[1] << " ]" << endl;
+        cout << poly[4] << endl;
+
+        poly[3]++;
+        cout << "\nSolution for the DEFINITE INTEGRAL OF " << poly[0] << "]";
+        poly[3].displayTotal();
+        poly[4]++;
+        cout << "\nSolution for the DEFINITE INTEGRAL OF " << poly[1] << "]";
+        poly[4].displayTotal();
 
   //  cout << setprecision(2) << fixed << showpoint;
 
