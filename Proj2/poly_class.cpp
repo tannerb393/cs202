@@ -1,22 +1,18 @@
 /*{{{*/
  /* --------------------------------FILE HEADER ---------------------------------------
-FILE NAME:     banking.CPP
-DESCRIPTION:   polyclass.cpp file written to use create a banking program 
-PURPOSE:       holds code that is compiled with makefie to run the banking program
-USAGE:         compile this file into an executable by using the make file in Proj1, run the 
-                compiled file along any command line actions.
-EXAMPLES:      'make banking' followed by './banking '
-PARAMETERS:    int argc - holds count of paramenters on the command line / char *argv[] holds an array of the pointers
-EXIT CODES:    0 = success other = error
-COMPILATION:   vim to write, and make file to compile: (CPP: g++ -o $* $*.cpp -std=c++11 -std=gnu++11)
-NOTES:         large project file that contains most processes in individual functions
-		from the structure 'StudentGrade'
+FILE NAME:     poly_class.cpp
+DESCRIPTION:   .cpp file which is main .cpp for the poly_class programs. holds int main () and other non-class functions 
+PURPOSE:       for connection the actions of the header file 'Polynomial.h' and 'Polynomial.cpp'
+USAGE:         must be compiled along with Polynomial.h and Polynomial.cpp
+COMPILATION:   vim to write, and make file to compile: the linux command 'make -f Makefile poly_class'
+NOTES:         uses the int main () function to give call all other functions in a linear method to show all the functionality
+                of the Class member functions, and variables. user input is limited to some basic calls for degree values,
+                coeficcient values, x value, and ranges for integrals.
 MODIFICATION HISTORY:
 Author              Date        Modification(s)
 -------------   -----------    ---------------
-Tanner_Benavides  09-28-2017     1.0 / banking.cpp
-Tanner_Benavides  10-8-2017     2.0 / banking.cpp
-Tanner_Benavides  10-11-2017     3.0 / banking.cpp
+Tanner_Benavides  10-25-2017     1.0 / poly_class.cpp
+Tanner_Benavides  11-1-2017     2.0 / poly_class.cpp
 //-----------------------------------------------------------------------------*/ 
 /*}}}*/
 #include "Polynomial.h" // call to header file
@@ -24,10 +20,9 @@ Tanner_Benavides  10-11-2017     3.0 / banking.cpp
 
 
 /* --------------------------------------------------------------------------------------
- *FUNCTION: 
- *PURPOSE: 
- *RETURNS: 
- *NOTE: 
+ *FUNCTION: int main ()
+ *PURPOSE: holds majority of code to call other functions 
+ *RETURNS: 0 to end program 
  * --------------------------------------------------------------------------------------*/
 int main (int argc, char *argv[])
 {/*{{{*/
@@ -86,10 +81,10 @@ int main (int argc, char *argv[])
         cout << poly[4] << endl;
 
         poly[3]++;
-        cout << "\nSolution for the DEFINITE INTEGRAL OF " << poly[0] << "]";
+        cout << "\n[Solution for the DEFINITE INTEGRAL OF " << poly[0] << "] \n ";
         poly[3].displayTotal();
         poly[4]++;
-        cout << "\nSolution for the DEFINITE INTEGRAL OF " << poly[1] << "]";
+        cout << "\n[Solution for the DEFINITE INTEGRAL OF " << poly[1] << "] \n ";
         poly[4].displayTotal();
 
   //  cout << setprecision(2) << fixed << showpoint;
@@ -97,6 +92,11 @@ int main (int argc, char *argv[])
    return 0;
 }/*}}}*/
 
+/* --------------------------------------------------------------------------------------
+ *FUNCTION: intChoice()
+ *PURPOSE: used to correct invalid, non-numerical choice input                                              
+ *RETURNS: int value
+ * --------------------------------------------------------------------------------------*/
 int intChoice()
 {/*{{{*/
     int choice = 0;
@@ -107,6 +107,11 @@ int intChoice()
 	return choice;
 }/*}}}*/
 
+/* --------------------------------------------------------------------------------------
+ *FUNCTION: clearIt()
+ *PURPOSE: clears buffer 
+ *RETURNS: void 
+ * --------------------------------------------------------------------------------------*/
 void clearIt()
 {/*{{{*/
 	cin.clear();
