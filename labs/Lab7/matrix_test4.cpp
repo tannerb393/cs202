@@ -21,38 +21,13 @@ int main (int argc, char *argv[])
     char let_x;
     char file1[2];
     ifstream infile;
-    string args[3];
-
-
-
-    stringstream ss[3];
-    for (int i = 0; i < 3; i++){ 
-       ss[i] << argv[i]; 
-       ss[i] >> args[i];}
-
 
     if (argc < 3)
     {
-        cout << "Not Enough Arguments! \n\n";
+        cout << "Not enough Arguments ?\n\n";
         return 0;
     }
 
-    if (args[1] == "-inp")
-        args[2] += ".mtx";
-
-
-    infile.open(args[2].c_str());
-    if(!infile)
-    {   cout << "Error opening file: " << args[2] << endl;
-        return 0;
-    }
-    
-    infile >> m >> let_x >> n;
-
-    double k;
- 
-
-   /*
     if (strcmp(argv[1], "-inp") == 0)
     {
         strcpy(file1, argv[2]);
@@ -61,21 +36,21 @@ int main (int argc, char *argv[])
 
         if(!infile)             //Test for errors.
         {
-            cout << "\n Error opening file: " << args[2] << "\n\n";
+            cout << "\n Error opening file: " << file1 << "\n\n";
             return 0;
         }
     }
-*/
 
 
 
+    infile >> m >> let_x >> n;
 
-    Matrix<double>  mat1(m, n);
-//    int k; // value to be read for Matrix<int>
+    Matrix<int>  mat1(m, n);
+
 //   Matrix<double> mat1(m, n);
-//   double k;
+
 //  Matrix<byte> mat1(m, n);
-//    byte k;
+
 
     for (i=0; i < m; i++)
     {

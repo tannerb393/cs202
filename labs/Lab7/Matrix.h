@@ -5,12 +5,13 @@
 #include <iomanip>
 #include <fstream>
 #include <string.h>
+#include <string>
+#include <sstream>
 
 
 using namespace std;
 
 template <class T>
-
 class Matrix
 {
     private:
@@ -20,8 +21,8 @@ class Matrix
     public:
     Matrix(int rows, int cols); // constructor
     ~Matrix();
-    T get (int i, int j);
-    void set (int i, int j, int T);
+    T get (int , int);
+    void set (int, int, T);
 
     void display();
 };
@@ -31,3 +32,8 @@ class Matrix
 
 // OVERLOADED OPERATORS FOR INPUT AND OUTPUT WILL
 
+
+// template <class T1>
+// friends ostream& operator << (ostream &, const Matrix<T1> &);
+// tempate <class T1>
+// friend istrream& operator >> (istream &, Matrix <T1> &);

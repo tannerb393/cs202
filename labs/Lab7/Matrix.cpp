@@ -6,25 +6,26 @@ Matrix<T>::Matrix(int n_rows, int n_cols)
     rows = n_rows;
     cols = n_cols;
 
-    array = new int*[rows];
+    array = new T*[rows];
 
     for (int i = 0; i < rows; i++)
-        array[i] = new int[cols];
+        array[i] = new T[cols];
 
     cout << "Matrix constructor: ";
     cout << rows << " X " << cols << endl;
 }
 
 template <class T>
-int Matrix<T>::get(int i, int j)
+T Matrix<T>::get(int i, int j)
 {
     return array[i][j];
 }
 
 template <class T>
-void Matrix<T>::set(int i, int j, int k)
+void Matrix<T>::set(int i,int j, T val1)
 {
-    array[i][j] = k;
+    array[i][j] = val1;
+
 }
 
 template <class T>
