@@ -34,19 +34,20 @@ int main (int argc, char *argv[])
     ifstream infile;
     double k;
 
- //   cout << argc << endl;
+    Matrix<double> mat1;
+    Matrix<double> mat2;
+    Matrix<double> mat3;
+
+    if (argc < 3 || argc > 4)
+    {
+        cout << "Invalid Argument Count \n\n";
+        return 0;
+    }
 
    stringstream ss[4];
    for (int i = 0; i < argc; i++){
        ss[i] << argv[i];
        ss[i] >> args[i];}
-
-    if (argc < 3)
-    {
-        cout << "Not Enough Arguments! \n\n";
-        return 0;
-    }
-
 
     args[2] += ".mtx";
     infile.open(args[2].c_str());
@@ -55,37 +56,33 @@ int main (int argc, char *argv[])
         return 0;
     }
     infile.close();
+
     if (argc == 4)
-    {
-        args[3] += ".mtx";
+      { args[3] += ".mtx";
         infile.open(args[3].c_str());
         if(!infile)
          {   cout << "Error opening file 2: " << args[3] << endl;
-             return 0;
-         }
-        infile.close();
-    }
+             return 0; }
+        infile.close(); }
+
+
+    Matrix<double> pass1(args, 2, argc);
+    mat1 = pass1;
+    if (argc == 4)
+    { Matrix<double> pass2(args, 3, argc);
+      mat2 = pass2; }  
+        
 
 
     if (args[1] == "-inp")
-    {
-       cout << "-inp (72 - matrix_math)\n";
-       Matrix<double>mat1(args, 2, argc);
-       cout << mat1;
-    }
+        cout << mat1;
 
 
     if (args[1] == "-add")
     {
        cout << "ADDING MATRIX 1 AND MATRIX 2\n";
-       Matrix<double>mat1(args, 2, argc);
-       cout << mat1;
-       Matrix<double>mat2(args, 3, argc);
-       cout << mat2;
-/*       Matrix<double>mat3(args, 2, argc);
-       cout << mat3;
-       mat3 = mat2 + mat1; */ //WTF WHY NO WORKY?
-       Matrix<double>mat3 = mat2 + mat1;
+       cout << mat1 << mat2;
+       mat3 = (mat2 + mat1);
        cout << "\n      ANSWER:";
        cout << mat3;
     }

@@ -30,6 +30,8 @@ Tanner_Benavides  10-25-2017     1.0 / Matrix.cpp
 template <class T>
 Matrix<T>::Matrix(int m_rows, int m_cols, string args[4], int argc)
 {
+    cout << "Temp class Constructor (52 - Matrix.cpp)\n";
+
     rows = m_rows;
     cols = m_cols;
 
@@ -48,7 +50,23 @@ Matrix<T>::Matrix(int m_rows, int m_cols, string args[4], int argc)
     for(int i = 0; i < argc; i++)
      m_args[i] = args[i];
 
-cout << "Temp class Constructor (52 - Matrix.cpp)\n";
+
+
+}/*}}}*/
+
+
+/*{{{*/ /*{{{*/ //----------- MAIN CONSTRUCTOR HEADER-----------------------------
+//FUNCTION:
+//PURPOSE: 
+//RETURNS: NA
+//NOTE: 
+/*}}}*/ //---------------------------------------------------------------------
+template <class T>
+Matrix<T>::Matrix()
+{
+    cout << "Main Constructor (65 - Matrix.cpp)\n";
+    rows = 0;
+    cols = 0;
 
 }/*}}}*/
 
@@ -63,6 +81,8 @@ template <class T>
 Matrix<T>::Matrix(string args[4], int c, int argc)
 {
  
+    cout << "Matrix overloaded constructor: (95 - Matrix.cpp) \n\n";
+
  ifstream infile;
   char let_x;
 
@@ -92,10 +112,8 @@ Matrix<T>::Matrix(string args[4], int c, int argc)
         }
     infile.close();
 
-    cout << "Matrix overloaded constructor: (95 - Matrix.cpp) \n\n";
     cout << "      " << args[c] << endl;
     cout << "      " << rows << " x " << cols;
-
     
 }/*}}}*/
 
@@ -252,9 +270,13 @@ Matrix<T> Matrix<T>::operator * (Matrix<T> &m1)
 template <class T>
 void Matrix<T>::operator = (const Matrix<T> &m1)
 {
-
+    cout << "\n = Operator (238 - Matrix.cpp)\n";
    rows = m1.rows;
    cols = m1.cols;
+
+        array = new T*[m1.rows];
+        for(int i = 0; i < m1.rows; i++)
+            array[i] = new T[m1.cols];
 
     for(int i = 0; i < m1.m_argc; i++)
      m_args[i] = m1.m_args[i];
@@ -268,7 +290,7 @@ void Matrix<T>::operator = (const Matrix<T> &m1)
         }
     }
 
-    cout << " = Operator (238 - Matrix.cpp)\n";
+
 }/*}}}*/
 
 

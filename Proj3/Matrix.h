@@ -48,6 +48,7 @@ class Matrix
         int m_argc;
 
     public:
+        Matrix<T>();
         Matrix<T>(string[4], int, int); 
         Matrix<T>(int, int, string[4], int); 
         ~Matrix<T>() 
