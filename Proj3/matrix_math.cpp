@@ -30,6 +30,7 @@ int main (int argc, char *argv[])
     int *ptr = 0;
     int m, n;
     char let_x;
+    char x;
     string args[4];
     ifstream infile;
     double k;
@@ -53,8 +54,7 @@ int main (int argc, char *argv[])
     infile.open(args[2].c_str());
     if(!infile)
     {   cout << "Error opening file 1: " << args[2] << endl;
-        return 0;
-    }
+        return 0;   }
     infile.close();
 
     if (argc == 4)
@@ -62,8 +62,8 @@ int main (int argc, char *argv[])
         infile.open(args[3].c_str());
         if(!infile)
          {   cout << "Error opening file 2: " << args[3] << endl;
-             return 0; }
-        infile.close(); }
+             return 0;  }
+        infile.close();  }
 
 
     Matrix<double> pass1(args, 2, argc);
@@ -71,68 +71,43 @@ int main (int argc, char *argv[])
     if (argc == 4)
     { Matrix<double> pass2(args, 3, argc);
       mat2 = pass2; }  
-        
 
 
     if (args[1] == "-inp")
         cout << mat1;
 
-
     if (args[1] == "-add")
-    {
-       cout << "ADDING MATRIX 1 AND MATRIX 2\n";
-       cout << mat1 << mat2;
+    {  cout << "ADDING MATRIX 1 AND MATRIX 2\n";
+       cout << mat1 << "        +\n" << mat2;
        mat3 = (mat2 + mat1);
        cout << "\n      ANSWER:";
-       cout << mat3;
-    }
+       cout << mat3;    }
 
     if (args[1] == "-sub")
-    {
-       cout << "SUBTRACTING MATRIX 1 AND MATRIX 2\n";
-       Matrix<double>mat1(args, 2, argc);
-       cout << mat1;
-       Matrix<double>mat2(args, 3, argc);
-       cout << mat2;
-       Matrix<double>mat3 = mat2 - mat1;
+    {  cout << "SUBTRACTING MATRIX 1 AND MATRIX 2\n";
+       cout << mat1 << "        -\n" << mat2;
+       mat3 = (mat2 - mat1);
        cout << "\n      ANSWER:";
-       cout << mat3;
-    }
+       cout << mat3;    }
 
     if (args[1] == "-mul")
-    {
-       cout << "MULTIPLYING MATRIX 1 AND MATRIX 2\n";
-       Matrix<double>mat1(args, 2, argc);
-       cout << mat1;
-       Matrix<double>mat2(args, 3, argc);
-       cout << mat2;
-       Matrix<double>mat3 = mat2 * mat1;
+    {  cout << "SUBTRACTING MATRIX 1 AND MATRIX 2\n";
+       cout << mat1 << "        *\n" << mat2;
+       mat3 = (mat2 * mat1);
        cout << "\n      ANSWER:";
-       cout << mat3;
-    }
+       cout << mat3;    }
 
    if (args[1] == "-eq")
-    {
-       cout << "EQUALITY TEST OF TWO MATRICES\n";
-       Matrix<double>mat1(args, 2, argc);
-       cout << mat1;
-       Matrix<double>mat2(args, 3, argc);
-       cout << mat2;
+    {  cout << "EQUALITY TEST OF TWO MATRICES\n";
+       cout << mat1 << mat2;
 
       cout << "Matrix #1 ";
       if (mat1 == mat2)
         cout << "IS EQUAL ";
       else
         cout << "IS NOT EQUAL ";
-      cout << "to Matrix #2]\n";
-    }
+      cout << "to Matrix #2]\n";    }
 
-
-
-
- //   mat1.display();
-
- //   infile.close();
 
     return 0;
 

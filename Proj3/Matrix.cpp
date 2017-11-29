@@ -34,6 +34,7 @@ Matrix<T>::Matrix(int m_rows, int m_cols, string args[4], int argc)
 
     rows = m_rows;
     cols = m_cols;
+    m_argc = argc;
 
         array = new T*[rows];
 
@@ -50,8 +51,6 @@ Matrix<T>::Matrix(int m_rows, int m_cols, string args[4], int argc)
     for(int i = 0; i < argc; i++)
      m_args[i] = args[i];
 
-
-
 }/*}}}*/
 
 
@@ -64,10 +63,16 @@ Matrix<T>::Matrix(int m_rows, int m_cols, string args[4], int argc)
 template <class T>
 Matrix<T>::Matrix()
 {
-    cout << "Main Constructor (65 - Matrix.cpp)\n";
     rows = 0;
     cols = 0;
+    m_argc = 0;
 
+        array = new T*[rows];
+
+        for(int i = 0; i < rows; i++)
+            array[i] = new T[cols];
+
+   // cout << "Main Constructor (65 - Matrix.cpp)\n";
 }/*}}}*/
 
 
@@ -81,7 +86,7 @@ template <class T>
 Matrix<T>::Matrix(string args[4], int c, int argc)
 {
  
-    cout << "Matrix overloaded constructor: (95 - Matrix.cpp) \n\n";
+ //   cout << "Matrix overloaded constructor: (95 - Matrix.cpp) \n\n";
 
  ifstream infile;
   char let_x;
@@ -91,7 +96,6 @@ Matrix<T>::Matrix(string args[4], int c, int argc)
     for(int i = 0; i < argc; i++)
     {
        m_args[i] = args[i];
-    //   cout << m_args[i] << endl;
     }
 
         infile.open(args[c].c_str());
@@ -112,8 +116,7 @@ Matrix<T>::Matrix(string args[4], int c, int argc)
         }
     infile.close();
 
-    cout << "      " << args[c] << endl;
-    cout << "      " << rows << " x " << cols;
+   // cout << "      " << args[c] << endl;
     
 }/*}}}*/
 
@@ -141,15 +144,12 @@ T Matrix<T>::get (int i, int j)
 template <class T1>
 ostream &operator << (ostream &strm, Matrix<T1> &m1)
 {
-   strm << endl;
+   strm << endl << "      " << m1.rows << " x " << m1.cols << endl;
+
    for (int i = 0; i < m1.rows; i++)
-   {
-       for (int j = 0; j < m1.cols; j++)
-            {
+   {    for (int j = 0; j < m1.cols; j++)
                 strm << setw(4) << m1.get(i, j);
-            }
-   strm << endl;
-   }
+        strm << endl;   }
 strm << endl;
 
 return strm;
@@ -201,16 +201,11 @@ istream &operator >> (istream &strm, Matrix<T1> &m1)
 template <class T>
 Matrix<T> Matrix<T>::operator + (Matrix<T> &m1)
 {
-  Matrix<double> m2(rows, cols, m_args, m_argc);
-
- // cout << "m2 created in + operator (187 - Matrix.cpp)\n";
- // cout << m2;
-
+    Matrix<double> m2;
+    m2 = m1;
     for (int i = 0; i < rows; i++)
-    {
         for (int j = 0; j < cols; j++)
            m2.array[i][j] = (m1.array[i][j] + array[i][j]);
-    }
     return m2;
 }/*}}}*/
 
@@ -224,16 +219,11 @@ Matrix<T> Matrix<T>::operator + (Matrix<T> &m1)
 template <class T>
 Matrix<T> Matrix<T>::operator - (Matrix<T> &m1)
 {
-  Matrix<double> m2(rows, cols, m_args, m_argc);
-
- // cout << "m2 created in - operator (210 - Matrix.cpp)\n";
- // cout << m2;
-
+    Matrix<double> m2;
+    m2 = m1;
     for (int i = 0; i < rows; i++)
-    {
         for (int j = 0; j < cols; j++)
            m2.array[i][j] = (m1.array[i][j] - array[i][j]);
-    }
     return m2;
 }/*}}}*/
 
@@ -247,16 +237,11 @@ Matrix<T> Matrix<T>::operator - (Matrix<T> &m1)
 template <class T>
 Matrix<T> Matrix<T>::operator * (Matrix<T> &m1)
 {
-  Matrix<double> m2(rows, cols, m_args, m_argc);
-
- // cout << "m2 created in - operator (210 - Matrix.cpp)\n";
- // cout << m2;
-
+    Matrix<double> m2;
+    m2 = m1;
     for (int i = 0; i < rows; i++)
-    {
         for (int j = 0; j < cols; j++)
            m2.array[i][j] = (m1.array[i][j] * array[i][j]);
-    }
     return m2;
 }/*}}}*/
 
@@ -270,17 +255,23 @@ Matrix<T> Matrix<T>::operator * (Matrix<T> &m1)
 template <class T>
 void Matrix<T>::operator = (const Matrix<T> &m1)
 {
-    cout << "\n = Operator (238 - Matrix.cpp)\n";
-   rows = m1.rows;
-   cols = m1.cols;
 
-        array = new T*[m1.rows];
-        for(int i = 0; i < m1.rows; i++)
-            array[i] = new T[m1.cols];
+    for(int i = 0; i < rows; i++)
+        delete [] array[i];
+    delete [] array;
 
-    for(int i = 0; i < m1.m_argc; i++)
+   // cout << "\n = Operator (238 - Matrix.cpp)\n";
+    rows = m1.rows;
+    cols = m1.cols;
+    m_argc = m1.m_argc;
+
+    array = new T*[m1.rows];
+
+    for(int i = 0; i < m1.rows; i++)
+        array[i] = new T[m1.cols];
+
+    for(int i = 0; i < 4; i++)
      m_args[i] = m1.m_args[i];
-
 
     for (int i = 0; i < m1.rows; i++)
     {

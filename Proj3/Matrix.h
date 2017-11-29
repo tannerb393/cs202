@@ -32,7 +32,7 @@ using namespace std;
     template <class T>
     class Matrix; // Forward declaration
 
-/*{{{*/ /*{{{*//*-------------CLASS HEADER-------------------------------------------------------*/
+/*{{{*/ /*{{{*//*-------------CLASS <F5>HEADER-------------------------------------------------------*/
 //CLASS:class Matrix
 //PURPOSE: Class matrix used to store the information for displaying and manipulating 
 //         matrixs as they would be manipulated in standard mathmatics
@@ -58,11 +58,11 @@ class Matrix
             delete [] array;
            // delete [] m_args;
 
-            cout << "~Matrix (69 - Matrix.h)\n";
+           // cout << "~Matrix (69 - Matrix.h)\n";
         }
         Matrix<T>(const Matrix<T> &m1)
         {
-            cout << "Copy Constructor (73 -Matrix.h)\n";
+            //cout << "Copy Constructor (73 -Matrix.h)\n";
            rows = m1.rows;
            cols = m1.cols;
 
