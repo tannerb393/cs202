@@ -32,7 +32,7 @@ using namespace std;
     template <class T>
     class Matrix; // Forward declaration
 
-/*{{{*/ /*{{{*//*-------------CLASS <F5>HEADER-------------------------------------------------------*/
+/*{{{*/ /*{{{*//*-------------CLASS HEADER-------------------------------------------------------*/
 //CLASS:class Matrix
 //PURPOSE: Class matrix used to store the information for displaying and manipulating 
 //         matrixs as they would be manipulated in standard mathmatics

@@ -79,21 +79,21 @@ int main (int argc, char *argv[])
     if (args[1] == "-add")
     {  cout << "ADDING MATRIX 1 AND MATRIX 2\n";
        cout << mat1 << "        +\n" << mat2;
-       mat3 = (mat2 + mat1);
+       mat3 = (mat1 + mat2);
        cout << "\n      ANSWER:";
        cout << mat3;    }
 
     if (args[1] == "-sub")
     {  cout << "SUBTRACTING MATRIX 1 AND MATRIX 2\n";
        cout << mat1 << "        -\n" << mat2;
-       mat3 = (mat2 - mat1);
+       mat3 = (mat1 - mat2);
        cout << "\n      ANSWER:";
        cout << mat3;    }
 
     if (args[1] == "-mul")
-    {  cout << "SUBTRACTING MATRIX 1 AND MATRIX 2\n";
+    {  cout << "MULTIPLYING MATRIX 1 AND MATRIX 2\n";
        cout << mat1 << "        *\n" << mat2;
-       mat3 = (mat2 * mat1);
+       mat3 = (mat1 * mat2);
        cout << "\n      ANSWER:";
        cout << mat3;    }
 

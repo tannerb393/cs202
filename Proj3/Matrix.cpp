@@ -205,7 +205,7 @@ Matrix<T> Matrix<T>::operator + (Matrix<T> &m1)
     m2 = m1;
     for (int i = 0; i < rows; i++)
         for (int j = 0; j < cols; j++)
-           m2.array[i][j] = (m1.array[i][j] + array[i][j]);
+           m2.array[i][j] = (array[i][j] + m1.array[i][j]);
     return m2;
 }/*}}}*/
 
@@ -223,7 +223,7 @@ Matrix<T> Matrix<T>::operator - (Matrix<T> &m1)
     m2 = m1;
     for (int i = 0; i < rows; i++)
         for (int j = 0; j < cols; j++)
-           m2.array[i][j] = (m1.array[i][j] - array[i][j]);
+           m2.array[i][j] = (array[i][j] - m1.array[i][j]);
     return m2;
 }/*}}}*/
 
@@ -237,11 +237,27 @@ Matrix<T> Matrix<T>::operator - (Matrix<T> &m1)
 template <class T>
 Matrix<T> Matrix<T>::operator * (Matrix<T> &m1)
 {
-    Matrix<double> m2;
-    m2 = m1;
-    for (int i = 0; i < rows; i++)
-        for (int j = 0; j < cols; j++)
-           m2.array[i][j] = (m1.array[i][j] * array[i][j]);
+    double c = 0;
+    double d = 0;
+
+
+    Matrix<double> m2(rows, m1.cols, m_args, 4);
+  //  m2 = m1;
+
+    for (int k = 0; k < m1.cols; k++)
+    {
+        for (int i = 0; i < rows; i++)
+        {
+                for (int j = 0; j < cols; j++)
+                   c += (array[i][j] * m1.array[j][k]);
+                m2.array[i][k] = c;
+                c = 0;
+            cout << m2.array[i][k] << " ";
+        }
+        cout << endl;
+    }
+    cout << m2;
+    cin >> d;
     return m2;
 }/*}}}*/
 
