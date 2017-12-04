@@ -44,31 +44,27 @@ class Matrix
     private:
         int rows, cols; 
         T **array;
-        string m_args[4];
+        string m_args[6];
         int m_argc;
 
     public:
         Matrix<T>();
-        Matrix<T>(string[4], int, int); 
-        Matrix<T>(int, int, string[4], int); 
+        Matrix<T>(string[6], int, int); 
+        Matrix<T>(int, int, string[6], int);
         ~Matrix<T>() 
         {
             for (int i = 0; i < rows; i++)
                 delete [] array[i];
             delete [] array;
-           // delete [] m_args;
-
            // cout << "~Matrix (69 - Matrix.h)\n";
         }
-        Matrix<T>(const Matrix<T> &m1)
+        Matrix<T>(const Matrix<T> &m1) // COPY CONSTRUCTOR
         {
-            //cout << "Copy Constructor (73 -Matrix.h)\n";
            rows = m1.rows;
            cols = m1.cols;
 
             for(int i = 0; i < m1.m_argc; i++)
              m_args[i] = m1.m_args[i];
-
 
             for (int i = 0; i < m1.rows; i++)
             {
@@ -89,6 +85,9 @@ class Matrix
 
         void set(int, int, T);
         T get (int, int);
+        void trans ();
+        void out ();
+
         void display();
 
     template <class T1>    

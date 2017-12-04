@@ -28,9 +28,9 @@ Tanner_Benavides  10-25-2017     1.0 / Matrix.cpp
 //NOTE: 
 /*}}}*/ //---------------------------------------------------------------------
 template <class T>
-Matrix<T>::Matrix(int m_rows, int m_cols, string args[4], int argc)
+Matrix<T>::Matrix(int m_rows, int m_cols, string args[6], int argc)
 {
-    cout << "Temp class Constructor (52 - Matrix.cpp)\n";
+   // cout << "Temp class Constructor (52 - Matrix.cpp)\n";
 
     rows = m_rows;
     cols = m_cols;
@@ -54,7 +54,7 @@ Matrix<T>::Matrix(int m_rows, int m_cols, string args[4], int argc)
 }/*}}}*/
 
 
-/*{{{*/ /*{{{*/ //----------- MAIN CONSTRUCTOR HEADER-----------------------------
+/*{{{*/ /*{{{*/ //----------- MAIN CONSTRUCTOR ---------------------------------
 //FUNCTION:
 //PURPOSE: 
 //RETURNS: NA
@@ -83,10 +83,10 @@ Matrix<T>::Matrix()
 //NOTE: 
 /*}}}*/ //---------------------------------------------------------------------
 template <class T>
-Matrix<T>::Matrix(string args[4], int c, int argc)
+Matrix<T>::Matrix(string args[6], int c, int argc)
 {
  
- //   cout << "Matrix overloaded constructor: (95 - Matrix.cpp) \n\n";
+// cout << "Matrix overloaded constructor: (95 - Matrix.cpp) \n\n";
 
  ifstream infile;
   char let_x;
@@ -112,7 +112,6 @@ Matrix<T>::Matrix(string args[4], int c, int argc)
             {
                 infile >> array[i][j];
             }
-
         }
     infile.close();
 
@@ -130,10 +129,56 @@ Matrix<T>::Matrix(string args[4], int c, int argc)
 template<class T>
 T Matrix<T>::get (int i, int j)
 {
-  //  cout << "get test\n";
     return array[i][j];
 }/*}}}*/
 
+/*{{{*/ /*{{{*//*-------------Matrix trans() ----------------------------------------------------*/
+//FUNCTION: int main ()
+//PURPOSE: holds majority of code to call other functions 
+//RETURNS: 0 to end program 
+/*}}}*/ /*}}}*//*--------------------------------------------------------------------------------*/
+template <class T>
+void Matrix<T>::trans()
+{/*{{{*/
+
+    Matrix<double> m1(cols, rows, m_args, 6);
+
+        for (int i = 0; i < cols; i++)
+        {
+            for (int j = 0; j < rows; j++)
+            {
+                m1.array[i][j] = array[j][i];
+            }
+        }
+        cout << m1;
+}/*}}}*/
+
+/*{{{*/ /*{{{*//*-------------Matrix out() ----------------------------------------------------*/
+//FUNCTION: int main ()
+//PURPOSE: holds majority of code to call other functions 
+//RETURNS: 0 to end program 
+/*}}}*/ /*}}}*//*--------------------------------------------------------------------------------*/
+template <class T>
+void Matrix<T>::out()
+{/*{{{*/
+
+    ofstream save;
+
+    save.open(m_args[5].c_str(), ios::out);
+
+   save << setw((cols * 2)) << rows << " x " << cols << endl;
+
+   for (int i = 0; i < rows; i++)
+   {    for (int j = 0; j < cols; j++)
+                save << setw(4) << get(i, j);
+        save << endl;   }
+
+   save.close();
+    
+
+
+
+}/*}}}*/
 
 /*{{{*/ /*{{{*/ //-------------- << operator ----------------------------------
 //FUNCTION:
@@ -144,7 +189,7 @@ T Matrix<T>::get (int i, int j)
 template <class T1>
 ostream &operator << (ostream &strm, Matrix<T1> &m1)
 {
-   strm << endl << "      " << m1.rows << " x " << m1.cols << endl;
+   strm << endl << setw((m1.cols * 2)) << m1.rows << " x " << m1.cols << endl;
 
    for (int i = 0; i < m1.rows; i++)
    {    for (int j = 0; j < m1.cols; j++)
@@ -201,7 +246,7 @@ istream &operator >> (istream &strm, Matrix<T1> &m1)
 template <class T>
 Matrix<T> Matrix<T>::operator + (Matrix<T> &m1)
 {
-    Matrix<double> m2;
+    Matrix<double> m2(rows, cols, m_args, m_argc);
     m2 = m1;
     for (int i = 0; i < rows; i++)
         for (int j = 0; j < cols; j++)
@@ -241,7 +286,7 @@ Matrix<T> Matrix<T>::operator * (Matrix<T> &m1)
     double d = 0;
 
 
-    Matrix<double> m2(rows, m1.cols, m_args, 4);
+    Matrix<double> m2(rows, m1.cols, m_args, 6);
   //  m2 = m1;
 
     for (int k = 0; k < m1.cols; k++)
@@ -252,12 +297,11 @@ Matrix<T> Matrix<T>::operator * (Matrix<T> &m1)
                    c += (array[i][j] * m1.array[j][k]);
                 m2.array[i][k] = c;
                 c = 0;
-            cout << m2.array[i][k] << " ";
+           // cout << m2.array[i][k] << " ";
         }
-        cout << endl;
+      //  cout << endl;
     }
-    cout << m2;
-    cin >> d;
+
     return m2;
 }/*}}}*/
 
@@ -286,7 +330,7 @@ void Matrix<T>::operator = (const Matrix<T> &m1)
     for(int i = 0; i < m1.rows; i++)
         array[i] = new T[m1.cols];
 
-    for(int i = 0; i < 4; i++)
+    for(int i = 0; i < m_argc; i++)
      m_args[i] = m1.m_args[i];
 
     for (int i = 0; i < m1.rows; i++)

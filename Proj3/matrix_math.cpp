@@ -31,7 +31,7 @@ int main (int argc, char *argv[])
     int m, n;
     char let_x;
     char x;
-    string args[4];
+    string args[6];
     ifstream infile;
     double k;
 
@@ -39,13 +39,13 @@ int main (int argc, char *argv[])
     Matrix<double> mat2;
     Matrix<double> mat3;
 
-    if (argc < 3 || argc > 4)
+    if (argc < 3 || argc > 6)
     {
         cout << "Invalid Argument Count \n\n";
         return 0;
     }
 
-   stringstream ss[4];
+   stringstream ss[6];
    for (int i = 0; i < argc; i++){
        ss[i] << argv[i];
        ss[i] >> args[i];}
@@ -57,7 +57,7 @@ int main (int argc, char *argv[])
         return 0;   }
     infile.close();
 
-    if (argc == 4)
+    if (argc > 3)
       { args[3] += ".mtx";
         infile.open(args[3].c_str());
         if(!infile)
@@ -65,10 +65,25 @@ int main (int argc, char *argv[])
              return 0;  }
         infile.close();  }
 
+    if (argc == 6 && args[4] == "-out")
+      { args[5] += ".mtx";
+          fstream checkf;
+          checkf.open(args[5].c_str(), ios::out | ios::app);
+          checkf.close();
+          ifstream infile;
+        infile.open(args[5].c_str());
+        if(!infile)
+         {   cout << "Error opening save file: " << args[3] << endl;
+             return 0;  }
+        infile.close();  
+        cout << " 5 ";
+      }
+
+
 
     Matrix<double> pass1(args, 2, argc);
     mat1 = pass1;
-    if (argc == 4)
+    if (argc > 3)
     { Matrix<double> pass2(args, 3, argc);
       mat2 = pass2; }  
 
@@ -94,7 +109,7 @@ int main (int argc, char *argv[])
     {  cout << "MULTIPLYING MATRIX 1 AND MATRIX 2\n";
        cout << mat1 << "        *\n" << mat2;
        mat3 = (mat1 * mat2);
-       cout << "\n      ANSWER:";
+       cout << "\n      ANSWER:\n";
        cout << mat3;    }
 
    if (args[1] == "-eq")
@@ -107,6 +122,21 @@ int main (int argc, char *argv[])
       else
         cout << "IS NOT EQUAL ";
       cout << "to Matrix #2]\n";    }
+
+   if (args[1] == "-T")
+   {   cout << "TRANSPOSING MATRIX " << args[2] << endl;
+       cout << mat1 << "    TRANSPOSED\n";
+       mat1.trans();  }
+
+   if (args[4] == "-out")
+   {   
+       
+       cout << "COPYING RESULTS TO: " << args[5];
+       mat3.out();
+
+    cout << mat3;
+   }
+
 
 
     return 0;
@@ -178,32 +208,6 @@ int main (int argc, char *argv[])
 */
 /*}}}*/
 
-}/*}}}*/
-
-/*{{{*/ /*{{{*//*-------------FUNCTION HEADER---------------------------------------------------*/
-//FUNCTION: int main ()
-//PURPOSE: holds majority of code to call other functions 
-//RETURNS: 0 to end program 
-/*}}}*/ /*}}}*//*--------------------------------------------------------------------------------*/
-int intChoice()
-{/*{{{*/
-    int choice = 0;
-	cout << "Please enter a valid numerical choice(1-9): ";
-	cin.clear();
-	cin.ignore(100, '\n');
-	cin >> choice;
-	return choice;
-}/*}}}*/
-
-/*{{{*/ /*{{{*//*-------------FUNCTION HEADER---------------------------------------------------*/
-//FUNCTION: int main ()
-//PURPOSE: holds majority of code to call other functions 
-//RETURNS: 0 to end program 
-/*}}}*/ /*}}}*//*--------------------------------------------------------------------------------*/
-void clearIt()
-{/*{{{*/
-	cin.clear();
-	cin.ignore(100, '\n');
 }/*}}}*/
 
 
