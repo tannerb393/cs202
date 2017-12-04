@@ -39,16 +39,22 @@ int main (int argc, char *argv[])
     Matrix<double> mat2;
     Matrix<double> mat3;
 
-    if (argc < 3 || argc > 6)
-    {
-        cout << "Invalid Argument Count \n\n";
-        return 0;
-    }
+
 
    stringstream ss[6];
    for (int i = 0; i < argc; i++){
        ss[i] << argv[i];
        ss[i] >> args[i];}
+
+    if (args[1] == "-h"){
+       help();  
+       return 0;    }
+
+    if (argc < 3 || argc > 6)
+    {
+        cout << "Invalid Argument Count \n\n";
+        return 0;
+    }
 
     args[2] += ".mtx";
     infile.open(args[2].c_str());
@@ -79,14 +85,11 @@ int main (int argc, char *argv[])
         cout << " 5 ";
       }
 
-
-
     Matrix<double> pass1(args, 2, argc);
     mat1 = pass1;
     if (argc > 3)
     { Matrix<double> pass2(args, 3, argc);
       mat2 = pass2; }  
-
 
     if (args[1] == "-inp")
         cout << mat1;
@@ -130,84 +133,41 @@ int main (int argc, char *argv[])
 
    if (args[4] == "-out")
    {   
-       
        cout << "COPYING RESULTS TO: " << args[5];
        mat3.out();
-
-    cout << mat3;
    }
 
 
 
     return 0;
 
-/*{{{*/
-/*
-    Matrix mtrx[5]; 
-    int x = 0;
-
-    for (int i = 0; i < 2; i++) 
-    {
-        cin >> mtrx[i];
-        cout << "matrix #" << i+1 << " is: ";
-        cout << mtrx[i] << endl;
-        cout << endl;
-    }
-
-        cout << "[Matrix #1 ";
-        if (mtrx[0] == mtrx[1])
-            cout << "IS EQUAL ";
-        else
-            cout << "IS NOT EQUAL ";
-        cout << "to Matrix #2]\n";
-
-        mtrx[2] = mtrx[0] + mtrx[1];
-        cout << mtrx[2] << endl << endl;
-
-        mtrx[2] = mtrx[0] - mtrx[1];
-        cout << mtrx[2] << endl << endl;
-
-        mtrx[2] = mtrx[0] * mtrx[1];
-        cout << mtrx[2] << endl << endl;
-
-        cout << "\nSet Value for variable x: \n";
-        cin >> x;
-        mtrx[0](x);
-        cout << "Answer for Matrix #1 given f(" << x << ") : ";
-        mtrx[0].displayTotal();
-        mtrx[1](x);
-        cout << "Answer for Matrix #2 given f(" << x << ") : ";
-        mtrx[1].displayTotal();
-
-        mtrx[2] = mtrx[0];
-        --mtrx[2];
-        cout << "\n[DERIVATIVE OF " << mtrx[0] << " ]" << endl;
-        cout << mtrx[2] << endl;
-        mtrx[2] = mtrx[1];
-        --mtrx[2];
-        cout << "\n[DERIVATIVE OF " << mtrx[1] << " ]" << endl;
-        cout << mtrx[2] << endl;
-
-        mtrx[3] = mtrx[0];
-        ++mtrx[3];
-        cout << "\n[INTEGRAL OF " << mtrx[0] << " ]" << endl;
-        cout << mtrx[3] << endl;
-        mtrx[4] = mtrx[1];
-        ++mtrx[4];
-        cout << "\n[INTEGRAL OF " << mtrx[1] << " ]" << endl;
-        cout << mtrx[4] << endl;
-
-        mtrx[3]++;
-        cout << "\n[Solution for the DEFINITE INTEGRAL OF " << mtrx[0] << "] \n ";
-        mtrx[3].displayTotal();
-        mtrx[4]++;
-        cout << "\n[Solution for the DEFINITE INTEGRAL OF " << mtrx[1] << "] \n ";
-        mtrx[4].displayTotal();
-
-  //  cout << setprecision(2) << fixed << showpoint;
-*/
-/*}}}*/
-
 }/*}}}*/
 
+/*{{{*/ /*{{{*/ //-------------void help() ------------------------------------
+//FUNCTION:
+//PURPOSE: 
+//RETURNS: NA
+//NOTE: 
+/*}}}*/ //---------------------------------------------------------------------
+void help()
+{/*{{{*/
+     cout << "\n                         matrix_math HELP MENU \n\n\n";
+     cout << "The matrix_math program is a command line based program using .mtx text files and commands \n";
+     cout << "The .mtx matrix files are Named using capital letters A through Z\n";
+     cout << "When enter the names of the .mtx files, enter the corresponding letter of the files\n";
+     cout << "      Example: ./matrix_math -inp A\n";
+     cout << "The following commands and the functions are commands that are compatible with the program:\n\n";
+     cout << "'-h'      help command used to access this menu.\n";
+     cout << "'-inp'    used in conjunction with a single .mtx file to display the stored matrix on screen\n";
+     cout << "'-out'    use this command, as well as a letter A-Z, that will be used to name and create a\n";
+     cout << "          .mtx save file. This command may be used following with the -add, -sub, -mul commands\n";
+     cout << "'-add'    adds together two matrices, .mtx files entered following the -add command\n";
+     cout << "'-sub'    subtracts one matrix from another, .mtx files entered following -sub command\n";
+     cout << "'-mul'    multiplies together two matrices, .mtx files entered following the -mul command\n";
+     cout << "'-eq'     the two .mtx files entered following the -eq command will be compared for equality\n";
+     cout << "'-T'      transposes the matrix in the .mtx file following the -T command\n";
+     cout << "'-l'      inverses the matrix in the .mtx file following the -l command\n";
+     cout << "'-det'    calculates the determinate of the matrix in the .mtx file follow the -det command\n";
+     cout << "'-solve'  solves a system of equations\n";
+}/*}}}*/
 

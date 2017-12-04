@@ -26,6 +26,7 @@ Tanner_Benavides  11-1-2017     3.0 / Matrix.h
 #include <sstream> 
 #include <string> 
 #include <iomanip>
+#include <bits/stdc++.h>
 
 using namespace std;
     
@@ -96,18 +97,9 @@ class Matrix
     friend istream &operator >> (istream &, Matrix<T1> &); // friend >> to give access to private memebers
 };/*}}}*/
 
-  int intChoice();
-  void clearIt();
-  void input(int, string[]);
+void help();
+
+
 
 #endif /* __MATRIX_H__ */
-
-/*{{{*/
-/*
-        Matrix operator () (int); // overloaded to solve for x of poly (evaluate)
-        Matrix operator -- (); // overload -- to derive poly
-        Matrix operator ++(); // overload right side ++ to integrate poly
-        Matrix operator ++(int); // overload left side ++ to integrate poly on range
-*/
-/*}}}*/
 

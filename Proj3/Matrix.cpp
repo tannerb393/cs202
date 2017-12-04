@@ -372,6 +372,29 @@ bool Matrix<T>::operator == (const Matrix<T> &m1)
 } /*}}}*/
 
 
+/*{{{*/ /*{{{*//*-------------Matrix det() ----------------------------------------------------*/
+//FUNCTION: int main ()
+//PURPOSE: holds majority of code to call other functions 
+//RETURNS: 0 to end program 
+/*}}}*/ /*}}}*//*--------------------------------------------------------------------------------*/
+/*
+template <class T>
+void Matrix<T>::det()
+{
+
+    double det = 0;
+
+//finding determinant
+    for(int i = 0; i < rows; i++)
+        for(int j = 0; j < cols; j++)
+  det += (array[i][j] * (array[1][(i+j)%3] * array[2][(i+2)%3] - array[1][(i+2)%3] * array[2][(i+1)%3]));
+    
+
+
+
+}
+*/
+
 /*{{{*/ /*{{{*/
 /*
 -------------------------------------------------------------------------------------
