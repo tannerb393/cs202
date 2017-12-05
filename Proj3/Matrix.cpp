@@ -1,18 +1,21 @@
 /*{{{*/ /*{{{*/
  /* --------------------------------FILE HEADER ---------------------------------------
-FILE NAME:     Matrix.CPP
-DESCRIPTION:   .CPP file for the poly_class program that 
+FILE NAME:     Matrix.cpp
+DESCRIPTION:   .cpp file for the matrix_math program that 
 PURPOSE:       holds bulk of the functions for the the class 'Matrix'
-USAGE:         to be used alongside poly_class.cpp. must be compiled along with poly_class.cpp and Matrix.h
-PARAMETERS:    int argc, char *argv[], but not used in this program
-COMPILATION:   vim to write, and make file to compile: the linux command 'make -f Makefile poly_class'
+USAGE:         to be used alongside matrix_math.cpp. must be compiled along with matrix_math.cpp and Matrix.h
+PARAMETERS:    int argc, char *argv[]
+COMPILATION:   vim to write, and make file to compile: the linux command 'make matrix_math'
 
-NOTES:         many overloaded operators are used in this program to show example of how these operators can
-                ben manipulated to work with classes.
+NOTES:         make use of both class and template classes, uses member class functions with
+                mathmatical manipulators to modify and combine matrices. Overloaded operators
+                are also used to perform the changes and actions on the matrices, which are stored
+                in the .mtx files.
 MODIFICATION HISTORY:
 Author              Date        Modification(s)
 -------------   -----------    ---------------
-Tanner_Benavides  10-25-2017     1.0 / Matrix.cpp
+Tanner_Benavides  11-28-2017     1.0 / Matrix.cpp
+Tanner_Benavides  12-01-2017     2.0 / Matrix.cpp
 
 //-----------------------------------------------------------------------------*/ 
 /*}}}*/ /*}}}*/
@@ -22,10 +25,10 @@ Tanner_Benavides  10-25-2017     1.0 / Matrix.cpp
 
 
 /*{{{*/ /*{{{*/ //-----------TEMP CLASS CONSTRUCTOR HEADER-----------------------------
-//FUNCTION:
-//PURPOSE: 
+//FUNCTION: Matrix (Overloaded Construcor)
+//PURPOSE: used as an overloaded contructor for 'temporary' class members created in operators
 //RETURNS: NA
-//NOTE: 
+//NOTE: used in overloaded operator like  '+' '*' '-'
 /*}}}*/ //---------------------------------------------------------------------
 template <class T>
 Matrix<T>::Matrix(int m_rows, int m_cols, string args[6], int argc)
@@ -55,10 +58,10 @@ Matrix<T>::Matrix(int m_rows, int m_cols, string args[6], int argc)
 
 
 /*{{{*/ /*{{{*/ //----------- MAIN CONSTRUCTOR ---------------------------------
-//FUNCTION:
-//PURPOSE: 
+//FUNCTION: Matrix (Main constructor)
+//PURPOSE: Basic (main) constructor which sets defaults for new Class memebers
 //RETURNS: NA
-//NOTE: 
+//NOTE: initializes main memebers int main() before the assgnment operator is used
 /*}}}*/ //---------------------------------------------------------------------
 template <class T>
 Matrix<T>::Matrix()
@@ -77,7 +80,7 @@ Matrix<T>::Matrix()
 
 
 /*{{{*/ /*{{{*/ //-------------MAIN OVERLOADED CONSTRUCTOR-----------------------------
-//FUNCTION:
+//FUNCTION: 
 //PURPOSE: 
 //RETURNS: NA
 //NOTE: 
@@ -371,121 +374,4 @@ bool Matrix<T>::operator == (const Matrix<T> &m1)
      return equal;
 } /*}}}*/
 
-
-/*{{{*/ /*{{{*//*-------------Matrix det() ----------------------------------------------------*/
-//FUNCTION: int main ()
-//PURPOSE: holds majority of code to call other functions 
-//RETURNS: 0 to end program 
-/*}}}*/ /*}}}*//*--------------------------------------------------------------------------------*/
-/*
-template <class T>
-void Matrix<T>::det()
-{
-
-    double det = 0;
-
-//finding determinant
-    for(int i = 0; i < rows; i++)
-        for(int j = 0; j < cols; j++)
-  det += (array[i][j] * (array[1][(i+j)%3] * array[2][(i+2)%3] - array[1][(i+2)%3] * array[2][(i+1)%3]));
-    
-
-
-
-}
-*/
-
-/*{{{*/ /*{{{*/
-/*
--------------------------------------------------------------------------------------
-*FUNCTION:operator -- ()
-*PURPOSE: fuction obtains the derivative of the matrix stored in the class object
-*RETURNS: NA
-*NOTE: using for loop multiplies the coef by the current degree and moves each coef down a power
-*--------------------------------------------------------------------------------------
-template <class T>
-Matrix Matrix<T>:: operator -- ()
-{
-int coefTemp[100];
-
-for (int i = degree; i >= 0; i--) 
-    coefTemp[i] = coef[i] * i;
-
- for (int i = degree; i >= 1; i--) 
-    coef[i - 1] = coefTemp[i];
- --degree;
-
-}
-
-
--------------------------------------------------------------------------------------
-*FUNCTION:operator ++ (int)
-*PURPOSE: does a definite integral, similar to previous function but uses upper and lower bounds
-*RETURNS: NA
-*NOTE: works like the '()' overloaded operator and then subtracts matrix #2 from #1
-*--------------------------------------------------------------------------------------
-template <class T>
-Matrix Matrix<T>::operator ++(int)
-{
-    double sum1 = 0;
-    double sum2 = 0;
-    double min = 0;
-    double max = 0;
-
-    cout << "\nDefine Beginnig Range for the Definite Integral: ";
-    cin >> min;
-    cout << min;
-    cout << "\nDefine End Range for the Definite Integral: ";
-    cin >> max;
-    cout << max;
-        
-    for (int i = degree; i >= 0; i--) 
-      sum1 += coef[i] * (pow (min, i));
-
-    for (int i = degree; i >= 0; i--) 
-      sum2 += coef[i] * (pow (max, i));
-
-    sum = sum2 - sum1;
-
-
-}
-
--------------------------------------------------------------------------------------
-*FUNCTION:operator == ()
-*PURPOSE: overloads the == to see if the matrix stored in two objects are the same
-*RETURNS: true/false
-*NOTE: check the value stored in each degree level and returns false if even one of them does not match
-*--------------------------------------------------------------------------------------
-template <class T>
-bool Matrix<T>::operator == (const Matrix &m1)
-{
-
-    bool equal = true;
-
-    for(int i = 0; i <= m1.degree; i++){
-       // cout << "m2= " << coef[i] << " m1=" << m1.coef[i] << endl; 
-       if(coef[i] != m1.coef[i]){
-           equal = false;
-           break;
-       }
-    }
-    return equal;
-}
-
-
--------------------------------------------------------------------------------------
-*FUNCTION:operator ()
-*PURPOSE: used to assign value to the 'x' displayed in the matrixs of the class objects
-and then sum up and solve the matrix storing the answer in the 'sum' private member
-*RETURNS: NA
-*NOTE: uses the 'pow' power function to take the 'x' to a power then multiplies with the coef[i] 
-*--------------------------------------------------------------------------------------
-template <class T>
-Matrix Matrix<T>::operator () (int x)
-{
-for (int i = degree; i >= 0; i--) 
-  sum += coef[i] * (pow (x, i));
-}
-*/
-/*}}}*/ /*}}}*/
 
