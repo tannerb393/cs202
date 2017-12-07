@@ -80,10 +80,10 @@ Matrix<T>::Matrix()
 
 
 /*{{{*/ /*{{{*/ //-------------MAIN OVERLOADED CONSTRUCTOR-----------------------------
-//FUNCTION: 
-//PURPOSE: 
+//FUNCTION: Matrix (Overloaded Constructor)
+//PURPOSE: overloaded constructor used to to initiate the two main objects of Matrix when
+//          a two .mtx file input operations is chosen, like -add or -mul
 //RETURNS: NA
-//NOTE: 
 /*}}}*/ //---------------------------------------------------------------------
 template <class T>
 Matrix<T>::Matrix(string args[6], int c, int argc)
@@ -117,17 +117,14 @@ Matrix<T>::Matrix(string args[6], int c, int argc)
             }
         }
     infile.close();
-
-   // cout << "      " << args[c] << endl;
-    
 }/*}}}*/
 
 
 /*{{{*/ /*{{{*/ //------ Matrix get() -----------------------------------------
-//FUNCTION:
-//PURPOSE: 
-//RETURNS: NA
-//NOTE: 
+//FUNCTION: get ()
+//PURPOSE: grabs the template value of the item in a specific array location for display
+//RETURNS: array[i][j];
+//NOTE: used in << operator.
 /*}}}*/ //---------------------------------------------------------------------
 template<class T>
 T Matrix<T>::get (int i, int j)
@@ -136,9 +133,9 @@ T Matrix<T>::get (int i, int j)
 }/*}}}*/
 
 /*{{{*/ /*{{{*//*-------------Matrix trans() ----------------------------------------------------*/
-//FUNCTION: int main ()
-//PURPOSE: holds majority of code to call other functions 
-//RETURNS: 0 to end program 
+//FUNCTION: trans{}
+//PURPOSE: performs the transpose math function on the given matrix 
+//RETURNS: NA 
 /*}}}*/ /*}}}*//*--------------------------------------------------------------------------------*/
 template <class T>
 void Matrix<T>::trans()
@@ -157,9 +154,10 @@ void Matrix<T>::trans()
 }/*}}}*/
 
 /*{{{*/ /*{{{*//*-------------Matrix out() ----------------------------------------------------*/
-//FUNCTION: int main ()
-//PURPOSE: holds majority of code to call other functions 
-//RETURNS: 0 to end program 
+//FUNCTION: out ()
+//PURPOSE: saves the resulting Matrix to a new .mtx file named with by the user. 
+//RETURNS: NA
+//NOTE: used as the 5th and 6th commands in command mode (ex: ./matrix_math -add A B -out C)
 /*}}}*/ /*}}}*//*--------------------------------------------------------------------------------*/
 template <class T>
 void Matrix<T>::out()
@@ -184,10 +182,9 @@ void Matrix<T>::out()
 }/*}}}*/
 
 /*{{{*/ /*{{{*/ //-------------- << operator ----------------------------------
-//FUNCTION:
-//PURPOSE: 
-//RETURNS: NA
-//NOTE: 
+//FUNCTION: << operator
+//PURPOSE: overloaded << to display the chosen matrix in the correct array format
+//RETURNS: strm
 /*}}}*/ //---------------------------------------------------------------------
 template <class T1>
 ostream &operator << (ostream &strm, Matrix<T1> &m1)
@@ -205,46 +202,36 @@ return strm;
 
 
 /*{{{*/ /*{{{*/ //------------ >> operator ------------------------------------
-//FUNCTION:
-//PURPOSE: 
-//RETURNS: NA
-//NOTE: 
+//FUNCTION: >> operator
+//PURPOSE: input into a class object from a file.
+//RETURNS: strm
+//NOTE: mainly used for input from the .mtx file
 /*}}}*/ //---------------------------------------------------------------------
 template <class T1>
 istream &operator >> (istream &strm, Matrix<T1> &m1)
 {
 
+  char let_x;
 
-    /*
-    cout << "\n[Enter degree of Matrix]: ";
-    strm >> m1.degree;
-    cout << m1.degree;
-    while (strm.fail())
-    { cout << "Please enter Matrix degree integer 1-9!\n";
-      strm >> m1.degree;
-    }
-    cout << "\n[Enter " << m1.degree + 1 << " coeficient(s)]: ";
-    for (int i = m1.degree; i >= 0; i--)
-    {strm >> m1.coef[i];
-        cout << m1.coef[i] << ", ";
-        while (strm.fail())
-        { cout << "Please enter Matrix degree integer 1-9!\n";
-          strm >> m1.coef[i];
+   m1.m_argc = m1.argc;
+
+        strm >> m1.rows >> let_x >> m1.cols;
+
+        for (int i = 0; i < m1.rows; i++)
+        {
+            for (int j = 0; j < m1.cols; j++)
+            {
+                strm >> m1.array[i][j];
+            }
         }
-    }
-    cout << endl;
-*/
-
-
-
 }/*}}}*/
 
 
 /*{{{*/ /*{{{*/ //------------ + operator---------------------------------------
-//FUNCTION:
-//PURPOSE: 
-//RETURNS: NA
-//NOTE: 
+//FUNCTION: Matrix operator +
+//PURPOSE: overloads the + symbol to add two Matrix objects together
+//RETURNS: m2
+//NOTE: the rows and cols size of both matrices have to been the same size
 /*}}}*/  //---------------------------------------------------------------------
 template <class T>
 Matrix<T> Matrix<T>::operator + (Matrix<T> &m1)
@@ -258,12 +245,12 @@ Matrix<T> Matrix<T>::operator + (Matrix<T> &m1)
 }/*}}}*/
 
 
-/*{{{*/ /*{{{*/ //----------- - operator --------------------------------------
-//FUNCTION:
-//PURPOSE: 
-//RETURNS: NA
-//NOTE: 
-/*}}}*/ //---------------------------------------------------------------------
+/*{{{*/ /*{{{*/ //------------ - operator---------------------------------------
+//FUNCTION: Matrix operator -
+//PURPOSE: overloads the - symbol to subtract two Matrix objects
+////RETURNS: m2
+//NOTE: the rows and cols size of both matrices have to been the same size
+/*}}}*/  //---------------------------------------------------------------------
 template <class T>
 Matrix<T> Matrix<T>::operator - (Matrix<T> &m1)
 {
@@ -276,12 +263,12 @@ Matrix<T> Matrix<T>::operator - (Matrix<T> &m1)
 }/*}}}*/
 
 
-/*{{{*/ /*{{{*/ //------------- * operator -------------------------------------
-//FUNCTION:
-//PURPOSE: 
-//RETURNS: NA
-//NOTE: 
-/*}}}*/ //---------------------------------------------------------------------
+/*{{{*/ /*{{{*/ //------------ * operator---------------------------------------
+//FUNCTION: Matrix operator *
+//PURPOSE: overloads the * symbol to add two Matrix objects together
+//RETURNS: m2
+//NOTE: The cols of the first matrix must be the size of the rows in the second
+/*}}}*/  //---------------------------------------------------------------------
 template <class T>
 Matrix<T> Matrix<T>::operator * (Matrix<T> &m1)
 {
@@ -310,10 +297,10 @@ Matrix<T> Matrix<T>::operator * (Matrix<T> &m1)
 
 
 /*{{{*/ /*{{{*/ //------------ = operator----------------------------------------
-//FUNCTION:
-//PURPOSE: 
+//FUNCTION: Matrix operator =
+//PURPOSE: overloads the = symbol work as an assignment operator
 //RETURNS: NA
-//NOTE: 
+//NOTE: used in int main() in this program to assign pass objects to mat objects
 /*}}}*///------------------------------------------------------------------------
 template <class T>
 void Matrix<T>::operator = (const Matrix<T> &m1)
@@ -348,12 +335,12 @@ void Matrix<T>::operator = (const Matrix<T> &m1)
 }/*}}}*/
 
 
-/*{{{*/ /*{{{*/ //---------- == operator ---------------------------------------
-//FUNCTION:
-//PURPOSE: 
+/*{{{*/ /*{{{*/ //------------ == operator----------------------------------------
+//FUNCTION: Matrix operator ==
+//PURPOSE: overloads the = symbol to test two matrices for equality
 //RETURNS: NA
-//NOTE: 
-/*}}}*/ //---------------------------------------------------------------------
+//NOTE: checks to see that each number matches the corresponding spot in the other matrix
+/*}}}*///------------------------------------------------------------------------
 template <class T>
 bool Matrix<T>::operator == (const Matrix<T> &m1)
 {
@@ -374,4 +361,39 @@ bool Matrix<T>::operator == (const Matrix<T> &m1)
      return equal;
 } /*}}}*/
 
+/*{{{*/ /*{{{*/ //------------ sizecheck() ----------------------------------------
+//FUNCTION: sizecheck()
+//PURPOSE: check for matching row and column size for + - == operators
+//RETURNS: equal
+//NOTE: used to prevent mismatching sizes which would result in segmentation core faults
+/*}}}*///------------------------------------------------------------------------
+template <class T>
+bool Matrix<T>::sizecheck(const Matrix<T> &m1)
+{
+    bool equal = true;
+
+   if(rows != m1.rows)
+       equal = false;
+   if(cols != m1.cols)
+       equal = false;
+
+     return equal;
+} /*}}}*/
+
+/*{{{*/ /*{{{*/ //------------ sizecheck() ----------------------------------------
+//FUNCTION: sizecheck()
+//PURPOSE: check for matching row and column size for + - == operators
+//RETURNS: equal
+//NOTE: used to prevent mismatching sizes which would result in segmentation core faults
+/*}}}*///------------------------------------------------------------------------
+template <class T>
+bool Matrix<T>::mulsizecheck(const Matrix<T> &m1)
+{
+    bool equal = true;
+
+   if(cols != m1.rows)
+       equal = false;
+
+     return equal;
+} /*}}}*/
 

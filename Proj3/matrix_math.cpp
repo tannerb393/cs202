@@ -19,6 +19,8 @@ Tanner_Benavides  11-1-2017     2.0 / mtrx_class.cpp
 #include "Matrix.cpp" // Call to Classes
 
 
+void help();
+
 /*{{{*/ /*{{{*//*-------------FUNCTION HEADER---------------------------------------------------*/
 //FUNCTION: int main ()
 //PURPOSE: holds majority of code to call other functions 
@@ -94,37 +96,60 @@ int main (int argc, char *argv[])
     if (args[1] == "-inp")
         cout << mat1;
 
-    if (args[1] == "-add")
-    {  cout << "ADDING MATRIX 1 AND MATRIX 2\n";
-       cout << mat1 << "        +\n" << mat2;
-       mat3 = (mat1 + mat2);
-       cout << "\n      ANSWER:";
-       cout << mat3;    }
 
-    if (args[1] == "-sub")
-    {  cout << "SUBTRACTING MATRIX 1 AND MATRIX 2\n";
-       cout << mat1 << "        -\n" << mat2;
-       mat3 = (mat1 - mat2);
-       cout << "\n      ANSWER:";
-       cout << mat3;    }
+    if (mat1.sizecheck(mat2))
+    {
 
-    if (args[1] == "-mul")
+        if (args[1] == "-add")
+        {  cout << "ADDING MATRIX 1 AND MATRIX 2\n";
+           cout << mat1 << "        +\n" << mat2;
+           mat3 = (mat1 + mat2);
+           cout << "\n      ANSWER:";
+           cout << mat3;    }
+
+        if (args[1] == "-sub")
+        {  cout << "SUBTRACTING MATRIX 1 AND MATRIX 2\n";
+           cout << mat1 << "        -\n" << mat2;
+           mat3 = (mat1 - mat2);
+           cout << "\n      ANSWER:";
+           cout << mat3;    }
+
+
+       if (args[1] == "-eq")
+        {  cout << "EQUALITY TEST OF TWO MATRICES\n";
+           cout << mat1 << mat2;
+
+          cout << "Matrix #1 ";
+          if (mat1 == mat2)
+            cout << "IS EQUAL ";
+          else
+            cout << "IS NOT EQUAL ";
+          cout << "to Matrix #2]\n";    }
+    }
+
+    if (!mat1.sizecheck(mat2) && ((args[1] == "-add") 
+                || (args[1] == "-sub") || (args[1] == "-eq")))
+    {
+        cout << "EXIT! Rows Size for Matrix 1 & 2 Must Match for this math command\n";
+        cout << "EXIT! Column Size for Matrix 1 & 2 Must Match for this math command\n";
+        return 0;
+    }
+
+
+    if (args[1] == "-mul" && (mat1.mulsizecheck(mat2)))
     {  cout << "MULTIPLYING MATRIX 1 AND MATRIX 2\n";
        cout << mat1 << "        *\n" << mat2;
        mat3 = (mat1 * mat2);
        cout << "\n      ANSWER:\n";
        cout << mat3;    }
 
-   if (args[1] == "-eq")
-    {  cout << "EQUALITY TEST OF TWO MATRICES\n";
-       cout << mat1 << mat2;
+    if (!mat1.mulsizecheck(mat2) && (args[1] == "-mul"))
+    {
+        cout << "EXIT! Column Size of Matrix 1 \n";
+        cout << "     Must Match Rows Size of Matrix 2 for -mul command\n";
+        return 0;
+    }   
 
-      cout << "Matrix #1 ";
-      if (mat1 == mat2)
-        cout << "IS EQUAL ";
-      else
-        cout << "IS NOT EQUAL ";
-      cout << "to Matrix #2]\n";    }
 
    if (args[1] == "-T")
    {   cout << "TRANSPOSING MATRIX " << args[2] << endl;

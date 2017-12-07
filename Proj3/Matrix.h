@@ -1,17 +1,17 @@
 /*{{{*/
  /* --------------------------------FILE HEADER ---------------------------------------
 FILE NAME:     Matrix.h
-DESCRIPTION:   .h file for the poly_class program that 
+DESCRIPTION:   .h file for the matrix_math.cpp program that compiles with Matrix.cpp as well
 PURPOSE:       holds the class call and definition, library calls, and non class function prototypes
-USAGE:         to be used alongside poly_class.cpp. must be compiled along with Matrix.cpp and Matrix.h
-COMPILATION:   vim to write, and make file to compile: the linux command 'make -f Makefile poly_class'
-NOTES:         many pre-definitions for the public: class protypes which are mostly for the constructors/destructor and 
-                overloaded operators.
+USAGE:         to be used alongside matrix_math.cpp. must be compiled along with Matrix.cpp 
+COMPILATION:   vim to write, and make file to compile: the linux command 'make matrix_math'
+NOTES:         many pre-definitions for the public: class Matrix which are mostly for the 
+                constructors/destructor and overloaded operators.
 MODIFICATION HISTORY:
 Author              Date        Modification(s)
 -------------   -----------    ---------------
-Tanner_Benavides  10-25-2017     1.0 / Matrix.h
-Tanner_Benavides  11-1-2017     3.0 / Matrix.h
+Tanner_Benavides  11-28-2017     1.0 / Matrix.h
+Tanner_Benavides  12-01-2017     3.0 / Matrix.h
 //-----------------------------------------------------------------------------*/ 
 /*}}}*/
 
@@ -26,7 +26,6 @@ Tanner_Benavides  11-1-2017     3.0 / Matrix.h
 #include <sstream> 
 #include <string> 
 #include <iomanip>
-#include <bits/stdc++.h>
 
 using namespace std;
     
@@ -88,6 +87,8 @@ class Matrix
         T get (int, int);
         void trans ();
         void out ();
+        bool sizecheck(const Matrix<T> &);
+        bool mulsizecheck(const Matrix<T> &);
 
         void display();
 
@@ -97,7 +98,7 @@ class Matrix
     friend istream &operator >> (istream &, Matrix<T1> &); // friend >> to give access to private memebers
 };/*}}}*/
 
-void help();
+
 
 
 
