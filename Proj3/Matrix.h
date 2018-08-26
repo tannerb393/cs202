@@ -26,6 +26,7 @@ Tanner_Benavides  12-01-2017     3.0 / Matrix.h
 #include <sstream> 
 #include <string> 
 #include <iomanip>
+#include <stdio.h>
 
 using namespace std;
     
@@ -52,36 +53,15 @@ class Matrix
         Matrix<T>(string[6], int, int); 
         Matrix<T>(int, int, string[6], int);
         ~Matrix<T>() 
-        {
-            for (int i = 0; i < rows; i++)
+        {   for (int i = 0; i < rows; i++)
                 delete [] array[i];
-            delete [] array;
-           // cout << "~Matrix (69 - Matrix.h)\n";
-        }
-        Matrix<T>(const Matrix<T> &m1) // COPY CONSTRUCTOR
-        {
-           rows = m1.rows;
-           cols = m1.cols;
-
-            for(int i = 0; i < m1.m_argc; i++)
-             m_args[i] = m1.m_args[i];
-
-            for (int i = 0; i < m1.rows; i++)
-            {
-                for (int j = 0; j < m1.cols; j++)
-                {
-                   array[i][j] = m1.array[i][j];
-                   cout << array[i][j] << endl;
-                }
-            }
-
-        }
-
-        Matrix<T> operator + (Matrix<T> &); // overloaded + to add poly
-        Matrix<T> operator - (Matrix<T> &); // overloaded + to add poly
-        Matrix<T> operator * (Matrix<T> &); // overloaded + to add poly
-             bool operator == (const Matrix<T> &); // overloaded + to add poly
-             void operator = (const Matrix<T> &);  // overloaded assignment 
+            delete [] array;    }
+        Matrix<T>(const Matrix<T> &); 
+        Matrix<T> operator + (Matrix<T> &); 
+        Matrix<T> operator - (Matrix<T> &); 
+        Matrix<T> operator * (Matrix<T> &); 
+             bool operator == (const Matrix<T> &); 
+             void operator = (const Matrix<T> &);   
 
         void set(int, int, T);
         T get (int, int);
@@ -90,7 +70,6 @@ class Matrix
         bool sizecheck(const Matrix<T> &);
         bool mulsizecheck(const Matrix<T> &);
 
-        void display();
 
     template <class T1>    
     friend ostream &operator << (ostream &, Matrix<T1> &); // friend << to give access to private members

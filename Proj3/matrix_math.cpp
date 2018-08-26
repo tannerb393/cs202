@@ -11,8 +11,8 @@ NOTES:         uses the int main () function to give call all other functions in
 MODIFICATION HISTORY:
 Author              Date        Modification(s)
 -------------   -----------    ---------------
-Tanner_Benavides  10-25-2017     1.0 / mtrx_class.cpp
-Tanner_Benavides  11-1-2017     2.0 / mtrx_class.cpp
+Tanner_Benavides  11-28-2017     1.0 / mtrx_class.cpp
+Tanner_Benavides  12-1-2017     2.0 / mtrx_class.cpp
 //-----------------------------------------------------------------------------*/ 
 /*}}}*/
 //#include "Matrix.h" // call to header file
@@ -36,6 +36,7 @@ int main (int argc, char *argv[])
     string args[6];
     ifstream infile;
     double k;
+    bool cmmd = false;
 
     Matrix<double> mat1;
     Matrix<double> mat2;
@@ -58,6 +59,14 @@ int main (int argc, char *argv[])
         return 0;
     }
 
+  //  for (int i = 0; i < argc, i++)  {
+    //    if (args[i] != ("-inp" ||("-add" ||("-" ||("-inp" ||("-inp" ||("-inp" ||
+
+
+
+
+
+
     args[2] += ".mtx";
     infile.open(args[2].c_str());
     if(!infile)
@@ -73,19 +82,7 @@ int main (int argc, char *argv[])
              return 0;  }
         infile.close();  }
 
-    if (argc == 6 && args[4] == "-out")
-      { args[5] += ".mtx";
-          fstream checkf;
-          checkf.open(args[5].c_str(), ios::out | ios::app);
-          checkf.close();
-          ifstream infile;
-        infile.open(args[5].c_str());
-        if(!infile)
-         {   cout << "Error opening save file: " << args[3] << endl;
-             return 0;  }
-        infile.close();  
-        cout << " 5 ";
-      }
+
 
     Matrix<double> pass1(args, 2, argc);
     mat1 = pass1;
@@ -105,14 +102,16 @@ int main (int argc, char *argv[])
            cout << mat1 << "        +\n" << mat2;
            mat3 = (mat1 + mat2);
            cout << "\n      ANSWER:";
-           cout << mat3;    }
+           cout << mat3;
+           cmmd = true;  }
 
         if (args[1] == "-sub")
         {  cout << "SUBTRACTING MATRIX 1 AND MATRIX 2\n";
            cout << mat1 << "        -\n" << mat2;
            mat3 = (mat1 - mat2);
            cout << "\n      ANSWER:";
-           cout << mat3;    }
+           cout << mat3;
+           cmmd = true;  }
 
 
        if (args[1] == "-eq")
@@ -124,7 +123,8 @@ int main (int argc, char *argv[])
             cout << "IS EQUAL ";
           else
             cout << "IS NOT EQUAL ";
-          cout << "to Matrix #2]\n";    }
+          cout << "to Matrix #2]\n";    
+            cmmd = true;   }
     }
 
     if (!mat1.sizecheck(mat2) && ((args[1] == "-add") 
@@ -136,13 +136,6 @@ int main (int argc, char *argv[])
     }
 
 
-    if (args[1] == "-mul" && (mat1.mulsizecheck(mat2)))
-    {  cout << "MULTIPLYING MATRIX 1 AND MATRIX 2\n";
-       cout << mat1 << "        *\n" << mat2;
-       mat3 = (mat1 * mat2);
-       cout << "\n      ANSWER:\n";
-       cout << mat3;    }
-
     if (!mat1.mulsizecheck(mat2) && (args[1] == "-mul"))
     {
         cout << "EXIT! Column Size of Matrix 1 \n";
@@ -150,19 +143,44 @@ int main (int argc, char *argv[])
         return 0;
     }   
 
+    if (argc == 6 && args[4] == "-out")
+      { args[5] += ".mtx";
+          cout << args[5] << endl;
+          fstream checkf;
+          checkf.open(args[5].c_str(), ios::out | ios::app);
+          checkf.close();
+          ifstream infile;
+        infile.open(args[5].c_str());
+        if(!infile)
+         {   cout << "Error opening save file: " << args[3] << endl;
+             return 0;  }
+        infile.close();  
+      }
+
+
+    if (args[1] == "-mul" && (mat1.mulsizecheck(mat2)))
+    {  cout << "MULTIPLYING MATRIX 1 AND MATRIX 2\n";
+       cout << mat1 << "        *\n" << mat2;
+       mat3 = (mat1 * mat2);
+       cout << "\n      ANSWER:\n";
+       cout << mat3; 
+       cmmd = true;  }
 
    if (args[1] == "-T")
    {   cout << "TRANSPOSING MATRIX " << args[2] << endl;
        cout << mat1 << "    TRANSPOSED\n";
-       mat1.trans();  }
+       mat1.trans(); 
+       cmmd = true;  }
 
    if (args[4] == "-out")
    {   
-       cout << "COPYING RESULTS TO: " << args[5];
+       cout << "COPYING RESULTS TO: " << args[5] << endl;
        mat3.out();
    }
 
 
+   if (cmmd == false)
+       cout << args[1] << " is NOT on the list of Valid Commands.\n type -h to see command list\n";
 
     return 0;
 

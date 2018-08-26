@@ -23,6 +23,31 @@ Tanner_Benavides  12-01-2017     2.0 / Matrix.cpp
 #include "Matrix.h" // call to header file
 //#include "Matrix.cpp" // Call to Classes
 
+/*{{{*/ /*{{{*/ //----------- COPY CONSTRUCTOR --------------------------------
+//FUNCTION: Matrix (Copy Constructor)
+//PURPOSE: uses the '=' symbol between ojbects to copy the member data between
+//RETURNS: NA
+/*}}}*/ //---------------------------------------------------------------------
+template <class T>
+Matrix<T>::Matrix(const Matrix<T> &m1) // COPY CONSTRUCTOR
+{
+   // copy constructor in the program, but is not used ever.
+   rows = m1.rows;
+   cols = m1.cols;
+
+    for(int i = 0; i < m1.m_argc; i++)
+     m_args[i] = m1.m_args[i];
+
+    for (int i = 0; i < m1.rows; i++)
+    {
+        for (int j = 0; j < m1.cols; j++)
+        {
+           array[i][j] = m1.array[i][j];
+           cout << array[i][j] << endl;
+        }
+    }
+
+}/*}}}*/
 
 /*{{{*/ /*{{{*/ //-----------TEMP CLASS CONSTRUCTOR HEADER-----------------------------
 //FUNCTION: Matrix (Overloaded Construcor)
@@ -33,8 +58,6 @@ Tanner_Benavides  12-01-2017     2.0 / Matrix.cpp
 template <class T>
 Matrix<T>::Matrix(int m_rows, int m_cols, string args[6], int argc)
 {
-   // cout << "Temp class Constructor (52 - Matrix.cpp)\n";
-
     rows = m_rows;
     cols = m_cols;
     m_argc = argc;
@@ -53,7 +76,6 @@ Matrix<T>::Matrix(int m_rows, int m_cols, string args[6], int argc)
         }
     for(int i = 0; i < argc; i++)
      m_args[i] = args[i];
-
 }/*}}}*/
 
 
@@ -75,7 +97,6 @@ Matrix<T>::Matrix()
         for(int i = 0; i < rows; i++)
             array[i] = new T[cols];
 
-   // cout << "Main Constructor (65 - Matrix.cpp)\n";
 }/*}}}*/
 
 
@@ -88,9 +109,6 @@ Matrix<T>::Matrix()
 template <class T>
 Matrix<T>::Matrix(string args[6], int c, int argc)
 {
- 
-// cout << "Matrix overloaded constructor: (95 - Matrix.cpp) \n\n";
-
  ifstream infile;
   char let_x;
 
@@ -164,7 +182,7 @@ void Matrix<T>::out()
 {/*{{{*/
 
     ofstream save;
-
+    m_args[5] += ".mtx";
     save.open(m_args[5].c_str(), ios::out);
 
    save << setw((cols * 2)) << rows << " x " << cols << endl;
